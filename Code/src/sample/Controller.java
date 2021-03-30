@@ -12,12 +12,19 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import utils.ConnectionUtil;
 
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
 
+    //Links Controller and login scene
     @FXML
     private TextField txtEid;
     @FXML
@@ -31,10 +38,70 @@ public class Controller implements Initializable {
 
     @FXML ImageView img_close;
 
+    //SQL setup
+    Connection con = null;
+    PreparedStatement preparedStatement = null;
+    ResultSet resultSet = null;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         lbl_msg.setText("");
+
+        //Check connectivity status
+        con = ConnectionUtil.conDB();
+
+        if (con == null) {
+            lblErrors.setTextFill(Color.TOMATO);
+            lblErrors.setText("Server Error : Check");
+        } else {
+            lblErrors.setTextFill(Color.GREEN);
+            lblErrors.setText("Server is up : Good to go");
+        }
+
+    }
+
+    public void signIn(){
+        String userType = authenticate();
+    }
+
+    private String authenticate() {
+        String status = "";
+
+        //Fetch username and password
+        String username = txtEid.getText();
+        String password = txtPassword.getText();
+
+        //Check if fields empty or not
+        if(username.isEmpty() || password.isEmpty())
+        {
+            setLblError(Color.TOMATO, "Empty credentials");
+            status = "Error";
+        }
+        else
+        {
+            //If fields not empty write query
+            // TODO: 30-03-2021 Ritka fetch usernames and password
+            String query = "SELECT * FROM auth where eid=? and password=?";
+            try{
+                preparedStatement = con.prepareStatement(query);
+                preparedStatement.setString(1, username);
+                preparedStatement.setString(2, password);
+
+                resultSet = preparedStatement.executeQuery();
+
+                if (!resultSet.next()) {
+                    setLblError(Color.TOMATO, "Enter Correct Email/Password");
+                    status = "Error";
+                }else {
+                    setLblError(Color.GREEN, "Login Successful..Redirecting..");
+                }
+
+            } catch (SQLException ex) {
+                System.err.println(ex.getMessage());
+                status = "Exception";
+            }
+        }
+        return status;
     }
 
     public void clear(){
@@ -53,5 +120,11 @@ public class Controller implements Initializable {
     public void exit(){
         Platform.exit();
         System.exit(0);
+    }
+
+    private void setLblError(Color color, String text) {
+        lblErrors.setTextFill(color);
+        lblErrors.setText(text);
+        System.out.println(text);
     }
 }
