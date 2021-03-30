@@ -47,7 +47,7 @@ public class Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         lbl_msg.setText("");
 
-        //Check connectivity status
+        //Connect with DB
         con = ConnectionUtil.conDB();
 
         if (con == null) {
@@ -61,6 +61,7 @@ public class Controller implements Initializable {
     }
 
     public void signIn(){
+        if(con==null)return;
         String userType = authenticate();
     }
 
