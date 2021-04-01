@@ -20,7 +20,8 @@ public class Main extends Application {
         try
         {
 
-            root = FXMLLoader.load(getClass().getResource("login.fxml"));
+            //root = FXMLLoader.load(getClass().getResource("login.fxml"));
+            root = FXMLLoader.load(getClass().getResource("Reception.fxml"));
 
             stage.initStyle(StageStyle.UNDECORATED);
             stage.setMaximized(false);
@@ -46,6 +47,8 @@ public class Main extends Application {
             stage.show();
         }catch(Exception e){
             System.out.println(e.getMessage());
+            System.out.println(e.getCause());
+            System.out.println(e.getStackTrace());
         }
     }
 
