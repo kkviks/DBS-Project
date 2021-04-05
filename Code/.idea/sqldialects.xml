@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/../Database/Data Scripts/attendance.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/../Database/Data Scripts/bill.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/../Database/Data Scripts/credentials.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/../Database/Data Scripts/customer.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/../Database/Data Scripts/designation.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/../Database/Data Scripts/employee.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/../Database/Data Scripts/employee_bellboy.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/../Database/Data Scripts/employee_receptionist.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/../Database/Data Scripts/parking_slot.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/../Database/Data Scripts/room.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/../Database/Data Scripts/room_service.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/../Database/Data Scripts/room_type.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/../Database/Data Scripts/service_type.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/../Database/Data Scripts/shift.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/../Database/Data Scripts/toll.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/../Database/Data Scripts/visitor.sql" dialect="MySQL" />
+  </component>
+</project>
