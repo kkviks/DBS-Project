@@ -4,6 +4,8 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
@@ -17,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1050.0" style="-fx-background-color: #02030A;" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="sample.ReceptionController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1050.0" style="-fx-background-color: #02030A;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ReceptionController">
    <children>
       <VBox alignment="TOP_CENTER" prefHeight="576.0" prefWidth="256.0" style="-fx-background-color: #05071F;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -127,7 +129,7 @@
       </VBox>
       <StackPane layoutX="258.0" prefHeight="576.0" prefWidth="793.0" style="-fx-background-color: #02030A;">
          <children>
-            <Pane fx:id="pnlOverview" prefHeight="554.0" prefWidth="793.0" visible="false">
+            <Pane fx:id="pnlOverview" prefHeight="554.0" prefWidth="793.0">
                <children>
                   <TextField layoutX="590.0" layoutY="47.0" prefHeight="27.0" prefWidth="183.0" promptText="search" style="-fx-background-color: #02030A; -fx-border-color: #B7C3D7; -fx-border-radius: 2em;" />
                   <Label layoutX="57.0" layoutY="25.0" text="Room Status" textFill="#e7e5e5">
@@ -139,7 +141,7 @@
                      <children>
                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <Label text="80" textFill="#2a73ff">
+                              <Label fx:id="lblRoomsTotal" text="80" textFill="#2a73ff">
                                  <font>
                                     <Font name="System Bold" size="26.0" />
                                  </font>
@@ -149,7 +151,7 @@
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <Label text="50" textFill="#26bfbc">
+                              <Label fx:id="lblRoomsOccupied" text="50" textFill="#26bfbc">
                                  <font>
                                     <Font name="System Bold" size="26.0" />
                                  </font>
@@ -159,7 +161,7 @@
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <Label text="30" textFill="#fa5f7e">
+                              <Label fx:id="lblRoomsAvailable" text="30" textFill="#fa5f7e">
                                  <font>
                                     <Font name="System Bold" size="26.0" />
                                  </font>
@@ -169,12 +171,12 @@
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <Label alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" prefHeight="38.0" prefWidth="121.0" text="1" textFill="#de0000">
+                              <Label fx:id="lblServerStatus" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" prefHeight="38.0" prefWidth="121.0" text="1" textFill="#de0000">
                                  <font>
                                     <Font name="System Bold" size="26.0" />
                                  </font>
                               </Label>
-                              <Label text="On Duty" textFill="#e7e5e5" />
+                              <Label text="Server" textFill="#e7e5e5" />
                            </children>
                         </VBox>
                      </children>
@@ -210,10 +212,21 @@
                   </HBox>
                   <ScrollPane layoutX="14.0" layoutY="232.0" prefHeight="320.0" prefWidth="746.0" stylesheets="@style.css">
                      <content>
-                        <VBox fx:id="pnItems" prefHeight="318.0" prefWidth="744.0" spacing="5.0" style="-fx-background-color: #02030A;">
+                        <VBox prefHeight="318.0" prefWidth="744.0" spacing="5.0" style="-fx-background-color: #02030A;">
                            <padding>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
+                           <children>
+                              <TableView fx:id="roomTableView" prefHeight="297.0" prefWidth="735.0">
+                                <columns>
+                                  <TableColumn fx:id="roomNumCol" prefWidth="112.79992371797562" text="Room" />
+                                  <TableColumn fx:id="roomTypeCol" prefWidth="188.80006408691406" text="Type" />
+                                    <TableColumn fx:id="roomBedsCol" prefWidth="62.39996337890625" text="Beds" />
+                                    <TableColumn fx:id="roomPriceCol" prefWidth="154.39990234375" text="Price" />
+                                    <TableColumn fx:id="roomAvailabilityCol" prefWidth="160.7999267578125" text="Availability" />
+                                </columns>
+                              </TableView>
+                           </children>
                         </VBox>
                      </content>
                   </ScrollPane>
@@ -229,7 +242,7 @@
                   <Label layoutX="305.0" layoutY="288.0" prefHeight="17.0" prefWidth="125.0" text="New Booking" />
                </children>
             </Pane>
-            <Pane fx:id="pnlStaff" layoutX="10.0" layoutY="10.0" prefHeight="554.0" prefWidth="793.0">
+            <Pane fx:id="pnlStaff" layoutX="10.0" layoutY="10.0" prefHeight="554.0" prefWidth="793.0" visible="false">
                <children>
                   <Label layoutX="57.0" layoutY="25.0" text="Staff" textFill="#e7e5e5">
                      <font>

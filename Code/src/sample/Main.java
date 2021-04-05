@@ -20,7 +20,7 @@ public class Main extends Application {
         try
         {
 
-            //root = FXMLLoader.load(getClass().getResource("login.fxml"));
+            //FXMLLoader loader = FXMLLoader.load(getClass().getResource("login.fxml"));
             root = FXMLLoader.load(getClass().getResource("Reception.fxml"));
 
             stage.initStyle(StageStyle.UNDECORATED);

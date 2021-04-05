@@ -34,7 +34,7 @@ public class LoginController implements Initializable {
     private Button btn_clear, btn_signIn, btn_signUp, btn_close;
 
     @FXML
-    private Label lbl_forgotPassword, lblErrors, lbl_msg;
+    private Label lbl_forgotPassword, lblErrors, lbl_msg ;
 
     @FXML ImageView img_close;
 

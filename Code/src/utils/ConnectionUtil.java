@@ -9,7 +9,7 @@ public class ConnectionUtil {
 
     public static Connection conDB() {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             String username = "root";
             String password = "ok12345";
             String schemaName = "dbs_project";

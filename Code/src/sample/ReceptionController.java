@@ -1,17 +1,18 @@
 package sample;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import models.Room;
 
 import java.io.IOException;
 import java.net.URL;
@@ -20,7 +21,7 @@ import java.util.ResourceBundle;
 public class ReceptionController implements Initializable {
 
     @FXML
-    private VBox pnItems = null;
+    private VBox pnItems = null, pnItems1 = null;
     @FXML
     private Button btnOverview;
 
@@ -77,9 +78,51 @@ public class ReceptionController implements Initializable {
     @FXML
     Label lblSelectedStaff;
 
+    //tableView
+    @FXML
+    private TableView<Room> roomTableView;
+
+    @FXML
+    private TableColumn<Room, Integer> roomNumCol;
+    @FXML
+    private TableColumn<Room, String> roomTypeCol;
+    @FXML
+    private TableColumn<Room, Integer> roomBedsCol;
+    @FXML
+    private TableColumn<Room, Integer> roomPriceCol;
+    @FXML
+    private TableColumn<Room, String> roomAvailabilityCol;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        //updateOverviewTable("Total");
+        roomNumCol.setCellValueFactory(new PropertyValueFactory<Room,Integer>("roomNum"));
+        roomTypeCol.setCellValueFactory(new PropertyValueFactory<Room,String>("roomType"));
+        roomBedsCol.setCellValueFactory(new PropertyValueFactory<Room,Integer>("roomBeds"));
+        roomPriceCol.setCellValueFactory(new PropertyValueFactory<Room,Integer>("roomPrice"));
+        roomAvailabilityCol.setCellValueFactory(new PropertyValueFactory<Room,String>("roomAvailability"));
+
+        //Data
+        ObservableList<Room> roomList = FXCollections.observableArrayList();
+        for(int i=0;i<100;i++)
+         roomList.add(new Room(1,"type1",2, 2000, "Yes"));
+
+        roomTableView.setItems(roomList);
+
+        staffTableShowTemp();
+        hideAll();
+        showOnly("Overview");
+
+        //Toggle Staff
+        lblSelectedStaff.setText("Present");
+    }
+
+    private void updateOverviewTable(String total) {
+    }
+
+    private void staffTableShowTemp() {
         Node[] nodes = new Node[10];
         for (int i = 0; i < nodes.length; i++) {
             try {
@@ -88,22 +131,19 @@ public class ReceptionController implements Initializable {
                 nodes[i] = FXMLLoader.load(getClass().getResource("Item.fxml"));
                 //give the items some effect
 
+
                 nodes[i].setOnMouseEntered(event -> {
                     nodes[j].setStyle("-fx-background-color : #0A0E3F");
                 });
                 nodes[i].setOnMouseExited(event -> {
                     nodes[j].setStyle("-fx-background-color : #02030A");
                 });
-                pnItems.getChildren().add(nodes[i]);
+                pnItems1.getChildren().add(nodes[i]);
+                //pnItems1.getChildren().add(nodes[i]);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        hideAll();
-        showOnly("Overview");
-
-        //Toggle Staff
-        lblSelectedStaff.setText("Present");
     }
 
     private void hideAll() {
@@ -192,21 +232,18 @@ public class ReceptionController implements Initializable {
         }
     }
 
-    public void handleToggle(ActionEvent actionEvent){
+    public void handleToggle(ActionEvent actionEvent) {
         System.out.println(actionEvent.getSource().toString());
 
-        if(actionEvent.getSource() == totalStaff)
-        {
+        if (actionEvent.getSource() == totalStaff) {
             lblSelectedStaff.setText("Total Staff");
         }
 
-        if(actionEvent.getSource() == presentStaff)
-        {
+        if (actionEvent.getSource() == presentStaff) {
             lblSelectedStaff.setText("Present");
         }
 
-        if(actionEvent.getSource() == absentStaff)
-        {
+        if (actionEvent.getSource() == absentStaff) {
             lblSelectedStaff.setText("Absent");
         }
     }
