@@ -1,15 +1,21 @@
 package sample;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.InputMethodEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import models.Room;
@@ -78,6 +84,9 @@ public class ReceptionController implements Initializable {
     @FXML
     Label lblSelectedStaff;
 
+    @FXML
+    TextField filterRoomTable;
+
     //tableView
     @FXML
     private TableView<Room> roomTableView;
@@ -97,19 +106,7 @@ public class ReceptionController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        //updateOverviewTable("Total");
-        roomNumCol.setCellValueFactory(new PropertyValueFactory<Room,Integer>("roomNum"));
-        roomTypeCol.setCellValueFactory(new PropertyValueFactory<Room,String>("roomType"));
-        roomBedsCol.setCellValueFactory(new PropertyValueFactory<Room,Integer>("roomBeds"));
-        roomPriceCol.setCellValueFactory(new PropertyValueFactory<Room,Integer>("roomPrice"));
-        roomAvailabilityCol.setCellValueFactory(new PropertyValueFactory<Room,String>("roomAvailability"));
-
-        //Data
-        ObservableList<Room> roomList = FXCollections.observableArrayList();
-        for(int i=0;i<100;i++)
-         roomList.add(new Room(1,"type1",2, 2000, "Yes"));
-
-        roomTableView.setItems(roomList);
+        updateOverviewTable("Total");
 
         staffTableShowTemp();
         hideAll();
@@ -120,6 +117,66 @@ public class ReceptionController implements Initializable {
     }
 
     private void updateOverviewTable(String total) {
+
+        roomNumCol.setCellValueFactory(new PropertyValueFactory<Room,Integer>("roomNum"));
+        roomTypeCol.setCellValueFactory(new PropertyValueFactory<Room,String>("roomType"));
+        roomBedsCol.setCellValueFactory(new PropertyValueFactory<Room,Integer>("roomBeds"));
+        roomPriceCol.setCellValueFactory(new PropertyValueFactory<Room,Integer>("roomPrice"));
+        roomAvailabilityCol.setCellValueFactory(new PropertyValueFactory<Room,String>("roomAvailability"));
+
+        // 0. Initialize the columns.
+        ObservableList<Room> roomList = FXCollections.observableArrayList();
+        for(int i=0;i<100;i++)
+            roomList.add(new Room(i+1,"type"+String.valueOf((i+1)/5),2, (i/5)*100, i%2==0?"Yes":"No"));
+
+        // 1. Wrap the ObservableList in a FilteredList (initially display all data).
+        FilteredList<Room> roomFilteredList = new FilteredList<>(roomList,p->true);
+
+        // 2. Set the filter Predicate whenever the filter changes.
+        filterRoomTable.textProperty().addListener((observable, oldValue, newValue) -> {
+            roomFilteredList.setPredicate(room -> {
+                //If filter is empty display all data
+                if(newValue==null || newValue.isEmpty())
+                {
+                    return true;
+                }
+
+                String lowerCaseFilter = newValue.toLowerCase().trim();
+                //Column-wise filters
+
+                if(room.getRoomType().toLowerCase().contains(lowerCaseFilter))
+                {
+                    return true;
+                }
+                else if(room.getRoomAvailability().toLowerCase().contains(lowerCaseFilter))
+                {
+                    return true;
+                }
+                else if(String.valueOf(room.getRoomBeds()).contains(lowerCaseFilter))
+                {
+                    return true;
+                }
+                else if(String.valueOf(room.getRoomPrice()).contains(lowerCaseFilter))
+                {
+                    return true;
+                }
+                else if(String.valueOf(room.getRoomNum()).contains(lowerCaseFilter))
+                {
+                    return true;
+                }
+                return false;
+            });
+        });
+
+        // 3. Wrap the FilteredList in a SortedList.
+        SortedList<Room> roomSortedList = new SortedList<>(roomFilteredList);
+
+        //4. Bind the Sortedlist comparator to the TableView comparator.
+        //Otherwise, sorting the TableView would have no effect.
+        roomSortedList.comparatorProperty().bind(roomTableView.comparatorProperty());
+
+        //Add sorted ( and filtered ) data to the table.
+        roomTableView.setItems(roomSortedList);
     }
 
     private void staffTableShowTemp() {
