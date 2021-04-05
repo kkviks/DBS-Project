@@ -7,6 +7,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
@@ -59,6 +62,21 @@ public class ReceptionController implements Initializable {
     @FXML
     private Pane pnlCheckout;
 
+    @FXML
+    ToggleGroup toggleStaff;
+
+    @FXML
+    ToggleButton totalStaff;
+
+    @FXML
+    ToggleButton presentStaff;
+
+    @FXML
+    ToggleButton absentStaff;
+
+    @FXML
+    Label lblSelectedStaff;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -83,24 +101,34 @@ public class ReceptionController implements Initializable {
         }
         hideAll();
         showOnly("Overview");
+
+        //Toggle Staff
+        lblSelectedStaff.setText("Present");
     }
 
     private void hideAll() {
+
+        pnlOverview.setStyle("-fx-background-color : #02030A");
+        pnlNewBooking.setStyle("-fx-background-color : #02030A");
+        pnlStaff.setStyle("-fx-background-color : #02030A");
+        pnlCustomer.setStyle("-fx-background-color : #02030A");
+        pnlOrders.setStyle("-fx-background-color : #02030A");
+        pnlCheckout.setStyle("-fx-background-color : #02030A");
+
         pnlOverview.setVisible(false);
         pnlNewBooking.setVisible(false);
         pnlStaff.setVisible(false);
         pnlCustomer.setVisible(false);
         pnlOrders.setVisible(false);
-        ;
         pnlCheckout.setVisible(false);
     }
 
     private void showOnly(String panel) {
+
         switch (panel) {
             case "Overview":
                 pnlOverview.toFront();
                 pnlOverview.setVisible(true);
-                pnlOverview.setStyle("-fx-background-color : #02030A");
                 break;
             case "New Booking":
                 pnlNewBooking.toFront();
@@ -161,6 +189,25 @@ public class ReceptionController implements Initializable {
         if (actionEvent.getSource() == btnSignout) {
             Platform.exit();
             System.exit(0);
+        }
+    }
+
+    public void handleToggle(ActionEvent actionEvent){
+        System.out.println(actionEvent.getSource().toString());
+
+        if(actionEvent.getSource() == totalStaff)
+        {
+            lblSelectedStaff.setText("Total Staff");
+        }
+
+        if(actionEvent.getSource() == presentStaff)
+        {
+            lblSelectedStaff.setText("Present");
+        }
+
+        if(actionEvent.getSource() == absentStaff)
+        {
+            lblSelectedStaff.setText("Absent");
         }
     }
 }

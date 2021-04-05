@@ -1,0 +1,14 @@
+INSERT INTO demo_check.attendance (E_ID, Date, `Present?`, Total_Hours) VALUES (820170001, '2021-04-05', 1, 10);
+INSERT INTO demo_check.attendance (E_ID, Date, `Present?`, Total_Hours) VALUES (820170002, '2021-04-05', 1, 10);
+INSERT INTO demo_check.attendance (E_ID, Date, `Present?`, Total_Hours) VALUES (820180001, '2021-04-05', 1, 10);
+INSERT INTO demo_check.attendance (E_ID, Date, `Present?`, Total_Hours) VALUES (820180002, '2021-04-05', 1, 10);
+INSERT INTO demo_check.attendance (E_ID, Date, `Present?`, Total_Hours) VALUES (820180003, '2021-04-05', 1, 10);
+INSERT INTO demo_check.attendance (E_ID, Date, `Present?`, Total_Hours) VALUES (820180004, '2021-04-05', 1, 10);
+INSERT INTO demo_check.attendance (E_ID, Date, `Present?`, Total_Hours) VALUES (820190001, '2021-04-05', 1, 10);
+INSERT INTO demo_check.attendance (E_ID, Date, `Present?`, Total_Hours) VALUES (820190002, '2021-04-05', 0, 0);
+INSERT INTO demo_check.attendance (E_ID, Date, `Present?`, Total_Hours) VALUES (820190003, '2021-04-05', 1, 10);
+INSERT INTO demo_check.attendance (E_ID, Date, `Present?`, Total_Hours) VALUES (820190004, '2021-04-05', 1, 10);
+INSERT INTO demo_check.attendance (E_ID, Date, `Present?`, Total_Hours) VALUES (820180786, '2021-04-05', 1, 10);
+INSERT INTO demo_check.attendance (E_ID, Date, `Present?`, Total_Hours) VALUES (820191144, '2021-04-05', 1, 10);
+INSERT INTO demo_check.attendance (E_ID, Date, `Present?`, Total_Hours) VALUES (820180135, '2021-04-05', 1, 10);
+INSERT INTO demo_check.attendance (E_ID, Date, `Present?`, Total_Hours) VALUES (820190441, '2021-04-05', 1, 10);

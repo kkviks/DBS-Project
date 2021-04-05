@@ -81,8 +81,8 @@ public class LoginController implements Initializable {
         else
         {
             //If fields not empty write query
-            // TODO: 30-03-2021 Ritka fetch usernames and password
-            String query = "SELECT * FROM auth where eid=? and password=?";
+            // TODO: 30-03-2021 Ritika Garg fetch usernames and password
+            String query = "SELECT * FROM credentials where e_id=? and password=?";
             try{
                 preparedStatement = con.prepareStatement(query);
                 preparedStatement.setString(1, username);

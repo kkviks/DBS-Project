@@ -12,7 +12,7 @@ public class ConnectionUtil {
             Class.forName("com.mysql.jdbc.Driver");
             String username = "root";
             String password = "ok12345";
-            String schemaName = "sakila";
+            String schemaName = "dbs_project";
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+schemaName, username, password);
             return con;
         } catch (ClassNotFoundException | SQLException ex) {

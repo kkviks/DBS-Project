@@ -1,0 +1,10 @@
+INSERT INTO demo_check.toll (Date_Time, Customer_ID, `In time`, `Out time`, `Checked Out?`) VALUES ('2021-04-05 10:00:00', 20180603, '10:30:00', '11:30:00', 0);
+INSERT INTO demo_check.toll (Date_Time, Customer_ID, `In time`, `Out time`, `Checked Out?`) VALUES ('2021-04-05 10:00:00', 20180603, '11:30:00', '12:30:00', 0);
+INSERT INTO demo_check.toll (Date_Time, Customer_ID, `In time`, `Out time`, `Checked Out?`) VALUES ('2021-04-05 10:00:00', 20190604, '12:30:00', '13:30:00', 0);
+INSERT INTO demo_check.toll (Date_Time, Customer_ID, `In time`, `Out time`, `Checked Out?`) VALUES ('2021-04-05 10:00:00', 20190267, '13:30:00', '14:30:00', 0);
+INSERT INTO demo_check.toll (Date_Time, Customer_ID, `In time`, `Out time`, `Checked Out?`) VALUES ('2021-04-05 10:00:00', 20180062, '14:30:00', '15:30:00', 0);
+INSERT INTO demo_check.toll (Date_Time, Customer_ID, `In time`, `Out time`, `Checked Out?`) VALUES ('2021-04-05 10:00:00', 20191446, '15:30:00', '16:30:00', 0);
+INSERT INTO demo_check.toll (Date_Time, Customer_ID, `In time`, `Out time`, `Checked Out?`) VALUES ('2021-04-05 10:00:00', 20180276, '16:30:00', '17:30:00', 0);
+INSERT INTO demo_check.toll (Date_Time, Customer_ID, `In time`, `Out time`, `Checked Out?`) VALUES ('2021-04-05 10:00:00', 20191178, '17:30:00', '18:30:00', 0);
+INSERT INTO demo_check.toll (Date_Time, Customer_ID, `In time`, `Out time`, `Checked Out?`) VALUES ('2021-04-05 10:00:00', 20170692, '18:30:00', '19:30:00', 0);
+INSERT INTO demo_check.toll (Date_Time, Customer_ID, `In time`, `Out time`, `Checked Out?`) VALUES ('2021-04-05 10:00:00', 20170694, '19:30:00', '20:30:00', 0);

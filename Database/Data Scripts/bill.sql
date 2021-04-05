@@ -1,0 +1,12 @@
+INSERT INTO demo_check.bill (Bill_ID, Rent, Extra_Charges, Payment_Mode, Tax, Total, Due, Paid) VALUES (10001, 1800, 450, 'Paytm UPI', 90, 2340, 1340, 1000);
+INSERT INTO demo_check.bill (Bill_ID, Rent, Extra_Charges, Payment_Mode, Tax, Total, Due, Paid) VALUES (10002, 3000, 100, 'Paytm UPI', 150, 3250, 2000, 1250);
+INSERT INTO demo_check.bill (Bill_ID, Rent, Extra_Charges, Payment_Mode, Tax, Total, Due, Paid) VALUES (10003, 5300, 200, 'Cash', 265, 5765, 3000, 2765);
+INSERT INTO demo_check.bill (Bill_ID, Rent, Extra_Charges, Payment_Mode, Tax, Total, Due, Paid) VALUES (10004, 3600, 150, 'Cash', 180, 3930, 1930, 2000);
+INSERT INTO demo_check.bill (Bill_ID, Rent, Extra_Charges, Payment_Mode, Tax, Total, Due, Paid) VALUES (10005, 3000, 0, 'Gpay', 150, 3150, 0, 3150);
+INSERT INTO demo_check.bill (Bill_ID, Rent, Extra_Charges, Payment_Mode, Tax, Total, Due, Paid) VALUES (10006, 9200, 0, 'MMT ', 460, 9660, 0, 9660);
+INSERT INTO demo_check.bill (Bill_ID, Rent, Extra_Charges, Payment_Mode, Tax, Total, Due, Paid) VALUES (10007, 10600, 0, 'MMT ', 330, 10930, 0, 10930);
+INSERT INTO demo_check.bill (Bill_ID, Rent, Extra_Charges, Payment_Mode, Tax, Total, Due, Paid) VALUES (10008, 1800, 30, 'Cash', 90, 1920, 920, 1000);
+INSERT INTO demo_check.bill (Bill_ID, Rent, Extra_Charges, Payment_Mode, Tax, Total, Due, Paid) VALUES (10009, 6000, 450, 'Cash', 300, 6750, 2750, 4000);
+INSERT INTO demo_check.bill (Bill_ID, Rent, Extra_Charges, Payment_Mode, Tax, Total, Due, Paid) VALUES (10010, 5400, 320, 'MMT ', 270, 5990, 0, 5990);
+INSERT INTO demo_check.bill (Bill_ID, Rent, Extra_Charges, Payment_Mode, Tax, Total, Due, Paid) VALUES (10011, 10800, 420, 'Cash', 540, 11760, 7760, 4000);
+INSERT INTO demo_check.bill (Bill_ID, Rent, Extra_Charges, Payment_Mode, Tax, Total, Due, Paid) VALUES (10012, 3600, 30, 'Cash', 180, 3810, 1810, 2000);

@@ -1,0 +1,17 @@
+INSERT INTO demo_check.employee_receptionist (Customer_ID, E_ID) VALUES (20170360, 820170001);
+INSERT INTO demo_check.employee_receptionist (Customer_ID, E_ID) VALUES (20180603, 820180002);
+INSERT INTO demo_check.employee_receptionist (Customer_ID, E_ID) VALUES (20190604, 820170001);
+INSERT INTO demo_check.employee_receptionist (Customer_ID, E_ID) VALUES (20190267, 820170001);
+INSERT INTO demo_check.employee_receptionist (Customer_ID, E_ID) VALUES (20191204, 820180002);
+INSERT INTO demo_check.employee_receptionist (Customer_ID, E_ID) VALUES (20180062, 820170001);
+INSERT INTO demo_check.employee_receptionist (Customer_ID, E_ID) VALUES (20190125, 820180002);
+INSERT INTO demo_check.employee_receptionist (Customer_ID, E_ID) VALUES (20190085, 820170001);
+INSERT INTO demo_check.employee_receptionist (Customer_ID, E_ID) VALUES (20191446, 820180002);
+INSERT INTO demo_check.employee_receptionist (Customer_ID, E_ID) VALUES (20190593, 820170001);
+INSERT INTO demo_check.employee_receptionist (Customer_ID, E_ID) VALUES (20180932, 820180002);
+INSERT INTO demo_check.employee_receptionist (Customer_ID, E_ID) VALUES (20180276, 820170001);
+INSERT INTO demo_check.employee_receptionist (Customer_ID, E_ID) VALUES (20191178, 820180002);
+INSERT INTO demo_check.employee_receptionist (Customer_ID, E_ID) VALUES (20191368, 820170001);
+INSERT INTO demo_check.employee_receptionist (Customer_ID, E_ID) VALUES (20191381, 820170001);
+INSERT INTO demo_check.employee_receptionist (Customer_ID, E_ID) VALUES (20170692, 820180002);
+INSERT INTO demo_check.employee_receptionist (Customer_ID, E_ID) VALUES (20170694, 820180002);

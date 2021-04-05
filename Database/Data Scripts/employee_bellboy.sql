@@ -1,0 +1,14 @@
+INSERT INTO demo_check.employee_bellboy (Service_No, E_ID) VALUES (220170360, 820190001);
+INSERT INTO demo_check.employee_bellboy (Service_No, E_ID) VALUES (220180603, 820191144);
+INSERT INTO demo_check.employee_bellboy (Service_No, E_ID) VALUES (220190604, 820190001);
+INSERT INTO demo_check.employee_bellboy (Service_No, E_ID) VALUES (220180062, 820191144);
+INSERT INTO demo_check.employee_bellboy (Service_No, E_ID) VALUES (220190125, 820190001);
+INSERT INTO demo_check.employee_bellboy (Service_No, E_ID) VALUES (220190085, 820191144);
+INSERT INTO demo_check.employee_bellboy (Service_No, E_ID) VALUES (220191446, 820180135);
+INSERT INTO demo_check.employee_bellboy (Service_No, E_ID) VALUES (220190593, 820190441);
+INSERT INTO demo_check.employee_bellboy (Service_No, E_ID) VALUES (220180932, 820190001);
+INSERT INTO demo_check.employee_bellboy (Service_No, E_ID) VALUES (220180276, 820191144);
+INSERT INTO demo_check.employee_bellboy (Service_No, E_ID) VALUES (220191178, 820180135);
+INSERT INTO demo_check.employee_bellboy (Service_No, E_ID) VALUES (220191381, 820190441);
+INSERT INTO demo_check.employee_bellboy (Service_No, E_ID) VALUES (220170692, 820180135);
+INSERT INTO demo_check.employee_bellboy (Service_No, E_ID) VALUES (220170694, 820190441);
