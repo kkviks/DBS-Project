@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -132,7 +133,7 @@
             <Pane fx:id="pnlOverview" prefHeight="554.0" prefWidth="793.0">
                <children>
                   <TextField fx:id="filterRoomTable" layoutX="590.0" layoutY="47.0" prefHeight="27.0" prefWidth="183.0" promptText="search" style="-fx-background-color: #02030A; -fx-border-color: #B7C3D7; -fx-border-radius: 2em;" />
-                  <Label layoutX="57.0" layoutY="25.0" text="Room Status" textFill="#e7e5e5">
+                  <Label layoutX="57.0" layoutY="25.0" text="Overview" textFill="#e7e5e5">
                      <font>
                         <Font size="24.0" />
                      </font>
@@ -181,53 +182,24 @@
                         </VBox>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER_LEFT" layoutX="45.0" layoutY="178.0" prefHeight="42.0" prefWidth="712.0" spacing="80.0" style="-fx-background-color: #02030A;">
-                     <children>
-                        <Label text="Room #" textFill="#e7e5e5">
-                           <HBox.margin>
-                              <Insets left="50.0" />
-                           </HBox.margin>
-                        </Label>
-                        <Label text="Type" textFill="#e7e5e5">
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </Label>
-                        <Label text="Beds" textFill="#e7e5e5">
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </Label>
-                        <Label text="Price" textFill="#e7e5e5">
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </Label>
-                        <Label text="Status" textFill="#e7e5e5">
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </Label>
-                     </children>
-                  </HBox>
-                  <ScrollPane layoutX="14.0" layoutY="232.0" prefHeight="320.0" prefWidth="746.0" stylesheets="@style.css">
+                  <ScrollPane layoutX="14.0" layoutY="182.0" prefHeight="370.0" prefWidth="746.0" stylesheets="@style.css">
                      <content>
-                        <VBox prefHeight="318.0" prefWidth="744.0" spacing="5.0" style="-fx-background-color: #02030A;">
-                           <padding>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </padding>
-                           <children>
-                              <TableView fx:id="roomTableView" prefHeight="297.0" prefWidth="735.0">
-                                <columns>
-                                  <TableColumn fx:id="roomNumCol" prefWidth="112.79992371797562" text="Room" />
-                                  <TableColumn fx:id="roomTypeCol" prefWidth="188.80006408691406" text="Type" />
-                                    <TableColumn fx:id="roomBedsCol" prefWidth="62.39996337890625" text="Beds" />
-                                    <TableColumn fx:id="roomPriceCol" prefWidth="154.39990234375" text="Price" />
-                                    <TableColumn fx:id="roomAvailabilityCol" prefWidth="160.7999267578125" text="Availability" />
-                                </columns>
-                              </TableView>
-                           </children>
-                        </VBox>
+                        <TableView fx:id="roomTableView" prefHeight="364.0" prefWidth="744.0" style="-fx-background-color: #e7e5e5;" tableMenuButtonVisible="true">
+                           <columns>
+                              <TableColumn fx:id="roomNumCol" prefWidth="132.79998779296875" text="Room" />
+                              <TableColumn fx:id="roomTypeCol" prefWidth="164.800048828125" text="Type" />
+                              <TableColumn fx:id="roomBedsCol" prefWidth="127.20001220703125" text="Beds" />
+                              <TableColumn fx:id="roomPriceCol" prefWidth="127.199951171875" sortType="DESCENDING" text="Price" />
+                              <TableColumn fx:id="roomAvailabilityCol" prefWidth="170.4000244140625" text="Availability" />
+                           </columns>
+                           <stylesheets>
+                              <URL value="@table.css" />
+                              <URL value="@style.css" />
+                           </stylesheets>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </TableView>
                      </content>
                   </ScrollPane>
                   <ImageView fitHeight="17.0" fitWidth="16.0" layoutX="749.0" layoutY="53.0" pickOnBounds="true" preserveRatio="true">

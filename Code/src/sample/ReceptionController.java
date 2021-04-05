@@ -18,10 +18,17 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.InputMethodEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import models.Room;
+import utils.ConnectionUtil;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class ReceptionController implements Initializable {
@@ -82,10 +89,13 @@ public class ReceptionController implements Initializable {
     ToggleButton absentStaff;
 
     @FXML
-    Label lblSelectedStaff;
+    Label lblSelectedStaff, lblServerStatus;
 
     @FXML
     TextField filterRoomTable;
+
+    @FXML
+    Label lblRoomsTotal, lblRoomsOccupied, lblRoomsAvailable;
 
     //tableView
     @FXML
@@ -102,22 +112,93 @@ public class ReceptionController implements Initializable {
     @FXML
     private TableColumn<Room, String> roomAvailabilityCol;
 
+    //SQL setup
+    Connection con = null;
+    PreparedStatement preparedStatement = null;
+    ResultSet resultSet = null;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        updateOverviewTable("Total");
+        //Database Connectivity
+        con = ConnectionUtil.conDB();
 
-        staffTableShowTemp();
+        //Initialize panels
         hideAll();
+        setupOverview();
+        staffTableShowTemp();
         showOnly("Overview");
 
         //Toggle Staff
         lblSelectedStaff.setText("Present");
     }
 
-    private void updateOverviewTable(String total) {
+    private void setupOverview() {
+        setupOverviewHeader();
+        setupOverviewTable();
+    }
 
+    private void setupOverviewHeader() {
+        //Get room numbers
+        int numRoomsTotal = getRoomNums("Total");
+        int numRoomAvailable = getRoomNums("Available");
+        int numRoomsOccupied = getRoomNums("Occupied");
+
+        //Set label text values
+        lblRoomsTotal.setText(String.valueOf(numRoomsTotal));
+        lblRoomsOccupied.setText(String.valueOf(numRoomsOccupied));
+        lblRoomsAvailable.setText(String.valueOf(numRoomAvailable));
+
+        //Server Status
+        if (con == null) {
+            lblServerStatus.setTextFill(Color.TOMATO);
+            lblServerStatus.setText("Not OK");
+            return;
+        } else {
+            lblServerStatus.setTextFill(Color.GREEN);
+            lblServerStatus.setText("OK");
+        }
+    }
+
+    private int getRoomNums(String whatRooms) {
+
+        int count = 0;
+        String query ="";
+
+        switch (whatRooms)
+        {
+            case "Total":
+                query = "SELECT COUNT(*) AS VAL FROM ROOM";
+                break;
+            case "Available":
+                query = "SELECT COUNT(*) AS VAL FROM ROOM WHERE Availability=1;";
+                break;
+            case "Occupied":
+                query ="SELECT COUNT(*) AS VAL FROM room WHERE Availability=0";
+        }
+
+        try
+        {
+            preparedStatement = con.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+
+            if(resultSet.next())
+            {
+                count = resultSet.getInt("VAL");
+            }
+
+        }catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+            lblServerStatus.setText("Not OK");
+        }
+
+        return count;
+    }
+
+    private void setupOverviewTable() {
+
+        //Set Cell and Property Value Factory for the table
         roomNumCol.setCellValueFactory(new PropertyValueFactory<Room,Integer>("roomNum"));
         roomTypeCol.setCellValueFactory(new PropertyValueFactory<Room,String>("roomType"));
         roomBedsCol.setCellValueFactory(new PropertyValueFactory<Room,Integer>("roomBeds"));
@@ -125,9 +206,9 @@ public class ReceptionController implements Initializable {
         roomAvailabilityCol.setCellValueFactory(new PropertyValueFactory<Room,String>("roomAvailability"));
 
         // 0. Initialize the columns.
-        ObservableList<Room> roomList = FXCollections.observableArrayList();
-        for(int i=0;i<100;i++)
-            roomList.add(new Room(i+1,"type"+String.valueOf((i+1)/5),2, (i/5)*100, i%2==0?"Yes":"No"));
+        //ObservableList<Room> roomList = FXCollections.observableArrayList();
+        ObservableList<Room> roomList = fetchOverviewData();
+
 
         // 1. Wrap the ObservableList in a FilteredList (initially display all data).
         FilteredList<Room> roomFilteredList = new FilteredList<>(roomList,p->true);
@@ -135,6 +216,7 @@ public class ReceptionController implements Initializable {
         // 2. Set the filter Predicate whenever the filter changes.
         filterRoomTable.textProperty().addListener((observable, oldValue, newValue) -> {
             roomFilteredList.setPredicate(room -> {
+
                 //If filter is empty display all data
                 if(newValue==null || newValue.isEmpty())
                 {
@@ -142,8 +224,8 @@ public class ReceptionController implements Initializable {
                 }
 
                 String lowerCaseFilter = newValue.toLowerCase().trim();
-                //Column-wise filters
 
+                //Column-wise filtering logic
                 if(room.getRoomType().toLowerCase().contains(lowerCaseFilter))
                 {
                     return true;
@@ -152,7 +234,7 @@ public class ReceptionController implements Initializable {
                 {
                     return true;
                 }
-                else if(String.valueOf(room.getRoomBeds()).contains(lowerCaseFilter))
+                else if(String.valueOf(room.getRoomBeds()).toLowerCase().contains(lowerCaseFilter))
                 {
                     return true;
                 }
@@ -160,7 +242,7 @@ public class ReceptionController implements Initializable {
                 {
                     return true;
                 }
-                else if(String.valueOf(room.getRoomNum()).contains(lowerCaseFilter))
+                else if(String.valueOf(room.getRoomNum()).toLowerCase().contains(lowerCaseFilter))
                 {
                     return true;
                 }
@@ -177,6 +259,47 @@ public class ReceptionController implements Initializable {
 
         //Add sorted ( and filtered ) data to the table.
         roomTableView.setItems(roomSortedList);
+
+        //If we have no data to show
+        roomTableView.setPlaceholder(new Label("No search results"));
+    }
+
+    private ObservableList<Room> fetchOverviewData() {
+
+        ObservableList<Room> roomsList = FXCollections.observableArrayList();
+
+        try
+        {
+            //Quering data for room items
+            String query = "SELECT Room_No,Room_Type, Availability , Beds_Num, Price " +
+                    "FROM room,room_type " +
+                    "WHERE room.room_type=room_type.Type " +
+                    "ORDER BY room.Availability DESC, " +
+                    "Room_Type.Price DESC, " +
+                    "room.Room_No ASC;";
+
+            preparedStatement = con.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+
+            //Iterating over data and adding to rooms observable list
+            while(resultSet.next())
+            {
+                //Extract data from a particular row
+                int roomNum = resultSet.getInt("Room_No");
+                String roomType = resultSet.getString("Room_Type");
+                int numBed = resultSet.getInt("Beds_Num");
+                int price = resultSet.getInt("Price");
+                String roomAvailability = resultSet.getInt("Availability")==1?"Available": "Taken";
+
+                //Add data to roomList
+                roomsList.add(new Room(roomNum, roomType,numBed,price,roomAvailability));
+            }
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return roomsList;
     }
 
     private void staffTableShowTemp() {
