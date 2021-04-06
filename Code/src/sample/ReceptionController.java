@@ -12,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import models.Customer;
 import models.Room;
 import models.Staff;
 import utils.ConnectionUtil;
@@ -90,6 +91,9 @@ public class ReceptionController implements Initializable {
     TableView<Staff> staffTableView;
 
     @FXML
+    TableView<Customer> customerTableView;
+
+    @FXML
     TableColumn<Room, Integer> roomNumCol;
     @FXML
     TableColumn<Room, Integer> roomBedsCol;
@@ -110,6 +114,29 @@ public class ReceptionController implements Initializable {
     TableColumn<Staff, String> staffPhoneCol;
     @FXML
     TableColumn<Staff, String> staffAvailabilityCol;
+
+
+    //For customer table
+    @FXML
+    TableColumn<Customer,Integer> customerRoomCol;
+    @FXML
+    TableColumn<Customer,String> customerNameCol;
+    @FXML
+    TableColumn<Customer,String> customerServiceTypeCol;
+    @FXML
+    TableColumn<Customer,Integer> customerOccupantsCol;
+    @FXML
+    TableColumn<Customer,String> customerArrivalCol;
+    @FXML
+    TableColumn<Customer,Integer> customerAmountDueCol;
+    @FXML
+    TableColumn<Customer,String> customerRequestsCol;
+
+    @FXML
+     TextField filterCustomerTable;
+
+    @FXML
+    Label lblServerStatusCustomer, lblVisitorCount, lblCustomerCount, lblAmountDueCount;
 
     //SQL setup
     Connection con = null;
