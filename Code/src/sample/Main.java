@@ -9,6 +9,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.util.Arrays;
+
 public class Main extends Application {
 
     private double xOffset = 0;
@@ -17,8 +19,6 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception{
-        try
-        {
 
             //FXMLLoader loader = FXMLLoader.load(getClass().getResource("login.fxml"));
             root = FXMLLoader.load(getClass().getResource("Reception.fxml"));
@@ -45,11 +45,6 @@ public class Main extends Application {
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-            System.out.println(e.getCause());
-            System.out.println(e.getStackTrace());
-        }
     }
 
 

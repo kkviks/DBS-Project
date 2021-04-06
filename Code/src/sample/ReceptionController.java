@@ -1,28 +1,21 @@
 package sample;
 
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.InputMethodEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import models.Room;
+import models.Staff;
 import utils.ConnectionUtil;
 
-import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -33,8 +26,6 @@ import java.util.ResourceBundle;
 
 public class ReceptionController implements Initializable {
 
-    @FXML
-    private VBox pnItems = null, pnItems1 = null;
     @FXML
     private Button btnOverview;
 
@@ -59,58 +50,66 @@ public class ReceptionController implements Initializable {
     //panels
 
     @FXML
-    private Pane pnlOverview;
+    Pane pnlOverview;
 
     @FXML
-    private Pane pnlNewBooking;
+    Pane pnlNewBooking;
 
     @FXML
-    private Pane pnlStaff;
+    Pane pnlStaff;
 
     @FXML
-    private Pane pnlCustomer;
+    Pane pnlCustomer;
 
     @FXML
-    private Pane pnlOrders;
+    Pane pnlOrders;
 
     @FXML
-    private Pane pnlCheckout;
+    Pane pnlCheckout;
 
     @FXML
-    ToggleGroup toggleStaff;
+    Label lblServerStatus;
 
     @FXML
-    ToggleButton totalStaff;
-
-    @FXML
-    ToggleButton presentStaff;
-
-    @FXML
-    ToggleButton absentStaff;
-
-    @FXML
-    Label lblSelectedStaff, lblServerStatus;
-
-    @FXML
-    TextField filterRoomTable;
+    TextField filterRoomTable, filterStaffTable;
 
     @FXML
     Label lblRoomsTotal, lblRoomsOccupied, lblRoomsAvailable;
 
-    //tableView
     @FXML
-    private TableView<Room> roomTableView;
+    Label lblStaffTotal, lblStaffPresent, lblStaffAbsent;
 
     @FXML
-    private TableColumn<Room, Integer> roomNumCol;
+    Label lblServerStatusStaff;
+
+    //tableView
     @FXML
-    private TableColumn<Room, String> roomTypeCol;
+    TableView<Room> roomTableView;
+
     @FXML
-    private TableColumn<Room, Integer> roomBedsCol;
+    TableView<Staff> staffTableView;
+
     @FXML
-    private TableColumn<Room, Integer> roomPriceCol;
+    TableColumn<Room, Integer> roomNumCol;
     @FXML
-    private TableColumn<Room, String> roomAvailabilityCol;
+    TableColumn<Room, Integer> roomBedsCol;
+    @FXML
+    TableColumn<Room, Integer> roomPriceCol;
+    @FXML
+    TableColumn<Room, String> roomTypeCol;
+    @FXML
+    TableColumn<Room, String> roomAvailabilityCol;
+
+    @FXML
+    TableColumn<Staff, String> staffShiftCol;
+    @FXML
+    TableColumn<Staff, String> staffNameCol;
+    @FXML
+    TableColumn<Staff, String> staffDesignationCol;
+    @FXML
+    TableColumn<Staff, String> staffPhoneCol;
+    @FXML
+    TableColumn<Staff, String> staffAvailabilityCol;
 
     //SQL setup
     Connection con = null;
@@ -127,11 +126,173 @@ public class ReceptionController implements Initializable {
         //Initialize panels
         hideAll();
         setupOverview();
-        staffTableShowTemp();
+        setupStaff();
         showOnly("Overview");
+    }
 
-        //Toggle Staff
-        lblSelectedStaff.setText("Present");
+    private void setupStaff() {
+        setupStaffHeader();
+        setupStaffTable();
+    }
+
+    private void setupStaffTable() {
+        // TODO: 06-04-2021
+        //Set Cell and Property Value Factory for the table
+        staffNameCol.setCellValueFactory(new PropertyValueFactory<Staff,String>("staffName"));
+        staffDesignationCol.setCellValueFactory(new PropertyValueFactory<Staff,String>("staffDesignation"));
+        staffPhoneCol.setCellValueFactory(new PropertyValueFactory<Staff,String>("staffPhone"));
+        staffShiftCol.setCellValueFactory(new PropertyValueFactory<Staff,String>("staffShift"));
+        staffAvailabilityCol.setCellValueFactory(new PropertyValueFactory<Staff,String>("staffAttendance"));
+
+        // 0. Initialize the columns.
+        //ObservableList<Staff> roomList = FXCollections.observableArrayList();
+        ObservableList<Staff> staffList = fetchStaffData();
+
+
+        // 1. Wrap the ObservableList in a FilteredList (initially display all data).
+        FilteredList<Staff> staffFilteredList = new FilteredList<>(staffList,p->true);
+
+        // 2. Set the filter Predicate whenever the filter changes.
+        filterStaffTable.textProperty().addListener((observable, oldValue, newValue) -> {
+            staffFilteredList.setPredicate(staff -> {
+
+                //If filter is empty display all data
+                if(newValue==null || newValue.isEmpty())
+                {
+                    return true;
+                }
+
+                String lowerCaseFilter = newValue.toLowerCase().trim();
+
+                //Column-wise filtering logic
+                if(staff.getStaffName().toLowerCase().contains(lowerCaseFilter))
+                {
+                    return true;
+                }
+                else if(staff.getStaffDesignation().toLowerCase().contains(lowerCaseFilter))
+                {
+                    return true;
+                }
+                else if(staff.getStaffShift().toLowerCase().contains(lowerCaseFilter))
+                {
+                    return true;
+                }
+                else if(staff.getStaffAttendance().toLowerCase().contains(lowerCaseFilter))
+                {
+                    return true;
+                }
+                else if(staff.getStaffPhone().toLowerCase().contains(lowerCaseFilter))
+                {
+                    return true;
+                }
+                return false;
+            });
+        });
+
+        // 3. Wrap the FilteredList in a SortedList.
+        SortedList<Staff> staffSortedList = new SortedList<>(staffFilteredList);
+
+        //4. Bind the Sortedlist comparator to the TableView comparator.
+        //Otherwise, sorting the TableView would have no effect.
+        staffSortedList.comparatorProperty().bind(staffTableView.comparatorProperty());
+
+        //Add sorted ( and filtered ) data to the table.
+        staffTableView.setItems(staffSortedList);
+
+        //If we have no data to show
+        staffTableView.setPlaceholder(new Label("No search results"));
+    }
+
+    private ObservableList<Staff> fetchStaffData() {
+        ObservableList<Staff> stafflist = FXCollections.observableArrayList();
+
+        try
+        {
+            //Quering data for staff items
+            String query = "SELECT CONCAT(Employee.FirstName, ' ',Employee.LastName) AS Name, Designation, Phone, Shift, isPresent AS Availability " +
+                    "FROM Employee, Attendance " +
+                    "WHERE Employee.E_ID=Attendance.E_ID;";
+
+            preparedStatement = con.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+
+            //Iterating over data and adding to observable list
+            while(resultSet.next())
+            {
+                //Extract data from a particular row
+                String staffName = resultSet.getString("Name");
+                String staffDesignation = resultSet.getString("Designation");
+                String staffPhone = resultSet.getString("Phone");
+                String staffShift = resultSet.getString("Shift");
+                String staffAvailability = resultSet.getInt("Availability")==1?"Present": "Absent";
+
+                //Add data to stafflist
+                stafflist.add(new Staff(staffName, staffDesignation,staffPhone,staffShift,staffAvailability));
+            }
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return stafflist;
+    }
+
+    private void setupStaffHeader() {
+        //Get room numbers
+        int numStaffTotal = getStaffNums("Total");
+        int numStaffPresent = getStaffNums("Present");
+        int numStaffAbsent = getStaffNums("Absent");
+
+        //Set label text values
+        lblStaffTotal.setText(String.valueOf(numStaffTotal));
+        lblStaffPresent.setText(String.valueOf(numStaffPresent));
+        lblStaffAbsent.setText(String.valueOf(numStaffAbsent));
+
+        //Server Status
+        if (con == null) {
+            lblServerStatusStaff.setTextFill(Color.TOMATO);
+            lblServerStatusStaff.setText("Not OK");
+            return;
+        } else {
+            lblServerStatusStaff.setTextFill(Color.GREEN);
+            lblServerStatusStaff.setText("OK");
+        }
+        
+    }
+
+    private int getStaffNums(String whatStaff) {
+
+        int count = 0;
+        String query ="";
+
+        switch (whatStaff)
+        {
+            case "Total":
+                query = "SELECT COUNT(*) AS VAL FROM Employee, Attendance WHERE Employee.E_ID=Attendance.E_ID";
+                break;
+            case "Present":
+                query = "SELECT COUNT(*) AS VAL FROM Employee, Attendance WHERE Employee.E_ID=Attendance.E_ID AND isPresent=1";
+                break;
+            case "Absent":
+                query = "SELECT COUNT(*) AS VAL FROM Employee, Attendance WHERE Employee.E_ID=Attendance.E_ID AND isPresent=0";
+        }
+
+        try
+        {
+            preparedStatement = con.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+
+            if(resultSet.next())
+            {
+                count = resultSet.getInt("VAL");
+            }
+
+        }catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+            lblServerStatusStaff.setText("Not OK");
+        }
+
+        return count;
     }
 
     private void setupOverview() {
@@ -302,30 +463,6 @@ public class ReceptionController implements Initializable {
         return roomsList;
     }
 
-    private void staffTableShowTemp() {
-        Node[] nodes = new Node[10];
-        for (int i = 0; i < nodes.length; i++) {
-            try {
-
-                final int j = i;
-                nodes[i] = FXMLLoader.load(getClass().getResource("Item.fxml"));
-                //give the items some effect
-
-
-                nodes[i].setOnMouseEntered(event -> {
-                    nodes[j].setStyle("-fx-background-color : #0A0E3F");
-                });
-                nodes[i].setOnMouseExited(event -> {
-                    nodes[j].setStyle("-fx-background-color : #02030A");
-                });
-                pnItems1.getChildren().add(nodes[i]);
-                //pnItems1.getChildren().add(nodes[i]);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     private void hideAll() {
 
         pnlOverview.setStyle("-fx-background-color : #02030A");
@@ -411,20 +548,5 @@ public class ReceptionController implements Initializable {
             System.exit(0);
         }
     }
-
-    public void handleToggle(ActionEvent actionEvent) {
-        System.out.println(actionEvent.getSource().toString());
-
-        if (actionEvent.getSource() == totalStaff) {
-            lblSelectedStaff.setText("Total Staff");
-        }
-
-        if (actionEvent.getSource() == presentStaff) {
-            lblSelectedStaff.setText("Present");
-        }
-
-        if (actionEvent.getSource() == absentStaff) {
-            lblSelectedStaff.setText("Absent");
-        }
-    }
+    
 }

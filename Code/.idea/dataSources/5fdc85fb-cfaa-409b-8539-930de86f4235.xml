@@ -1163,7 +1163,7 @@ Date</ColNames>
     </column>
     <column id="353" parent="297" name="UIDAI">
       <Position>5</Position>
-      <DataType>int|0s</DataType>
+      <DataType>bigint|0s</DataType>
     </column>
     <column id="354" parent="297" name="Phone">
       <Position>6</Position>
@@ -1394,7 +1394,7 @@ Date</ColNames>
     </column>
     <column id="406" parent="303" name="Price">
       <Position>3</Position>
-      <DataType>double|0s</DataType>
+      <DataType>int|0s</DataType>
     </column>
     <key id="407" parent="303" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
