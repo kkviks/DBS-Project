@@ -25,6 +25,7 @@ public class Main extends Application {
 
             stage.initStyle(StageStyle.UNDECORATED);
             stage.setMaximized(false);
+            stage.setResizable(false);
 
             root.setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override
@@ -42,7 +43,7 @@ public class Main extends Application {
                 }
             });
 
-            Scene scene = new Scene(root);
+            Scene scene = new Scene(root,1050,600);
             stage.setScene(scene);
             stage.show();
     }

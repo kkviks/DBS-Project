@@ -163,7 +163,6 @@ public class ReceptionController implements Initializable {
     }
 
     private void setupStaffTable() {
-        // TODO: 06-04-2021
         //Set Cell and Property Value Factory for the table
         staffNameCol.setCellValueFactory(new PropertyValueFactory<Staff,String>("staffName"));
         staffDesignationCol.setCellValueFactory(new PropertyValueFactory<Staff,String>("staffDesignation"));
@@ -190,7 +189,6 @@ public class ReceptionController implements Initializable {
                 }
 
                 String lowerCaseFilter = newValue.toLowerCase().trim();
-
                 //Column-wise filtering logic
                 if(staff.getStaffName().toLowerCase().contains(lowerCaseFilter))
                 {

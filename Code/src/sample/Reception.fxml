@@ -3,8 +3,12 @@
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -12,13 +16,16 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="1050.0" style="-fx-background-color: #02030A;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ReceptionController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" style="-fx-background-color: #02030A;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ReceptionController">
    <children>
       <VBox alignment="TOP_CENTER" prefHeight="576.0" prefWidth="256.0" style="-fx-background-color: #05071F;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -207,11 +214,6 @@
                   </ImageView>
                </children>
             </Pane>
-            <Pane fx:id="pnlNewBooking" prefHeight="200.0" prefWidth="200.0" visible="false">
-               <children>
-                  <Label layoutX="305.0" layoutY="288.0" prefHeight="17.0" prefWidth="125.0" text="New Booking" />
-               </children>
-            </Pane>
             <Pane fx:id="pnlOrders" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" visible="false">
                <children>
                   <Label layoutX="325.0" layoutY="376.0" text="Orders" />
@@ -301,7 +303,7 @@
                   </ImageView>
                </children>
             </Pane>
-            <Pane fx:id="pnlCustomer" layoutX="10.0" layoutY="10.0" prefHeight="554.0" prefWidth="793.0">
+            <Pane fx:id="pnlCustomer" layoutX="10.0" layoutY="10.0" prefHeight="554.0" prefWidth="793.0" visible="false">
                <children>
                   <TextField fx:id="filterCustomerTable" layoutX="590.0" layoutY="47.0" prefHeight="27.0" prefWidth="183.0" promptText="search" style="-fx-background-color: #02030A; -fx-border-color: #B7C3D7; -fx-border-radius: 2em;" />
                   <Label layoutX="57.0" layoutY="25.0" text="Customers" textFill="#e7e5e5">
@@ -380,6 +382,194 @@
                         <Image url="@../images/icons8_Search_52px.png" />
                      </image>
                   </ImageView>
+                  <Pane fx:id="pnlNewBooking" prefHeight="200.0" prefWidth="200.0" visible="false">
+                     <children>
+                        <Label layoutX="305.0" layoutY="288.0" prefHeight="17.0" prefWidth="125.0" text="New Booking" />
+                     </children>
+                  </Pane>
+               </children>
+            </Pane>
+            <Pane fx:id="pnlNewBooking" layoutX="10.0" layoutY="10.0" prefHeight="554.0" prefWidth="793.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" layoutX="50.0" layoutY="25.0" prefHeight="92.0" prefWidth="687.0" spacing="50.0">
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="92.0" prefWidth="162.0">
+                           <children>
+                              <TextField fx:id="filterRoomTable1" alignment="CENTER" prefHeight="27.0" prefWidth="183.0" promptText="Room" style="-fx-background-color: #02030A; -fx-border-color: #B7C3D7; -fx-border-radius: 1em;" />
+                              <Label text="Available" textFill="#e7e5e5">
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" prefHeight="92.0" prefWidth="187.0">
+                           <children>
+                              <Label fx:id="lblCustomerCount1" alignment="CENTER" prefHeight="38.0" prefWidth="170.0" text="Suite" textFill="#26bfbc">
+                                 <font>
+                                    <Font name="System Bold" size="26.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Price" textFill="#e7e5e5">
+                                 <VBox.margin>
+                                    <Insets top="5.0" />
+                                 </VBox.margin>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" prefHeight="92.0" prefWidth="161.0">
+                           <children>
+                              <ComboBox prefWidth="150.0" promptText="Service Type" stylesheets="@style.css" />
+                              <Label text="Price" textFill="#e7e5e5">
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="71.0" text="Book" />
+                              <Label text="Total Price" textFill="#e7e5e5">
+                                 <padding>
+                                    <Insets top="10.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <ScrollPane layoutX="14.0" layoutY="125.0" prefHeight="439.0" prefWidth="746.0" stylesheets="@style.css">
+                     <content>
+                        <VBox prefHeight="434.0" prefWidth="743.0">
+                           <children>
+                              <HBox>
+                                 <children>
+                                    <Button alignment="CENTER" contentDisplay="CENTER" defaultButton="true" layoutX="576.0" layoutY="10.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="380.0" text="Reset" textFill="WHITE" wrapText="true">
+                                       <HBox.margin>
+                                          <Insets left="30.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Label prefHeight="31.0" prefWidth="780.0">
+                                       <HBox.margin>
+                                          <Insets left="20.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <Button alignment="CENTER" contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" prefHeight="32.0" prefWidth="380.0" text="Reset" textFill="WHITE" wrapText="true">
+                                       <HBox.margin>
+                                          <Insets right="30.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                              <GridPane hgap="10.0" prefHeight="318.0" prefWidth="734.0" vgap="20.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="352.20001220703125" minWidth="10.0" prefWidth="310.60003662109375" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="406.59997558593756" minWidth="10.0" prefWidth="403.3999633789063" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <HBox prefHeight="24.0" prefWidth="372.0">
+                                       <children>
+                                          <Label alignment="CENTER" prefHeight="58.0" prefWidth="178.0" text="Name" />
+                                          <TextField prefHeight="37.0" prefWidth="187.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+                                       <children>
+                                          <Label alignment="CENTER" prefHeight="58.0" prefWidth="178.0" text="Surname" />
+                                          <TextField prefHeight="37.0" prefWidth="187.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                                       <children>
+                                          <Label alignment="CENTER" prefHeight="58.0" prefWidth="178.0" text="E-mail" />
+                                          <TextField prefHeight="37.0" prefWidth="187.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <children>
+                                          <Label alignment="CENTER" prefHeight="58.0" prefWidth="178.0" text="Phone" />
+                                          <TextField prefHeight="37.0" prefWidth="187.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
+                                       <children>
+                                          <Label alignment="CENTER" prefHeight="58.0" prefWidth="178.0" text="UIDAI" />
+                                          <TextField prefHeight="37.0" prefWidth="187.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                       <children>
+                                          <Label alignment="CENTER" prefHeight="58.0" prefWidth="178.0" text="Passport" />
+                                          <TextField prefHeight="37.0" prefWidth="187.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
+                                       <children>
+                                          <Label alignment="CENTER" prefHeight="58.0" prefWidth="178.0" text="Profession" />
+                                          <TextField prefHeight="37.0" prefWidth="187.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                       <children>
+                                          <Label alignment="CENTER" prefHeight="58.0" prefWidth="178.0" text="Martial Status" />
+                                          <ComboBox editable="true" prefHeight="30.0" prefWidth="187.0" promptText="Choose" visibleRowCount="3" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5">
+                                       <children>
+                                          <Label alignment="CENTER" prefHeight="58.0" prefWidth="178.0" text="Address" />
+                                          <TextField prefHeight="37.0" prefWidth="187.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                       <children>
+                                          <Label alignment="CENTER" prefHeight="58.0" prefWidth="178.0" text="Occupants" />
+                                          <Spinner editable="true" prefHeight="36.0" prefWidth="187.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="4">
+                                       <children>
+                                          <Label alignment="CENTER" prefHeight="58.0" prefWidth="178.0" text="Arrival" />
+                                          <DatePicker editable="false" prefHeight="37.0" prefWidth="186.0" />
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                       <children>
+                                          <Label alignment="CENTER" prefHeight="58.0" prefWidth="178.0" text="Departure" />
+                                          <DatePicker prefHeight="37.0" prefWidth="186.0" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="10.0" right="10.0" top="20.0" />
+                                 </VBox.margin>
+                                 <padding>
+                                    <Insets left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </GridPane>
+                              <ProgressBar prefHeight="20.0" prefWidth="814.0" progress="0.0">
+                                 <VBox.margin>
+                                    <Insets left="60.0" right="40.0" top="25.0" />
+                                 </VBox.margin>
+                              </ProgressBar>
+                           </children>
+                        </VBox>
+                     </content>
+                  </ScrollPane>
+                  <Pane fx:id="pnlNewBooking1" prefHeight="200.0" prefWidth="200.0" visible="false">
+                     <children>
+                        <Label layoutX="305.0" layoutY="288.0" prefHeight="17.0" prefWidth="125.0" text="New Booking" />
+                     </children>
+                  </Pane>
                </children>
             </Pane>
          </children>
