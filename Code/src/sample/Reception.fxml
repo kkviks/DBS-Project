@@ -528,7 +528,7 @@
                                                                <children>
                                                                   <HBox prefHeight="67.0" prefWidth="282.0">
                                                                      <children>
-                                                                        <TextField alignment="CENTER" prefHeight="26.0" prefWidth="134.0" promptText="Receipt" text="Reference #">
+                                                                        <TextField alignment="CENTER" prefHeight="26.0" prefWidth="134.0" promptText="Reference No.">
                                                                            <HBox.margin>
                                                                               <Insets left="20.0" top="15.0" />
                                                                            </HBox.margin>

@@ -13,6 +13,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import models.Customer;
+import models.Orders;
 import models.Room;
 import models.Staff;
 import utils.ConnectionUtil;
@@ -98,6 +99,9 @@ public class ReceptionController implements Initializable {
     TableView<Customer> customerTableView;
 
     @FXML
+    TableView<Orders> ordersTableView;
+
+    @FXML
     TableColumn<Room, Integer> roomNumCol;
     @FXML
     TableColumn<Room, Integer> roomBedsCol;
@@ -119,7 +123,6 @@ public class ReceptionController implements Initializable {
     @FXML
     TableColumn<Staff, String> staffAvailabilityCol;
 
-
     //For customer table
     @FXML
     TableColumn<Customer, Integer> customerRoomCol;
@@ -136,8 +139,26 @@ public class ReceptionController implements Initializable {
     @FXML
     TableColumn<Customer, String> customerRequestsCol;
 
+    //For Orders table
+    @FXML
+    TableColumn<Orders, Integer> orderRoomCol;
+    @FXML
+    TableColumn<Orders, String> orderRequestsCol;
+    @FXML
+    TableColumn<Orders, String> orderInventoriesCol;
+    @FXML
+    TableColumn<Orders, Integer> orderChargesCol;
+    @FXML
+    TableColumn<Orders, String> orderTimeCol;
+    @FXML
+    TableColumn<Orders, Integer> orderBellboyCol;
+
+
     @FXML
     TextField filterCustomerTable;
+
+    @FXML
+    TextField filterOrderTable;
 
     @FXML
     Label lblServerStatusCustomer, lblVisitorCount, lblCustomerCount, lblAmountDueCount;
@@ -228,7 +249,7 @@ public class ReceptionController implements Initializable {
 
         try {
             //Quering data for staff items
-            String query = "SELECT CONCAT(Employee.FirstName, ' ',Employee.LastName) AS Name, Designation, Phone, Shift, Daily_Attendance AS Availability " +
+            String query = "SELECT CONCAT(Employee.FirstName, ' ',Employee.LastName) AS Name, Designation, Phone, Shift, isPresent AS Availability " +
                     "FROM Employee, Attendance " +
                     "WHERE Employee.E_ID=Attendance.E_ID;";
 
@@ -288,10 +309,10 @@ public class ReceptionController implements Initializable {
                 query = "SELECT COUNT(*) AS VAL FROM Employee, Attendance WHERE Employee.E_ID=Attendance.E_ID";
                 break;
             case "Present":
-                query = "SELECT COUNT(*) AS VAL FROM Employee, Attendance WHERE Employee.E_ID=Attendance.E_ID AND Daily_Attendance=1";
+                query = "SELECT COUNT(*) AS VAL FROM Employee, Attendance WHERE Employee.E_ID=Attendance.E_ID AND isPresent=1";
                 break;
             case "Absent":
-                query = "SELECT COUNT(*) AS VAL FROM Employee, Attendance WHERE Employee.E_ID=Attendance.E_ID AND Daily_Attendance=0";
+                query = "SELECT COUNT(*) AS VAL FROM Employee, Attendance WHERE Employee.E_ID=Attendance.E_ID AND isPresent=0";
         }
 
         try {
@@ -625,6 +646,13 @@ public class ReceptionController implements Initializable {
         return customerList;
     }
 
+    private void setupOrders() {
+        // TODO: 07-04-2021
+        //setupOrdersHeader();
+        //setupOrdersTable();
+    }
+
+
     private void hideAll() {
 
         pnlOverview.setStyle("-fx-background-color : #02030A");
@@ -710,6 +738,8 @@ public class ReceptionController implements Initializable {
             System.exit(0);
         }
     }
+
+
 }
     
 
