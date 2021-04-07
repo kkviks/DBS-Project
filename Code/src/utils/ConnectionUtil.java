@@ -11,8 +11,8 @@ public class ConnectionUtil {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String username = "root";
-            String password = "ok12345";
-            String schemaName = "dbs_project";
+            String password = "radha2004*";
+            String schemaName = "demo_check";
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+schemaName, username, password);
             return con;
         } catch (ClassNotFoundException | SQLException ex) {
