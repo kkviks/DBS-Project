@@ -83,6 +83,10 @@ public class ReceptionController implements Initializable {
     @FXML
     Label lblServerStatusStaff;
 
+    @FXML
+    Label lblServerStatusOrder;
+
+
     //tableView
     @FXML
     TableView<Room> roomTableView;
@@ -118,22 +122,22 @@ public class ReceptionController implements Initializable {
 
     //For customer table
     @FXML
-    TableColumn<Customer,Integer> customerRoomCol;
+    TableColumn<Customer, Integer> customerRoomCol;
     @FXML
-    TableColumn<Customer,String> customerNameCol;
+    TableColumn<Customer, String> customerNameCol;
     @FXML
-    TableColumn<Customer,String> customerServiceTypeCol;
+    TableColumn<Customer, String> customerServiceTypeCol;
     @FXML
-    TableColumn<Customer,Integer> customerOccupantsCol;
+    TableColumn<Customer, Integer> customerOccupantsCol;
     @FXML
-    TableColumn<Customer,String> customerArrivalCol;
+    TableColumn<Customer, String> customerArrivalCol;
     @FXML
-    TableColumn<Customer,Integer> customerAmountDueCol;
+    TableColumn<Customer, Integer> customerAmountDueCol;
     @FXML
-    TableColumn<Customer,String> customerRequestsCol;
+    TableColumn<Customer, String> customerRequestsCol;
 
     @FXML
-     TextField filterCustomerTable;
+    TextField filterCustomerTable;
 
     @FXML
     Label lblServerStatusCustomer, lblVisitorCount, lblCustomerCount, lblAmountDueCount;
@@ -154,6 +158,7 @@ public class ReceptionController implements Initializable {
         hideAll();
         setupOverview();
         setupStaff();
+        setupCustomer();
         showOnly("Overview");
     }
 
@@ -165,11 +170,11 @@ public class ReceptionController implements Initializable {
     private void setupStaffTable() {
         // TODO: 06-04-2021
         //Set Cell and Property Value Factory for the table
-        staffNameCol.setCellValueFactory(new PropertyValueFactory<Staff,String>("staffName"));
-        staffDesignationCol.setCellValueFactory(new PropertyValueFactory<Staff,String>("staffDesignation"));
-        staffPhoneCol.setCellValueFactory(new PropertyValueFactory<Staff,String>("staffPhone"));
-        staffShiftCol.setCellValueFactory(new PropertyValueFactory<Staff,String>("staffShift"));
-        staffAvailabilityCol.setCellValueFactory(new PropertyValueFactory<Staff,String>("staffAttendance"));
+        staffNameCol.setCellValueFactory(new PropertyValueFactory<Staff, String>("staffName"));
+        staffDesignationCol.setCellValueFactory(new PropertyValueFactory<Staff, String>("staffDesignation"));
+        staffPhoneCol.setCellValueFactory(new PropertyValueFactory<Staff, String>("staffPhone"));
+        staffShiftCol.setCellValueFactory(new PropertyValueFactory<Staff, String>("staffShift"));
+        staffAvailabilityCol.setCellValueFactory(new PropertyValueFactory<Staff, String>("staffAttendance"));
 
         // 0. Initialize the columns.
         //ObservableList<Staff> roomList = FXCollections.observableArrayList();
@@ -177,39 +182,29 @@ public class ReceptionController implements Initializable {
 
 
         // 1. Wrap the ObservableList in a FilteredList (initially display all data).
-        FilteredList<Staff> staffFilteredList = new FilteredList<>(staffList,p->true);
+        FilteredList<Staff> staffFilteredList = new FilteredList<>(staffList, p -> true);
 
         // 2. Set the filter Predicate whenever the filter changes.
         filterStaffTable.textProperty().addListener((observable, oldValue, newValue) -> {
             staffFilteredList.setPredicate(staff -> {
 
                 //If filter is empty display all data
-                if(newValue==null || newValue.isEmpty())
-                {
+                if (newValue == null || newValue.isEmpty()) {
                     return true;
                 }
 
                 String lowerCaseFilter = newValue.toLowerCase().trim();
 
                 //Column-wise filtering logic
-                if(staff.getStaffName().toLowerCase().contains(lowerCaseFilter))
-                {
+                if (staff.getStaffName().toLowerCase().contains(lowerCaseFilter)) {
                     return true;
-                }
-                else if(staff.getStaffDesignation().toLowerCase().contains(lowerCaseFilter))
-                {
+                } else if (staff.getStaffDesignation().toLowerCase().contains(lowerCaseFilter)) {
                     return true;
-                }
-                else if(staff.getStaffShift().toLowerCase().contains(lowerCaseFilter))
-                {
+                } else if (staff.getStaffShift().toLowerCase().contains(lowerCaseFilter)) {
                     return true;
-                }
-                else if(staff.getStaffAttendance().toLowerCase().contains(lowerCaseFilter))
-                {
+                } else if (staff.getStaffAttendance().toLowerCase().contains(lowerCaseFilter)) {
                     return true;
-                }
-                else if(staff.getStaffPhone().toLowerCase().contains(lowerCaseFilter))
-                {
+                } else if (staff.getStaffPhone().toLowerCase().contains(lowerCaseFilter)) {
                     return true;
                 }
                 return false;
@@ -233,10 +228,9 @@ public class ReceptionController implements Initializable {
     private ObservableList<Staff> fetchStaffData() {
         ObservableList<Staff> stafflist = FXCollections.observableArrayList();
 
-        try
-        {
+        try {
             //Quering data for staff items
-            String query = "SELECT CONCAT(Employee.FirstName, ' ',Employee.LastName) AS Name, Designation, Phone, Shift, isPresent AS Availability " +
+            String query = "SELECT CONCAT(Employee.FirstName, ' ',Employee.LastName) AS Name, Designation, Phone, Shift, Daily_Attendance AS Availability " +
                     "FROM Employee, Attendance " +
                     "WHERE Employee.E_ID=Attendance.E_ID;";
 
@@ -244,20 +238,19 @@ public class ReceptionController implements Initializable {
             resultSet = preparedStatement.executeQuery();
 
             //Iterating over data and adding to observable list
-            while(resultSet.next())
-            {
+            while (resultSet.next()) {
                 //Extract data from a particular row
                 String staffName = resultSet.getString("Name");
                 String staffDesignation = resultSet.getString("Designation");
                 String staffPhone = resultSet.getString("Phone");
                 String staffShift = resultSet.getString("Shift");
-                String staffAvailability = resultSet.getInt("Availability")==1?"Present": "Absent";
+                String staffAvailability = resultSet.getInt("Availability") == 1 ? "Present" : "Absent";
 
                 //Add data to stafflist
-                stafflist.add(new Staff(staffName, staffDesignation,staffPhone,staffShift,staffAvailability));
+                stafflist.add(new Staff(staffName, staffDesignation, staffPhone, staffShift, staffAvailability));
             }
 
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -284,37 +277,34 @@ public class ReceptionController implements Initializable {
             lblServerStatusStaff.setTextFill(Color.GREEN);
             lblServerStatusStaff.setText("OK");
         }
-        
+
     }
 
     private int getStaffNums(String whatStaff) {
 
         int count = 0;
-        String query ="";
+        String query = "";
 
-        switch (whatStaff)
-        {
+        switch (whatStaff) {
             case "Total":
                 query = "SELECT COUNT(*) AS VAL FROM Employee, Attendance WHERE Employee.E_ID=Attendance.E_ID";
                 break;
             case "Present":
-                query = "SELECT COUNT(*) AS VAL FROM Employee, Attendance WHERE Employee.E_ID=Attendance.E_ID AND isPresent=1";
+                query = "SELECT COUNT(*) AS VAL FROM Employee, Attendance WHERE Employee.E_ID=Attendance.E_ID AND Daily_Attendance=1";
                 break;
             case "Absent":
-                query = "SELECT COUNT(*) AS VAL FROM Employee, Attendance WHERE Employee.E_ID=Attendance.E_ID AND isPresent=0";
+                query = "SELECT COUNT(*) AS VAL FROM Employee, Attendance WHERE Employee.E_ID=Attendance.E_ID AND Daily_Attendance=0";
         }
 
-        try
-        {
+        try {
             preparedStatement = con.prepareStatement(query);
             resultSet = preparedStatement.executeQuery();
 
-            if(resultSet.next())
-            {
+            if (resultSet.next()) {
                 count = resultSet.getInt("VAL");
             }
 
-        }catch (SQLException ex) {
+        } catch (SQLException ex) {
             System.err.println(ex.getMessage());
             lblServerStatusStaff.setText("Not OK");
         }
@@ -352,10 +342,9 @@ public class ReceptionController implements Initializable {
     private int getRoomNums(String whatRooms) {
 
         int count = 0;
-        String query ="";
+        String query = "";
 
-        switch (whatRooms)
-        {
+        switch (whatRooms) {
             case "Total":
                 query = "SELECT COUNT(*) AS VAL FROM ROOM";
                 break;
@@ -363,20 +352,18 @@ public class ReceptionController implements Initializable {
                 query = "SELECT COUNT(*) AS VAL FROM ROOM WHERE Availability=1;";
                 break;
             case "Occupied":
-                query ="SELECT COUNT(*) AS VAL FROM room WHERE Availability=0";
+                query = "SELECT COUNT(*) AS VAL FROM room WHERE Availability=0";
         }
 
-        try
-        {
+        try {
             preparedStatement = con.prepareStatement(query);
             resultSet = preparedStatement.executeQuery();
 
-            if(resultSet.next())
-            {
+            if (resultSet.next()) {
                 count = resultSet.getInt("VAL");
             }
 
-        }catch (SQLException ex) {
+        } catch (SQLException ex) {
             System.err.println(ex.getMessage());
             lblServerStatus.setText("Not OK");
         }
@@ -387,11 +374,11 @@ public class ReceptionController implements Initializable {
     private void setupOverviewTable() {
 
         //Set Cell and Property Value Factory for the table
-        roomNumCol.setCellValueFactory(new PropertyValueFactory<Room,Integer>("roomNum"));
-        roomTypeCol.setCellValueFactory(new PropertyValueFactory<Room,String>("roomType"));
-        roomBedsCol.setCellValueFactory(new PropertyValueFactory<Room,Integer>("roomBeds"));
-        roomPriceCol.setCellValueFactory(new PropertyValueFactory<Room,Integer>("roomPrice"));
-        roomAvailabilityCol.setCellValueFactory(new PropertyValueFactory<Room,String>("roomAvailability"));
+        roomNumCol.setCellValueFactory(new PropertyValueFactory<Room, Integer>("roomNum"));
+        roomTypeCol.setCellValueFactory(new PropertyValueFactory<Room, String>("roomType"));
+        roomBedsCol.setCellValueFactory(new PropertyValueFactory<Room, Integer>("roomBeds"));
+        roomPriceCol.setCellValueFactory(new PropertyValueFactory<Room, Integer>("roomPrice"));
+        roomAvailabilityCol.setCellValueFactory(new PropertyValueFactory<Room, String>("roomAvailability"));
 
         // 0. Initialize the columns.
         //ObservableList<Room> roomList = FXCollections.observableArrayList();
@@ -399,39 +386,29 @@ public class ReceptionController implements Initializable {
 
 
         // 1. Wrap the ObservableList in a FilteredList (initially display all data).
-        FilteredList<Room> roomFilteredList = new FilteredList<>(roomList,p->true);
+        FilteredList<Room> roomFilteredList = new FilteredList<>(roomList, p -> true);
 
         // 2. Set the filter Predicate whenever the filter changes.
         filterRoomTable.textProperty().addListener((observable, oldValue, newValue) -> {
             roomFilteredList.setPredicate(room -> {
 
                 //If filter is empty display all data
-                if(newValue==null || newValue.isEmpty())
-                {
+                if (newValue == null || newValue.isEmpty()) {
                     return true;
                 }
 
                 String lowerCaseFilter = newValue.toLowerCase().trim();
 
                 //Column-wise filtering logic
-                if(room.getRoomType().toLowerCase().contains(lowerCaseFilter))
-                {
+                if (room.getRoomType().toLowerCase().contains(lowerCaseFilter)) {
                     return true;
-                }
-                else if(room.getRoomAvailability().toLowerCase().contains(lowerCaseFilter))
-                {
+                } else if (room.getRoomAvailability().toLowerCase().contains(lowerCaseFilter)) {
                     return true;
-                }
-                else if(String.valueOf(room.getRoomBeds()).toLowerCase().contains(lowerCaseFilter))
-                {
+                } else if (String.valueOf(room.getRoomBeds()).toLowerCase().contains(lowerCaseFilter)) {
                     return true;
-                }
-                else if(String.valueOf(room.getRoomPrice()).contains(lowerCaseFilter))
-                {
+                } else if (String.valueOf(room.getRoomPrice()).contains(lowerCaseFilter)) {
                     return true;
-                }
-                else if(String.valueOf(room.getRoomNum()).toLowerCase().contains(lowerCaseFilter))
-                {
+                } else if (String.valueOf(room.getRoomNum()).toLowerCase().contains(lowerCaseFilter)) {
                     return true;
                 }
                 return false;
@@ -456,8 +433,7 @@ public class ReceptionController implements Initializable {
 
         ObservableList<Room> roomsList = FXCollections.observableArrayList();
 
-        try
-        {
+        try {
             //Quering data for room items
             String query = "SELECT Room_No,Room_Type, Availability , Beds_Num, Price " +
                     "FROM room,room_type " +
@@ -470,24 +446,185 @@ public class ReceptionController implements Initializable {
             resultSet = preparedStatement.executeQuery();
 
             //Iterating over data and adding to rooms observable list
-            while(resultSet.next())
-            {
+            while (resultSet.next()) {
                 //Extract data from a particular row
                 int roomNum = resultSet.getInt("Room_No");
                 String roomType = resultSet.getString("Room_Type");
                 int numBed = resultSet.getInt("Beds_Num");
                 int price = resultSet.getInt("Price");
-                String roomAvailability = resultSet.getInt("Availability")==1?"Available": "Taken";
+                String roomAvailability = resultSet.getInt("Availability") == 1 ? "Available" : "Taken";
 
                 //Add data to roomList
-                roomsList.add(new Room(roomNum, roomType,numBed,price,roomAvailability));
+                roomsList.add(new Room(roomNum, roomType, numBed, price, roomAvailability));
             }
 
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
         return roomsList;
+    }
+
+    private void setupCustomer() {
+        setupCustomerHeader();
+        setupCustomerTable();
+    }
+
+    private void setupCustomerHeader() {
+        //Get room numbers
+        int numCustomerVisitor = getCustomerNums("Visitor");
+        int numCustomerCustomer = getCustomerNums("Customer");
+        int numCustomerAmountDue = getCustomerNums("Amount Due");
+
+        //Set label text values
+        lblVisitorCount.setText(String.valueOf(numCustomerVisitor));
+        lblCustomerCount.setText(String.valueOf(numCustomerCustomer));
+        lblAmountDueCount.setText("₹ "+String.valueOf(numCustomerAmountDue));
+
+        //Server Status
+        if (con == null) {
+            lblServerStatusCustomer.setTextFill(Color.TOMATO);
+            lblServerStatusCustomer.setText("Not OK");
+            return;
+        } else {
+            lblServerStatusCustomer.setTextFill(Color.GREEN);
+            lblServerStatusCustomer.setText("OK");
+        }
+
+    }
+
+    private int getCustomerNums(String whatCustomers) {
+
+        int count = 0;
+        String query = "";
+
+        switch (whatCustomers) {
+            case "Visitor":
+                query = "SELECT COUNT(*) AS VAL FROM VISITOR;";
+                break;
+            case "Customer":
+                query = "SELECT COUNT(*) AS VAL FROM CUSTOMER;";
+                break;
+            case "Amount Due":
+                query ="SELECT SUM(DUE) AS VAL FROM BILL,CUSTOMER WHERE CUSTOMER.BILL_ID=BILL.BILL_ID;";
+        }
+
+        try {
+            preparedStatement = con.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                count = resultSet.getInt("VAL");
+            }
+
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+            lblServerStatus.setText("Not OK");
+        }
+
+        return count;
+    }
+
+    private void setupCustomerTable() {
+
+        //Set Cell and Property Value Factory for the table
+        customerRoomCol.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("customerRoomNo"));
+        customerNameCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("customerName"));
+        customerServiceTypeCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("customerServiceType"));
+        customerOccupantsCol.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("customerOccupants"));
+        customerArrivalCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("customerArrivalTime"));
+        customerAmountDueCol.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("customerAmountDue"));
+        customerRequestsCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("customerSpecialRequest"));
+
+        // 0. Initialize the columns.
+        //ObservableList<Customer> customerList = FXCollections.observableArrayList();
+        ObservableList<Customer> customerList = fetchCustomerData();
+
+
+        // 1. Wrap the ObservableList in a FilteredList (initially display all data).
+        FilteredList<Customer> customerFilteredList = new FilteredList<>(customerList, p -> true);
+
+        // 2. Set the filter Predicate whenever the filter changes.
+        filterCustomerTable.textProperty().addListener((observable, oldValue, newValue) -> {
+            customerFilteredList.setPredicate(customer -> {
+
+                //If filter is empty display all data
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+
+                String lowerCaseFilter = newValue.toLowerCase().trim();
+
+                //Column-wise filtering logic
+                if (String.valueOf(customer.getCustomerRoomNo()).toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if (customer.getCustomerName().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if (customer.getCustomerServiceType().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if (String.valueOf(customer.getCustomerOccupants()).toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if (customer.getCustomerArrivalTime().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if (String.valueOf(customer.getCustomerAmountDue()).toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if (customer.getCustomerSpecialRequest().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                }
+                return false;
+            });
+        });
+
+        // 3. Wrap the FilteredList in a SortedList.
+        SortedList<Customer> customerSortedList = new SortedList<>(customerFilteredList);
+
+        //4. Bind the Sortedlist comparator to the TableView comparator.
+        //Otherwise, sorting the TableView would have no effect.
+        customerSortedList.comparatorProperty().bind(customerTableView.comparatorProperty());
+
+        //Add sorted ( and filtered ) data to the table.
+        customerTableView.setItems(customerSortedList);
+
+        //If we have no data to show
+        customerTableView.setPlaceholder(new Label("No search results"));
+
+
+    }
+
+    private ObservableList<Customer> fetchCustomerData() {
+
+        ObservableList<Customer> customerList = FXCollections.observableArrayList();
+
+        try {
+            //Querying data for room items
+            String query = "SELECT Room_No , CONCAT(Visitor.FirstName, ' ',Visitor.LastName) AS Name,Service_Type,Occupants_Num, Arrival, Special_Requests,Due " +
+                    "FROM Customer,Visitor,Bill " +
+                    "WHERE Customer.Visitor_ID=Visitor.Visitor_ID AND Bill.Bill_ID=Customer.Bill_ID " +
+                    "ORDER BY Room_No;";
+
+            preparedStatement = con.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+
+            //Iterating over data and adding to rooms observable list
+            while (resultSet.next()) {
+                //Extract data from a particular row
+                int customerNum = resultSet.getInt("Room_No");
+                String customerName = resultSet.getString("Name");
+                String customerServiceType = resultSet.getString("Service_Type");
+                int numOccupants = resultSet.getInt("Occupants_Num");
+                String customerArrival = resultSet.getString("Arrival");
+                String customerSpecialRequest = resultSet.getString("Special_Requests");
+                int due = resultSet.getInt("Due");
+
+                //Add data to customerList
+                customerList.add(new Customer(customerNum, customerName, customerServiceType, numOccupants, customerArrival, due, customerSpecialRequest));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return customerList;
     }
 
     private void hideAll() {
@@ -575,5 +712,6 @@ public class ReceptionController implements Initializable {
             System.exit(0);
         }
     }
-    
 }
+    
+

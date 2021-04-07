@@ -1,40 +1,55 @@
 package models;
 
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 
+//Room No, Customer Name, Service Type, #Occupants, Arrival time or date, Amount Due, Special Request
 public class Customer {
-    private final SimpleStringProperty staffName;
-    private final SimpleStringProperty staffDesignation;
-    private final SimpleStringProperty staffPhone;
-    private final SimpleStringProperty staffShift;
-    private final SimpleStringProperty staffAttendance;
 
-    public Customer(String staffName, String staffDesignation, String staffPhone, String staffShift, String roomAvailability) {
+    private final SimpleIntegerProperty customerRoomNo;
+    private final SimpleStringProperty customerName;
+    private final SimpleStringProperty customerServiceType;
+    private final SimpleIntegerProperty customerOccupants;
+    private final SimpleStringProperty customerArrivalTime;
+    private final SimpleIntegerProperty customerAmountDue;
+    private final SimpleStringProperty customerSpecialRequest;
+
+    public Customer(Integer customerRoomNo, String customerName, String customerServiceType, Integer customerOccupants, String customerArrivalTime, Integer customerAmountDue, String customerSpecialRequest) {
         super();
-        this.staffName = new SimpleStringProperty(staffName);
-        this.staffDesignation = new SimpleStringProperty(staffDesignation);
-        this.staffPhone = new SimpleStringProperty(staffPhone);
-        this.staffShift = new SimpleStringProperty(staffShift);
-        this.staffAttendance = new SimpleStringProperty(roomAvailability);
+        this.customerRoomNo = new SimpleIntegerProperty(customerRoomNo);
+        this.customerName = new SimpleStringProperty(customerName);
+        this.customerServiceType = new SimpleStringProperty(customerServiceType);
+        this.customerOccupants = new SimpleIntegerProperty(customerOccupants);
+        this.customerArrivalTime = new SimpleStringProperty(customerArrivalTime);
+        this.customerAmountDue = new SimpleIntegerProperty(customerAmountDue);
+        this.customerSpecialRequest = new SimpleStringProperty(customerSpecialRequest);
     }
 
-    public String getStaffName() {
-        return staffName.get();
+    public Integer getCustomerRoomNo() {
+        return customerRoomNo.get();
     }
 
-    public String getStaffDesignation() {
-        return staffDesignation.get();
+    public String getCustomerName() {
+        return customerName.get();
     }
 
-    public String getStaffPhone() {
-        return staffPhone.get();
+    public String getCustomerServiceType() {
+        return customerServiceType.get();
     }
 
-    public String getStaffShift() {
-        return staffShift.get();
+    public Integer getCustomerOccupants() {
+        return customerOccupants.get();
     }
 
-    public String getStaffAttendance() {
-        return staffAttendance.get();
+    public String getCustomerArrivalTime() {
+        return customerArrivalTime.get();
+    }
+
+    public Integer getCustomerAmountDue() {
+        return customerAmountDue.get();
+    }
+
+    public String getCustomerSpecialRequest() {
+        return customerSpecialRequest.get();
     }
 }
