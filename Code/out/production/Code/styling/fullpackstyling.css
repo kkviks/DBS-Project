@@ -100,3 +100,11 @@
     -fx-border-color: derive(-fx-pie-color, 1%);
     -fx-border-width: 0px;
 }
+
+.split-pane-divider {
+    -fx-background-color: transparent;
+}
+
+.label {
+    -fx-text-fill: white;
+}
