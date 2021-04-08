@@ -23,7 +23,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class ReceptionController implements Initializable {
@@ -151,7 +150,7 @@ public class ReceptionController implements Initializable {
     @FXML
     TableColumn<Orders, String> orderTimeCol;
     @FXML
-    TableColumn<Orders, Integer> orderBellboyCol;
+    TableColumn<Orders, String> orderBellboyCol;
 
 
     @FXML
@@ -453,7 +452,7 @@ public class ReceptionController implements Initializable {
         ObservableList<Room> roomsList = FXCollections.observableArrayList();
 
         try {
-            //Quering data for room items
+            //Querying data for room items
             String query = "SELECT Room_No,Room_Type, Availability , Beds_Num, Price " +
                     "FROM room,room_type " +
                     "WHERE room.room_type=room_type.Type " +
@@ -498,7 +497,7 @@ public class ReceptionController implements Initializable {
         //Set label text values
         lblVisitorCount.setText(String.valueOf(numCustomerVisitor));
         lblCustomerCount.setText(String.valueOf(numCustomerCustomer));
-        lblAmountDueCount.setText("₹ "+String.valueOf(numCustomerAmountDue));
+        lblAmountDueCount.setText("₹ " + String.valueOf(numCustomerAmountDue));
 
         //Server Status
         if (con == null) {
@@ -525,7 +524,7 @@ public class ReceptionController implements Initializable {
                 query = "SELECT COUNT(*) AS VAL FROM CUSTOMER;";
                 break;
             case "Amount Due":
-                query ="SELECT SUM(DUE) AS VAL FROM BILL,CUSTOMER WHERE CUSTOMER.BILL_ID=BILL.BILL_ID;";
+                query = "SELECT SUM(DUE) AS VAL FROM BILL,CUSTOMER WHERE CUSTOMER.BILL_ID=BILL.BILL_ID;";
         }
 
         try {
@@ -649,7 +648,107 @@ public class ReceptionController implements Initializable {
     private void setupOrders() {
         // TODO: 07-04-2021
         //setupOrdersHeader();
-        //setupOrdersTable();
+        setupOrdersTable();
+    }
+
+    private void setupOrdersTable() {
+
+        //Set Cell and Property Value Factory for the table
+        orderRoomCol.setCellValueFactory(new PropertyValueFactory<Orders, Integer>("orderRoomNo"));
+        orderRequestsCol.setCellValueFactory(new PropertyValueFactory<Orders, String>("orderSpecialRequests"));
+        orderInventoriesCol.setCellValueFactory(new PropertyValueFactory<Orders, String>("orderInventories"));
+        orderChargesCol.setCellValueFactory(new PropertyValueFactory<Orders, Integer>("orderExtraCharges"));
+        orderTimeCol.setCellValueFactory(new PropertyValueFactory<Orders, String>("orderTime"));
+        orderBellboyCol.setCellValueFactory(new PropertyValueFactory<Orders, String>("orderBellBoy"));
+
+        // 0. Initialize the columns.
+        //ObservableList<Orders> ordersList = FXCollections.observableArrayList();
+        ObservableList<Orders> orderList = fetchOrdersData();
+
+
+        // 1. Wrap the ObservableList in a FilteredList (initially display all data).
+        FilteredList<Orders> orderFilteredList = new FilteredList<>(orderList, p -> true);
+
+        // 2. Set the filter Predicate whenever the filter changes.
+        filterOrderTable.textProperty().addListener((observable, oldValue, newValue) -> {
+            orderFilteredList.setPredicate(orders -> {
+
+                //If filter is empty display all data
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+
+                String lowerCaseFilter = newValue.toLowerCase().trim();
+
+                //Column-wise filtering logic
+                if (String.valueOf(orders.getOrderRoomNo()).toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if (orders.getOrderSpecialRequest().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if (orders.getOrderInventories().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if (String.valueOf(orders.getOrderExtraCharges()).toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if (orders.getOrderTime().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if (orders.getOrderBellBoy().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                }
+                return false;
+            });
+        });
+
+        // 3. Wrap the FilteredList in a SortedList.
+        SortedList<Orders> ordersSortedList = new SortedList<>(orderFilteredList);
+
+        //4. Bind the Sortedlist comparator to the TableView comparator.
+        //Otherwise, sorting the TableView would have no effect.
+        ordersSortedList.comparatorProperty().bind(ordersTableView.comparatorProperty());
+
+        //Add sorted ( and filtered ) data to the table.
+        ordersTableView.setItems(ordersSortedList);
+
+        //If we have no data to show
+        ordersTableView.setPlaceholder(new Label("No search results"));
+
+
+    }
+
+    private ObservableList<Orders> fetchOrdersData() {
+
+        ObservableList<Orders> ordersList = FXCollections.observableArrayList();
+
+        try {
+            //Querying data for orders items
+            String query = "SELECT Room_No, Special_Requests,Inventories,Extra_Charges,Service_Date_Time, CONCAT(Employee.FirstName, ' ',Employee.LastName) AS BellBoyName,Bell_Boy " +
+                    "FROM CUSTOMER,ROOM_SERVICE,EMPLOYEE " +
+                    "WHERE CUSTOMER.Customer_ID = ROOM_SERVICE.Customer_ID AND EMPLOYEE.E_ID=ROOM_SERVICE.Bell_Boy " +
+                    "ORDER BY Room_No ASC;";
+
+            preparedStatement = con.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+
+            //Iterating over data and adding to rooms observable list
+
+            while (resultSet.next()) {
+                //Extract data from a particular row
+                int ordersNum = resultSet.getInt("Room_No");
+                String ordersRequests = resultSet.getString("Special_Requests");
+                String ordersInventories = resultSet.getString("Inventories");
+                //TODO: Change Datatype for Special_Charges
+                int ordersCharges = (int) resultSet.getDouble("Special_Charges");
+                String ordersTime = resultSet.getString("Service_Date_time");
+                String ordersBellboy = resultSet.getString("Bell_Boy");
+
+                //Add data to ordersList
+                ordersList.add(new Orders(ordersNum, ordersRequests, ordersInventories, ordersCharges, ordersTime, ordersBellboy));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return ordersList;
     }
 
 

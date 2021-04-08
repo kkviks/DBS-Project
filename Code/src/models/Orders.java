@@ -5,7 +5,7 @@ import javafx.beans.property.SimpleStringProperty;
 //Room No, Special Requests, Inventories, Extra Charges, Time, BellBoy
 public class Orders
 {
-    private final SimpleIntegerProperty orderRoom;
+    private final SimpleIntegerProperty orderRoomNo;
     private final SimpleStringProperty orderSpecialRequest;
     private final SimpleStringProperty orderInventories;
     private final SimpleIntegerProperty orderExtraCharges;
@@ -14,7 +14,7 @@ public class Orders
 
     public Orders(Integer orderRoom, String orderSpecialRequest, String orderInventories, Integer orderExtraCharges, String orderTime, String orderBellBoy ) {
         super();
-        this.orderRoom = new SimpleIntegerProperty(orderRoom);
+        this.orderRoomNo = new SimpleIntegerProperty(orderRoom);
         this.orderSpecialRequest = new SimpleStringProperty(orderSpecialRequest);
         this.orderInventories = new SimpleStringProperty(orderInventories);
         this.orderExtraCharges = new SimpleIntegerProperty(orderExtraCharges);
@@ -22,8 +22,8 @@ public class Orders
         this.orderBellBoy = new SimpleStringProperty(orderBellBoy);
     }
 
-    public Integer getOrderRoom() {
-        return orderRoom.get();
+    public Integer getOrderRoomNo() {
+        return orderRoomNo.get();
     }
 
     public String getOrderSpecialRequest() {
