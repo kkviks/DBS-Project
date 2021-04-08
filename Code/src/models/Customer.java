@@ -24,6 +24,7 @@ public class Customer {
         this.customerAmountDue = new SimpleIntegerProperty(customerAmountDue);
         this.customerSpecialRequest = new SimpleStringProperty(customerSpecialRequest);
     }
+    // TODO: 08-04-2021 Overload new constructor for new field
 
     public Integer getCustomerRoomNo() {
         return customerRoomNo.get();
@@ -52,4 +53,5 @@ public class Customer {
     public String getCustomerSpecialRequest() {
         return customerSpecialRequest.get();
     }
+    // TODO: 08-04-2021  Add getter for new field
 }

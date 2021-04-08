@@ -25,7 +25,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class ReceptionController implements Initializable {
+public class ManagerController implements Initializable {
 
     @FXML
     private Button btnOverview;
@@ -178,7 +178,6 @@ public class ReceptionController implements Initializable {
         hideAll();
         setupOverview();
         setupStaff();
-        setupOrders();
         setupCustomer();
         showOnly("Overview");
     }
@@ -554,6 +553,10 @@ public class ReceptionController implements Initializable {
         customerArrivalCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("customerArrivalTime"));
         customerAmountDueCol.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("customerAmountDue"));
         customerRequestsCol.setCellValueFactory(new PropertyValueFactory<Customer, String>("customerSpecialRequest"));
+
+        // TODO: 08-04-2021 Test new columns query data by chaning parameter of PropertyValueFactory and finding to existing tableCols cols 
+        //customerCostCol.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("customerCost"));
+
 
         // 0. Initialize the columns.
         //ObservableList<Customer> customerList = FXCollections.observableArrayList();
