@@ -139,7 +139,7 @@
       </VBox>
       <StackPane layoutX="258.0" prefHeight="576.0" prefWidth="793.0" style="-fx-background-color: #02030A;">
          <children>
-            <Pane fx:id="pnlCheckout" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" visible="false">
+            <Pane fx:id="pnlCheckout" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0">
                <children>
                   <VBox prefHeight="576.0" prefWidth="794.0">
                      <children>
@@ -156,12 +156,12 @@
                               </VBox>
                               <VBox alignment="CENTER" prefHeight="92.0" prefWidth="162.0">
                                  <children>
-                                    <TextField fx:id="filterRoomTable11" alignment="CENTER" prefHeight="27.0" prefWidth="183.0" promptText="Room Number" style="-fx-background-color: #02030A; -fx-border-color: #B7C3D7; -fx-border-radius: 1em;" />
+                                    <TextField fx:id="txtRoomCheckout" alignment="CENTER" prefHeight="27.0" prefWidth="183.0" promptText="Room Number" style="-fx-background-color: #02030A; -fx-border-color: #B7C3D7; -fx-border-radius: 1em;" />
                                  </children>
                               </VBox>
                               <VBox alignment="CENTER" prefHeight="92.0" prefWidth="161.0">
                                  <children>
-                                    <Label prefHeight="28.0" prefWidth="105.0" text="Service Type" textFill="#e7e5e5">
+                                    <Label fx:id="lblRoomStatusCheckout" prefHeight="28.0" prefWidth="105.0" text="No such Room!" textFill="#e7e5e5">
                                        <VBox.margin>
                                           <Insets top="10.0" />
                                        </VBox.margin>
@@ -170,7 +170,7 @@
                               </VBox>
                               <VBox alignment="CENTER" prefHeight="70.0" prefWidth="146.0">
                                  <children>
-                                    <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="102.0" text="CHECKOUT">
+                                    <Button fx:id="btnFinalCheckout" mnemonicParsing="false" prefHeight="26.0" prefWidth="102.0" text="CHECKOUT">
                                        <VBox.margin>
                                           <Insets />
                                        </VBox.margin>
@@ -211,37 +211,37 @@
                                                 <HBox prefHeight="30.0" prefWidth="215.0">
                                                    <children>
                                                       <Label alignment="CENTER" prefHeight="30.0" prefWidth="99.0" text="Name :" />
-                                                      <Label alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="174.0" text="&lt;Text&gt;" />
+                                                      <Label fx:id="lblName" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="174.0" text="&lt;Text&gt;" />
                                                    </children>
                                                 </HBox>
                                                 <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                                                    <children>
                                                       <Label alignment="CENTER" prefHeight="30.0" prefWidth="99.0" text="E-mail:" />
-                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="174.0" text="&lt;Text&gt;" />
+                                                      <Label fx:id="lblEmail" alignment="CENTER" prefHeight="30.0" prefWidth="174.0" text="&lt;Text&gt;" />
                                                    </children>
                                                 </HBox>
                                                 <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
                                                    <children>
                                                       <Label alignment="CENTER" prefHeight="30.0" prefWidth="99.0" text="Phone:" />
-                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="174.0" text="&lt;Text&gt;" />
+                                                      <Label fx:id="lblPhone" alignment="CENTER" prefHeight="30.0" prefWidth="174.0" text="&lt;Text&gt;" />
                                                    </children>
                                                 </HBox>
                                                 <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                    <children>
                                                       <Label alignment="CENTER" prefHeight="30.0" prefWidth="99.0" text="Occupants" />
-                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="174.0" text="&lt;Text&gt;" />
+                                                      <Label fx:id="lblOccupants" alignment="CENTER" prefHeight="30.0" prefWidth="174.0" text="&lt;Text&gt;" />
                                                    </children>
                                                 </HBox>
                                                 <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
                                                    <children>
                                                       <Label alignment="CENTER" prefHeight="30.0" prefWidth="99.0" text="Check-in:" />
-                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="174.0" text="&lt;Text&gt;" />
+                                                      <Label fx:id="lblCheckin" alignment="CENTER" prefHeight="30.0" prefWidth="174.0" text="&lt;Text&gt;" />
                                                    </children>
                                                 </HBox>
                                                 <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                    <children>
                                                       <Label alignment="CENTER" prefHeight="30.0" prefWidth="99.0" text="Check-out" />
-                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="174.0" text="&lt;Text&gt;" />
+                                                      <Label fx:id="lblCheckout" alignment="CENTER" prefHeight="30.0" prefWidth="174.0" text="&lt;Text&gt;" />
                                                    </children>
                                                 </HBox>
                                              </children>
@@ -281,7 +281,7 @@
                                                 </HBox>
                                                 <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                                                    <children>
-                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="174.0" text="&lt;Text&gt;" />
+                                                      <Label fx:id="lblRoomNumCheckOut" alignment="CENTER" prefHeight="30.0" prefWidth="174.0" text="&lt;Text&gt;" />
                                                    </children>
                                                 </HBox>
                                                 <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
@@ -291,17 +291,17 @@
                                                 </HBox>
                                                 <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                    <children>
-                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="160.0" text="&lt;Text&gt;" />
+                                                      <Label fx:id="lblDuration" alignment="CENTER" prefHeight="30.0" prefWidth="160.0" text="&lt;Text&gt;" />
                                                    </children>
                                                 </HBox>
                                                 <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2">
                                                    <children>
-                                                      <Label alignment="CENTER" prefHeight="35.0" prefWidth="136.0" text="&lt;Price&gt;" />
+                                                      <Label fx:id="lblRoomPriceCheckOut" alignment="CENTER" prefHeight="35.0" prefWidth="136.0" text="&lt;Price&gt;" />
                                                    </children>
                                                 </HBox>
                                                 <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                                    <children>
-                                                      <Label alignment="CENTER" prefHeight="31.0" prefWidth="136.0" text="&lt;Price&gt;" />
+                                                      <Label fx:id="lblDurationPrice" alignment="CENTER" prefHeight="31.0" prefWidth="136.0" text="&lt;Price&gt;" />
                                                    </children>
                                                 </HBox>
                                                 <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
@@ -311,12 +311,12 @@
                                                 </HBox>
                                                 <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                    <children>
-                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="186.0" text="&lt;Text&gt;" />
+                                                      <Label fx:id="lblService" alignment="CENTER" prefHeight="30.0" prefWidth="186.0" text="&lt;Text&gt;" />
                                                    </children>
                                                 </HBox>
                                                 <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                                                    <children>
-                                                      <Label alignment="CENTER" prefHeight="31.0" prefWidth="136.0" text="&lt;Price&gt;" />
+                                                      <Label fx:id="lblServicePrice" alignment="CENTER" prefHeight="31.0" prefWidth="136.0" text="&lt;Price&gt;" />
                                                    </children>
                                                 </HBox>
                                                 <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3" />
@@ -327,7 +327,7 @@
                                                 </HBox>
                                                 <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
                                                    <children>
-                                                      <Label alignment="CENTER" prefHeight="31.0" prefWidth="136.0" text="Amount" />
+                                                      <Label fx:id="lblTotalRoomPriceCheckout" alignment="CENTER" prefHeight="31.0" prefWidth="136.0" text="Amount" />
                                                    </children>
                                                 </HBox>
                                              </children>
@@ -337,7 +337,7 @@
                                           </GridPane>
                                           <HBox prefHeight="100.0" prefWidth="200.0">
                                              <children>
-                                                <ProgressBar prefHeight="20.0" prefWidth="364.0" progress="0.0">
+                                                <ProgressBar fx:id="progressBarCheckout" prefHeight="20.0" prefWidth="364.0" progress="0.0">
                                                    <HBox.margin>
                                                       <Insets left="40.0" top="30.0" />
                                                    </HBox.margin>
@@ -375,6 +375,7 @@
                                             <rowConstraints>
                                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                              <children>
@@ -385,7 +386,7 @@
                                                 </HBox>
                                                 <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                                                    <children>
-                                                      <Label alignment="CENTER" prefHeight="31.0" prefWidth="136.0" text="&lt;Price&gt;" />
+                                                      <Label fx:id="lblSubtotal" alignment="CENTER" prefHeight="31.0" prefWidth="136.0" text="&lt;Price&gt;" />
                                                    </children>
                                                 </HBox>
                                                 <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
@@ -395,17 +396,30 @@
                                                 </HBox>
                                                 <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                    <children>
-                                                      <Label alignment="CENTER" prefHeight="31.0" prefWidth="136.0" text="&lt;Price&gt;" />
+                                                      <Label fx:id="lblAdditionalCharges" alignment="CENTER" prefHeight="31.0" prefWidth="136.0" text="&lt;Price&gt;" />
                                                    </children>
                                                 </HBox>
-                                                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
+                                                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
                                                    <children>
                                                       <Label alignment="CENTER" prefHeight="30.0" prefWidth="153.0" text="Tax" />
                                                    </children>
                                                 </HBox>
+                                                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                   <children>
+                                                      <Label fx:id="lblTax" alignment="CENTER" prefHeight="31.0" prefWidth="136.0" text="&lt;Price&gt;" />
+                                                   </children>
+                                                </HBox>
+                                                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
+                                                   <children>
+                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="153.0" text="Discount" />
+                                                   </children>
+                                                </HBox>
                                                 <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                    <children>
-                                                      <Label alignment="CENTER" prefHeight="31.0" prefWidth="136.0" text="&lt;Price&gt;" />
+                                                      <TextField fx:id="txtDiscount" alignment="CENTER" text="0">
+                                                         <HBox.margin>
+                                                            <Insets left="40.0" right="40.0" />
+                                                         </HBox.margin></TextField>
                                                    </children>
                                                 </HBox>
                                              </children>
@@ -429,7 +443,7 @@
                                                 </HBox>
                                                 <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                                                    <children>
-                                                      <Label alignment="CENTER" prefHeight="31.0" prefWidth="136.0" text="&lt;Price&gt;" />
+                                                      <Label fx:id="lblTotalCheckout" alignment="CENTER" prefHeight="31.0" prefWidth="136.0" text="&lt;Price&gt;" />
                                                    </children>
                                                 </HBox>
                                                 <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
@@ -439,7 +453,7 @@
                                                 </HBox>
                                                 <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                    <children>
-                                                      <Label alignment="CENTER" prefHeight="31.0" prefWidth="136.0" text="&lt;Price&gt;" />
+                                                      <Label fx:id="lblPaid" alignment="CENTER" prefHeight="31.0" prefWidth="136.0" text="&lt;Price&gt;" />
                                                    </children>
                                                 </HBox>
                                                 <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
@@ -449,7 +463,7 @@
                                                 </HBox>
                                                 <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                    <children>
-                                                      <Label alignment="CENTER" prefHeight="31.0" prefWidth="136.0" text="&lt;Price&gt;" />
+                                                      <Label fx:id="lblDue" alignment="CENTER" prefHeight="31.0" prefWidth="136.0" text="&lt;Price&gt;" />
                                                    </children>
                                                 </HBox>
                                              </children>
@@ -484,12 +498,12 @@
                                                                <children>
                                                                   <HBox prefHeight="67.0" prefWidth="282.0">
                                                                      <children>
-                                                                        <TextField alignment="CENTER" prefHeight="26.0" prefWidth="134.0" promptText="Amount">
+                                                                        <TextField fx:id="txtCash" alignment="CENTER" prefHeight="26.0" prefWidth="134.0" promptText="Amount">
                                                                            <HBox.margin>
                                                                               <Insets left="20.0" top="15.0" />
                                                                            </HBox.margin>
                                                                         </TextField>
-                                                                        <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="74.0" text="Receive">
+                                                                        <Button fx:id="btnReceiveCash" mnemonicParsing="false" prefHeight="32.0" prefWidth="74.0" text="Receive">
                                                                            <HBox.margin>
                                                                               <Insets left="40.0" right="20.0" top="15.0" />
                                                                            </HBox.margin>
@@ -506,12 +520,12 @@
                                                                <children>
                                                                   <HBox prefHeight="67.0" prefWidth="282.0">
                                                                      <children>
-                                                                        <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="109.0" text="Show QR">
+                                                                        <Button fx:id="btnShowQR" mnemonicParsing="false" prefHeight="32.0" prefWidth="109.0" text="Show QR">
                                                                            <HBox.margin>
                                                                               <Insets left="40.0" right="20.0" top="15.0" />
                                                                            </HBox.margin>
                                                                         </Button>
-                                                                        <Button layoutX="201.0" layoutY="25.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="96.0" text="Receive">
+                                                                        <Button fx:id="btnReceiveUPI" layoutX="201.0" layoutY="25.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="96.0" text="Receive">
                                                                            <HBox.margin>
                                                                               <Insets left="20.0" right="20.0" top="15.0" />
                                                                            </HBox.margin>
@@ -528,12 +542,12 @@
                                                                <children>
                                                                   <HBox prefHeight="67.0" prefWidth="282.0">
                                                                      <children>
-                                                                        <TextField alignment="CENTER" prefHeight="26.0" prefWidth="134.0" promptText="Reference No.">
+                                                                        <TextField fx:id="txtReferenceCard" alignment="CENTER" prefHeight="26.0" prefWidth="134.0" promptText="Reference No.">
                                                                            <HBox.margin>
                                                                               <Insets left="20.0" top="15.0" />
                                                                            </HBox.margin>
                                                                         </TextField>
-                                                                        <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="74.0" text="Receive">
+                                                                        <Button fx:id="btnReceiveCard" mnemonicParsing="false" prefHeight="32.0" prefWidth="74.0" text="Receive">
                                                                            <HBox.margin>
                                                                               <Insets left="40.0" right="20.0" top="15.0" />
                                                                            </HBox.margin>
@@ -988,7 +1002,7 @@
                   </Pane>
                </children>
             </Pane>
-            <Pane fx:id="pnlOrders" layoutX="10.0" layoutY="10.0" prefHeight="554.0" prefWidth="793.0">
+            <Pane fx:id="pnlOrders" layoutX="10.0" layoutY="10.0" prefHeight="554.0" prefWidth="793.0" visible="false">
                <children>
                   <TextField fx:id="filterOrderTable" layoutX="590.0" layoutY="47.0" prefHeight="27.0" prefWidth="183.0" promptText="search" style="-fx-background-color: #02030A; -fx-border-color: #B7C3D7; -fx-border-radius: 2em;" />
                   <Label layoutX="57.0" layoutY="25.0" text="Overview" textFill="#e7e5e5">

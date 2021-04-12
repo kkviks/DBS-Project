@@ -191,6 +191,40 @@ public class ReceptionController implements Initializable {
     @FXML
     Label lblServerStatusCustomer, lblVisitorCount, lblCustomerCount, lblAmountDueCount;
 
+    //Checkout
+    @FXML
+    TextField txtRoomCheckout;
+
+    @FXML
+    Label lblRoomStatusCheckout;
+
+    @FXML
+    Button btnFinalCheckout;
+
+    @FXML
+    ProgressBar progressBarCheckout;
+
+    @FXML
+    Label lblName,lblEmail, lblPhone, lblOccupants, lblCheckin, lblCheckout;
+
+    @FXML
+    Label lblRoomNumCheckOut,lblRoomPriceCheckOut, lblDuration, lblDurationPrice, lblService, lblServicePrice, lblTotalRoomPriceCheckout;
+
+    @FXML
+    TextField txtDiscount;
+
+    @FXML
+    Label lblSubtotal, lblAdditionalCharges, lblTax;
+
+    @FXML
+    Label lblTotalCheckout, lblPaid, lblDue;
+
+    @FXML
+    TextField txtCash, txtReferenceCard, txtReferenceUPI;
+
+    @FXML
+    Button btnReceiveCash, btnReceiveUPI, btnReceiveCard, btnShowQR;
+
     //SQL setup
     Connection con = null;
     PreparedStatement preparedStatement = null;
