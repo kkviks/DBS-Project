@@ -17,6 +17,7 @@ import models.Orders;
 import models.Room;
 import models.Staff;
 import utils.ConnectionUtil;
+import utils.Pair;
 
 import java.net.URL;
 import java.sql.Connection;
@@ -24,6 +25,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ReceptionController implements Initializable {
 
@@ -85,6 +88,32 @@ public class ReceptionController implements Initializable {
 
     @FXML
     Label lblServerStatusOrder;
+
+    //New Booking elements
+    private boolean isRoomAvailabe = false;
+    @FXML
+    TextField txtRoomNB;
+
+    @FXML
+    Label lblRoomStatusNB, lblRoomType, lblRoomTypePrice,lblServiceTypePrice, lblTotalRoomPrice;
+
+    @FXML
+    ComboBox cbServiceType, cbMartialStatus;
+
+    @FXML
+    Button btnBookRoom,btnResetBooking,btnResetBooking1;
+
+    @FXML
+    TextField txtFirstName, txtLastName, txtEmail, txtPhone, txtUIDAI, txtPassport, txtProfession, txtAddress;
+
+    @FXML
+    DatePicker dpArrival, dpDeparture;
+
+    @FXML
+    Spinner spinnerOccupants;
+
+    @FXML
+    ProgressBar progressBar;
 
 
     //tableView
@@ -178,7 +207,7 @@ public class ReceptionController implements Initializable {
         hideAll();
         setupOverview();
         setupStaff();
-        //setupOrders();
+        setupOrders();
         setupCustomer();
         showOnly("Overview");
     }
@@ -656,7 +685,7 @@ public class ReceptionController implements Initializable {
 
         //Set Cell and Property Value Factory for the table
         orderRoomCol.setCellValueFactory(new PropertyValueFactory<Orders, Integer>("orderRoomNo"));
-        orderRequestsCol.setCellValueFactory(new PropertyValueFactory<Orders, String>("orderSpecialRequests"));
+        orderRequestsCol.setCellValueFactory(new PropertyValueFactory<Orders, String>("orderSpecialRequest"));
         orderInventoriesCol.setCellValueFactory(new PropertyValueFactory<Orders, String>("orderInventories"));
         orderChargesCol.setCellValueFactory(new PropertyValueFactory<Orders, Integer>("orderExtraCharges"));
         orderTimeCol.setCellValueFactory(new PropertyValueFactory<Orders, String>("orderTime"));
@@ -721,7 +750,7 @@ public class ReceptionController implements Initializable {
 
         try {
             //Querying data for orders items
-            String query = "SELECT Room_No, Special_Requests,Inventories,Extra_Charges,Service_Date_Time, CONCAT(Employee.FirstName, ' ',Employee.LastName) AS BellBoyName,Bell_Boy " +
+            String query = "SELECT Room_No, Special_Request,Inventories,Extra_Charges,Service_Date_Time, CONCAT(Employee.FirstName, ' ',Employee.LastName) AS BellBoyName,Bell_Boy " +
                     "FROM CUSTOMER,ROOM_SERVICE,EMPLOYEE " +
                     "WHERE CUSTOMER.Customer_ID = ROOM_SERVICE.Customer_ID AND EMPLOYEE.E_ID=ROOM_SERVICE.Bell_Boy " +
                     "ORDER BY Room_No ASC;";
@@ -734,10 +763,13 @@ public class ReceptionController implements Initializable {
             while (resultSet.next()) {
                 //Extract data from a particular row
                 int ordersNum = resultSet.getInt("Room_No");
-                String ordersRequests = resultSet.getString("Special_Requests");
+                String ordersRequests = resultSet.getString("Special_Request");
                 String ordersInventories = resultSet.getString("Inventories");
+                if(ordersInventories.equals("NULL")){
+                    ordersInventories="-";
+                }
                 //TODO: Change Datatype for Special_Charges
-                int ordersCharges = (int) resultSet.getDouble("Special_Charges");
+                int ordersCharges = (int) resultSet.getDouble("Extra_Charges");
                 String ordersTime = resultSet.getString("Service_Date_time");
                 String ordersBellboy = resultSet.getString("Bell_Boy");
 
@@ -751,7 +783,6 @@ public class ReceptionController implements Initializable {
 
         return ordersList;
     }
-
 
     private void hideAll() {
 
@@ -837,6 +868,186 @@ public class ReceptionController implements Initializable {
             Platform.exit();
             System.exit(0);
         }
+    }
+
+    public void txtRoomNBChanged(){
+
+        txtRoomNB.textProperty().addListener((observable, oldValue, newValue) -> {
+            if(validateRoomNum(newValue)){
+                //lblRoomStatusNB.setText(newValue);
+                if(isRoomAvailable(newValue.trim())){
+                    lblRoomStatusNB.setText("Available!");
+                    Pair<String,Integer> roomTypeData = getRoomType(newValue.trim());
+                    if(roomTypeData==null){
+                        lblRoomType.setText("");
+                        lblRoomTypePrice.setText("");
+                    }
+                    else
+                    {
+                        lblRoomType.setText(roomTypeData.getFirst());
+                        lblRoomTypePrice.setText(String.valueOf(roomTypeData.getSecond()));
+                    }
+                }
+                else
+                {
+                    if(!lblRoomStatusNB.getText().equals("No such room!")){
+                        lblRoomStatusNB.setText("Occupied!");
+                    }
+                    lblRoomType.setText("");
+                    lblRoomTypePrice.setText("");
+                }
+            }
+            else
+            {
+                lblRoomStatusNB.setText("Invalid Room!");
+                lblRoomType.setText("");
+                lblRoomTypePrice.setText("");
+            }
+        });
+    }
+
+    private Pair<String,Integer> getRoomType(String roomNum) {
+
+        // TODO: 12-04-2021 Make view
+        String query = "SELECT Type, Price from room,room_type where room.Room_Type = room_type.Type and Room_No = " + roomNum +" ;";
+        try {
+            preparedStatement = con.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                String roomType = resultSet.getString("Type");
+                Integer roomPrice = resultSet.getInt("Price");
+                Pair<String,Integer> resPair = new Pair<String,Integer>(roomType,roomPrice);
+                return resPair;
+            }
+            else{
+                lblRoomType.setText("");
+            }
+
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+            lblRoomType.setText("SQL/DB error!");
+        }
+        return null;
+    }
+
+    public boolean isRoomAvailable(String roomNum) {
+
+        // TODO: 12-04-2021 Make view
+        String query = "SELECT Availability from room where Room_No = "+roomNum+" ;";
+
+        try {
+            preparedStatement = con.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                int availability = resultSet.getInt("Availability");
+                if(availability==1)return true;
+                else return false;
+            }
+            else{
+                lblRoomStatusNB.setText("No such room!");
+                lblRoomType.setText("");
+                lblRoomTypePrice.setText("");
+            }
+
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+            lblRoomStatusNB.setText("SQL/DB error!");
+        }
+        return false;
+    }
+
+    private boolean validateRoomNum(String roomNum) {
+        Pattern pattern = Pattern.compile("[1-9][0-9][0-9]");
+        Matcher matcher = pattern.matcher(roomNum.trim());
+        boolean matchFound = matcher.find();
+        if(matchFound && roomNum.trim().length()==3)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public void resetNewBooking(){
+        txtFirstName.setText("");
+        txtLastName.setText("");
+        txtEmail.setText("");
+        txtPhone.setText("");
+        txtUIDAI.setText("");
+        txtPassport.setText("");
+        txtProfession.setText("");
+        // TODO: 12-04-2021 Read input
+        //dpArrival.setChronology(null);
+        //dpDeparture.setChronology(null);
+        txtAddress.setText("");
+        //spinnerOccupants
+    }
+
+    public void bookRoom(){
+        boolean allOK = validateAllFields();
+        if(allOK){
+            // TODO: 12-04-2021 Update query
+
+        }
+    }
+
+    private boolean validateAllFields() {
+
+        boolean allOk = true;
+
+        String firstName = txtFirstName.getText();
+        String surname = txtLastName.getText();
+        String email = txtEmail.getText();
+        String phone = txtPhone.getText();
+        String adhar = txtUIDAI.getText();
+        String passport = txtPassport.getText();
+        String profession = txtProfession.getText();
+        String address = txtAddress.getText();
+        // TODO: 12-04-2021 Get data
+        // dpArrival.setChronology(null);
+        //dpDeparture.setChronoly
+        //spinnerOccupants
+
+        // TODO: 12-04-2021 Add Regex validations
+        if(firstName.isEmpty()){
+            txtFirstName.setStyle("-fx-border-color: red");
+            allOk = false;
+        }
+
+        if(surname.isEmpty()){
+            txtLastName.setStyle("-fx-border-color: red");
+            allOk = false;
+        }
+
+        if(email.isEmpty()){
+            txtEmail.setStyle("-fx-border-color: red");
+            allOk = false;
+        }
+
+        if(phone.isEmpty()){
+            txtPhone.setStyle("-fx-border-color: red");
+            allOk = false;
+        }
+
+        if(adhar.isEmpty()){
+            txtUIDAI.setStyle("-fx-border-color: red");
+            allOk = false;
+        }
+
+        if(passport.isEmpty()){
+            txtPassport.setStyle("-fx-border-color: red");
+            allOk = false;
+        }
+
+        if(profession.isEmpty()){
+            txtProfession.setStyle("-fx-border-color: red");
+            allOk = false;
+        }
+
+        // TODO: 12-04-2021  Add remaining field
+
+        return allOk;
     }
 
 

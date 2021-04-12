@@ -365,34 +365,34 @@ public class ManagerController implements Initializable {
 
     private int getRoomNums(String whatRooms) {
 
-        int count = 0;
-        String query = "";
-
-        switch (whatRooms) {
-            case "Total":
-                query = "SELECT COUNT(*) AS VAL FROM ROOM";
-                break;
-            case "Available":
-                query = "SELECT COUNT(*) AS VAL FROM ROOM WHERE Availability=1;";
-                break;
-            case "Occupied":
-                query = "SELECT COUNT(*) AS VAL FROM room WHERE Availability=0";
-        }
-
-        try {
-            preparedStatement = con.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) {
-                count = resultSet.getInt("VAL");
+            int count = 0;
+            String query = "";
+    
+            switch (whatRooms) {
+                case "Total":
+                    query = "SELECT COUNT(*) AS VAL FROM ROOM";
+                    break;
+                case "Available":
+                    query = "SELECT COUNT(*) AS VAL FROM ROOM WHERE Availability=1;";
+                    break;
+                case "Occupied":
+                    query = "SELECT COUNT(*) AS VAL FROM room WHERE Availability=0";
             }
-
-        } catch (SQLException ex) {
-            System.err.println(ex.getMessage());
-            lblServerStatus.setText("Not OK");
-        }
-
-        return count;
+    
+            try {
+                preparedStatement = con.prepareStatement(query);
+                resultSet = preparedStatement.executeQuery();
+    
+                if (resultSet.next()) {
+                    count = resultSet.getInt("VAL");
+                }
+    
+            } catch (SQLException ex) {
+                System.err.println(ex.getMessage());
+                lblServerStatus.setText("Not OK");
+            }
+    
+            return count;
     }
 
     private void setupOverviewTable() {
