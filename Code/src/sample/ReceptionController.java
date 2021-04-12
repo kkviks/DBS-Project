@@ -178,7 +178,7 @@ public class ReceptionController implements Initializable {
         hideAll();
         setupOverview();
         setupStaff();
-        setupOrders();
+        //setupOrders();
         setupCustomer();
         showOnly("Overview");
     }

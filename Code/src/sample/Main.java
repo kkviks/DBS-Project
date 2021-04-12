@@ -21,8 +21,8 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception{
 
             //FXMLLoader loader = FXMLLoader.load(getClass().getResource("login.fxml"));
-            //root = FXMLLoader.load(getClass().getResource("Reception.fxml"));
-            root = FXMLLoader.load(getClass().getResource("Manager.fxml"));
+            root = FXMLLoader.load(getClass().getResource("Reception.fxml"));
+            //root = FXMLLoader.load(getClass().getResource("Manager.fxml"));
 
             stage.initStyle(StageStyle.UNDECORATED);
             stage.setMaximized(false);

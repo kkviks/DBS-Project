@@ -17,7 +17,11 @@
     </data-source>
     <data-source name="demo_check@localhost" uuid="9d29042b-687b-455c-9227-dea3252b7baf">
       <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="MYSQL" exact-version="0" />
-      <schema-mapping />
+      <schema-mapping>
+        <introspection-scope>
+          <node kind="schema" negative="1" />
+        </introspection-scope>
+      </schema-mapping>
     </data-source>
   </component>
 </project>

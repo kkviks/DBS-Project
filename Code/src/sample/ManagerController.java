@@ -121,6 +121,8 @@ public class ManagerController implements Initializable {
     TableColumn<Staff, String> staffPhoneCol;
     @FXML
     TableColumn<Staff, String> staffAvailabilityCol;
+    @FXML
+    TableColumn<Staff, Integer> staffSalaryCol;
 
     //For customer table
     @FXML
@@ -194,6 +196,7 @@ public class ManagerController implements Initializable {
         staffPhoneCol.setCellValueFactory(new PropertyValueFactory<Staff, String>("staffPhone"));
         staffShiftCol.setCellValueFactory(new PropertyValueFactory<Staff, String>("staffShift"));
         staffAvailabilityCol.setCellValueFactory(new PropertyValueFactory<Staff, String>("staffAttendance"));
+        staffSalaryCol.setCellValueFactory(new PropertyValueFactory<Staff, Integer>("staffSalary"));
 
         // 0. Initialize the columns.
         //ObservableList<Staff> roomList = FXCollections.observableArrayList();
@@ -224,6 +227,8 @@ public class ManagerController implements Initializable {
                     return true;
                 } else if (staff.getStaffPhone().toLowerCase().contains(lowerCaseFilter)) {
                     return true;
+                } else if (String.valueOf(staff.getStaffSalary()).contains(lowerCaseFilter)) {
+                    return true;
                 }
                 return false;
             });
@@ -248,9 +253,9 @@ public class ManagerController implements Initializable {
 
         try {
             //Quering data for staff items
-            String query = "SELECT CONCAT(Employee.FirstName, ' ',Employee.LastName) AS Name, Designation, Phone, Shift, isPresent AS Availability " +
-                    "FROM Employee, Attendance " +
-                    "WHERE Employee.E_ID=Attendance.E_ID;";
+            String query = "SELECT CONCAT(Employee.FirstName, ' ',Employee.LastName) AS Name, Designation, Phone, Shift, isPresent AS Availability,Wage " +
+                    "FROM Employee, Attendance,Designation " +
+                    "WHERE Employee.E_ID=Attendance.E_ID AND Designation.Designation_Name=Employee.Designation;";
 
             preparedStatement = con.prepareStatement(query);
             resultSet = preparedStatement.executeQuery();
@@ -263,9 +268,10 @@ public class ManagerController implements Initializable {
                 String staffPhone = resultSet.getString("Phone");
                 String staffShift = resultSet.getString("Shift");
                 String staffAvailability = resultSet.getInt("Availability") == 1 ? "Present" : "Absent";
+                Integer staffSalary = resultSet.getInt("Wage");
 
                 //Add data to stafflist
-                stafflist.add(new Staff(staffName, staffDesignation, staffPhone, staffShift, staffAvailability));
+                stafflist.add(new Staff(staffName, staffDesignation, staffPhone, staffShift, staffAvailability, staffSalary));
             }
 
         } catch (SQLException e) {

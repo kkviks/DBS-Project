@@ -26,6 +26,8 @@ public class Customer {
     }
     // TODO: 08-04-2021 Overload new constructor for new field
 
+    //public Customer(Integer customerRoomNo, String customerName, String customerServiceType, Integer customerOccupants, String customerArrivalTime, Integer customerAmountDue, String customerSpecialRequest)
+
     public Integer getCustomerRoomNo() {
         return customerRoomNo.get();
     }
