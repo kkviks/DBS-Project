@@ -9,7 +9,7 @@ public class RegexValidation {
         Pattern pattern = Pattern.compile("[1-9][0-9][0-9]");
         Matcher matcher = pattern.matcher(roomNum.trim());
         boolean matchFound = matcher.find();
-        if(matchFound && roomNum.trim().length()==3)
+        if(matchFound)
         {
             return true;
         }
@@ -19,7 +19,7 @@ public class RegexValidation {
         Pattern pattern = Pattern.compile("[A-Z][a-z]{1,49}");
         Matcher matcher = pattern.matcher(roomName.trim());
         boolean matchFound = matcher.find();
-        if(matchFound && roomName.trim().length()==3)
+        if(matchFound)
         {
             return true;
         }
@@ -30,7 +30,7 @@ public class RegexValidation {
         Pattern pattern = Pattern.compile("[A-Z][a-z]{1,49}");
         Matcher matcher = pattern.matcher(roomSurname.trim());
         boolean matchFound = matcher.find();
-        if(matchFound && roomSurname.trim().length()==3)
+        if(matchFound)
         {
             return true;
         }
@@ -41,7 +41,7 @@ public class RegexValidation {
         Pattern pattern = Pattern.compile("^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$");
         Matcher matcher = pattern.matcher(roomEmail.trim());
         boolean matchFound = matcher.find();
-        if(matchFound && roomEmail.trim().length()==3)
+        if(matchFound)
         {
             return true;
         }
@@ -52,7 +52,7 @@ public class RegexValidation {
         Pattern pattern = Pattern.compile("[0-9]{12}");
         Matcher matcher = pattern.matcher(roomUIDAI.trim());
         boolean matchFound = matcher.find();
-        if(matchFound && roomUIDAI.trim().length()==3)
+        if(matchFound)
         {
             return true;
         }
@@ -63,7 +63,7 @@ public class RegexValidation {
         Pattern pattern = Pattern.compile("[1-9][0-9]{9}");
         Matcher matcher = pattern.matcher(roomPhone.trim());
         boolean matchFound = matcher.find();
-        if(matchFound && roomPhone.trim().length()==3)
+        if(matchFound)
         {
             return true;
         }
@@ -74,7 +74,7 @@ public class RegexValidation {
         Pattern pattern = Pattern.compile("[A-Z_0-9]{1,50}");
         Matcher matcher = pattern.matcher(roomPassport.trim());
         boolean matchFound = matcher.find();
-        if(matchFound && roomPassport.trim().length()==3)
+        if(matchFound)
         {
             return true;
         }
@@ -85,7 +85,7 @@ public class RegexValidation {
         Pattern pattern = Pattern.compile("[A-Z][a-z]{1,49}");
         Matcher matcher = pattern.matcher(roomNum.trim());
         boolean matchFound = matcher.find();
-        if(matchFound && roomNum.trim().length()==3)
+        if(matchFound)
         {
             return true;
         }
@@ -103,7 +103,7 @@ public class RegexValidation {
         Pattern pattern = Pattern.compile("(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2})");
         Matcher matcher = pattern.matcher(roomArrival.trim());
         boolean matchFound = matcher.find();
-        if(matchFound && roomArrival.trim().length()==3)
+        if(matchFound)
         {
             return true;
         }
@@ -114,7 +114,7 @@ public class RegexValidation {
         Pattern pattern = Pattern.compile("(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2})");
         Matcher matcher = pattern.matcher(roomDeparture.trim());
         boolean matchFound = matcher.find();
-        if(matchFound && roomDeparture.trim().length()==3)
+        if(matchFound)
         {
             return true;
         }
@@ -125,7 +125,7 @@ public class RegexValidation {
         Pattern pattern = Pattern.compile("[a-zA-Z]{1,300}");
         Matcher matcher = pattern.matcher(roomAddress.trim());
         boolean matchFound = matcher.find();
-        if(matchFound && roomAddress.trim().length()==3)
+        if(matchFound)
         {
             return true;
         }
