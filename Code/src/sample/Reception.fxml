@@ -156,7 +156,7 @@
                               </VBox>
                               <VBox alignment="CENTER" prefHeight="92.0" prefWidth="162.0">
                                  <children>
-                                    <TextField fx:id="txtRoomCheckout" alignment="CENTER" prefHeight="27.0" prefWidth="183.0" promptText="Room Number" style="-fx-background-color: #02030A; -fx-border-color: #B7C3D7; -fx-border-radius: 1em;" />
+                                    <TextField fx:id="txtRoomCheckout" alignment="CENTER" onKeyPressed="#txtRoomCheckoutChanged" prefHeight="27.0" prefWidth="183.0" promptText="Room Number" style="-fx-background-color: #02030A; -fx-border-color: #B7C3D7; -fx-border-radius: 1em;" />
                                  </children>
                               </VBox>
                               <VBox alignment="CENTER" prefHeight="92.0" prefWidth="161.0">
@@ -216,7 +216,7 @@
                                                 </HBox>
                                                 <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                                                    <children>
-                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="99.0" text="E-mail:" />
+                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="82.0" text="E-mail:" />
                                                       <Label fx:id="lblEmail" alignment="CENTER" prefHeight="30.0" prefWidth="174.0" text="&lt;Text&gt;" />
                                                    </children>
                                                 </HBox>
@@ -409,12 +409,12 @@
                                                       <Label fx:id="lblTax" alignment="CENTER" prefHeight="31.0" prefWidth="136.0" text="&lt;Price&gt;" />
                                                    </children>
                                                 </HBox>
-                                                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
+                                                <HBox prefHeight="100.0" prefWidth="200.0" visible="false" GridPane.rowIndex="2">
                                                    <children>
                                                       <Label alignment="CENTER" prefHeight="30.0" prefWidth="153.0" text="Discount" />
                                                    </children>
                                                 </HBox>
-                                                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                <HBox prefHeight="100.0" prefWidth="200.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                    <children>
                                                       <TextField fx:id="txtDiscount" alignment="CENTER" text="0">
                                                          <HBox.margin>

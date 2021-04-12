@@ -17,6 +17,7 @@ import models.Orders;
 import models.Room;
 import models.Staff;
 import utils.ConnectionUtil;
+import utils.DateManipulation;
 import utils.Pair;
 
 import java.net.URL;
@@ -24,6 +25,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -225,6 +228,8 @@ public class ReceptionController implements Initializable {
     @FXML
     Button btnReceiveCash, btnReceiveUPI, btnReceiveCard, btnShowQR;
 
+    private final double TAX = 0.18;
+
     //SQL setup
     Connection con = null;
     PreparedStatement preparedStatement = null;
@@ -244,6 +249,7 @@ public class ReceptionController implements Initializable {
         setupOrders();
         setupCustomer();
         showOnly("Overview");
+
     }
 
     private void setupStaff() {
@@ -1084,7 +1090,194 @@ public class ReceptionController implements Initializable {
         return allOk;
     }
 
+    public void txtRoomCheckoutChanged(){
+        // TODO: 12-04-2021 Clear when invalid room number 
 
+        txtRoomCheckout.textProperty().addListener((observable, oldValue, newValue) -> {
+            if(validateRoomNum(newValue.trim())){
+                if(!isRoomAvailable(newValue.trim())){
+                    lblRoomStatusCheckout.setText("Occupied!");
+                    //Fill detail on Checkout scene
+                    boolean fetchOK = fillCheckoutDetail(newValue.trim());
+                    if(fetchOK){
+                        btnFinalCheckout.setVisible(true);
+                    }
+                }
+                else
+                {
+                    if(!lblRoomStatusCheckout.getText().equals("No such room!")){
+                        lblRoomStatusCheckout.setText("Already Vacant!");
+                        btnFinalCheckout.setVisible(false);
+                    }
+                    btnFinalCheckout.setVisible(false);
+                }
+            }
+            else
+            {
+                lblRoomStatusCheckout.setText("No such room!");
+                btnFinalCheckout.setVisible(false);
+            }
+        });
+    }
+
+    private boolean fillCheckoutDetail(String roomNum) {
+
+        boolean fetchOK = true;
+        String query = "";
+
+        try {
+            //Customer details
+            query = "SELECT CONCAT(Visitor.FirstName, ' ', Visitor.LastName) AS Name, E_mail, " +
+                    "Customer.Phone AS Phone, " +
+                    "Occupants_Num AS Occupants, " +
+                    "Arrival AS CheckIn " +
+                    "FROM CUSTOMER, " +
+                    "VISITOR, " +
+                    "ROOM " +
+                    "WHERE Visitor.Visitor_ID = Customer.Visitor_ID " +
+                    "AND room.Room_No=customer.Room_No " +
+                    "AND Customer.Room_No = " + roomNum + " ;";
+
+            System.out.println(roomNum);
+
+            preparedStatement = con.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+
+            if(resultSet.next()){
+                lblName.setText(resultSet.getString("Name"));
+                lblEmail.setText(resultSet.getString("E_mail"));
+                lblPhone.setText(resultSet.getString("Phone"));
+                lblCheckin.setText(resultSet.getString("CheckIn").substring(0,10));
+                lblOccupants.setText(resultSet.getString("Occupants"));
+                //Today's date
+                lblCheckout.setText(DateManipulation.getTodayDate());
+            }else{
+                fetchOK=false;
+            }
+
+            //Summary details
+            query = "SELECT Type, Price " +
+                    "from ROOM_TYPE, " +
+                    " room " +
+                    "WHERE room.Room_Type = room_type.Type " +
+                    "  AND Room_No = " + roomNum +" ;";
+
+            preparedStatement = con.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+
+            if(resultSet.next()){
+                // TODO: 12-04-2021 Checkout Label and duration 
+                lblRoomNumCheckOut.setText(resultSet.getString("Type"));
+                lblRoomPriceCheckOut.setText(resultSet.getString("Price"));
+            }else{
+                fetchOK=false;
+            }
+
+            //Service details
+            query = "SELECT Service_type.Type AS Service_Type, Service_type.Price AS Price " +
+                    "from Customer, Service_type " +
+                    "WHERE Customer.service_type = Service_type.type " +
+                    "AND Customer.Room_No = " + roomNum + " ;";
+
+            preparedStatement = con.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+
+            if(resultSet.next()){
+                // TODO: 12-04-2021 Total Label
+                lblService.setText(resultSet.getString("Service_Type"));
+                lblServicePrice.setText(resultSet.getString("Price"));
+            }else{
+                fetchOK=false;
+            }
+
+
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+            lblRoomStatusNB.setText("SQL/DB error!");
+            fetchOK=false;
+        }
+        if(fetchOK==false){
+            System.out.println("FetchOK = false!");
+        }
+
+        // TODO: 12-04-2021 Duration, Total Amount
+        int roomPrice = Integer.parseInt(lblRoomPriceCheckOut.getText());
+        lblDuration.setText(String.valueOf(DateManipulation.getDifference(lblCheckin.getText())));
+        int duration = Integer.parseInt(lblDuration.getText());
+        int roomBill = roomPrice*duration;
+
+        lblDurationPrice.setText(String.valueOf(duration)+ "*" + String.valueOf(roomPrice));
+
+        int serviceBill = (int)Double.parseDouble(lblServicePrice.getText());
+
+        int totalRoomBill = roomBill+serviceBill;
+        lblTotalRoomPriceCheckout.setText(String.valueOf(totalRoomBill));
+
+        //Right pane
+        lblSubtotal.setText(lblTotalRoomPriceCheckout.getText());
+
+        int additionalCharges = findAdditionalCharges(roomNum);
+        lblAdditionalCharges.setText(String.valueOf(additionalCharges));
+
+        int withOutTaxTotal = totalRoomBill+additionalCharges;
+        int tax = (int)(TAX*withOutTaxTotal);
+        int total = withOutTaxTotal+tax;
+
+        lblTax.setText(String.valueOf(tax));
+        lblTotalCheckout.setText(String.valueOf(total));
+
+        int paid = fetchPaid(roomNum);
+        lblPaid.setText(String.valueOf(paid));
+
+        int due = total-paid;
+        // TODO: 12-04-2021 Fet pay listener
+        lblDue.setText(String.valueOf(due));
+
+        // TODO: 12-04-2021 Discount
+
+
+        return fetchOK;
+    }
+
+    private int fetchPaid(String roomNum) {
+        int paid = 0;
+        String query = "SELECT Paid FROM Bill,Customer " +
+                "WHERE Bill.Bill_ID = Customer.Bill_ID AND Customer.Room_No= " + roomNum +" ;";
+        try{
+            preparedStatement = con.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+
+            if(resultSet.next()){
+                paid = (int)resultSet.getDouble("Paid");
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return paid;
+    }
+
+    private int findAdditionalCharges(String roomNum) {
+        String query = "SELECT SUM(room_service.Extra_Charges) AS Addition_Charges_Sum " +
+                "FROM room_service,customer " +
+                "WHERE customer.Customer_ID = room_service.Customer_ID " +
+                "AND customer.Room_No = "+roomNum +" ;";
+        try{
+            preparedStatement = con.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+
+            if(resultSet.next()){
+                return (int)resultSet.getDouble("Addition_Charges_Sum");
+            }else{
+                return 0;
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            System.out.println("Could not fetch additional charges!");
+        }
+        return 0;
+    }
 }
     
 
