@@ -12,10 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import models.Customer;
-import models.Orders;
-import models.Room;
-import models.Staff;
+import models.*;
 import utils.ConnectionUtil;
 
 import java.net.URL;
@@ -72,7 +69,7 @@ public class ManagerController implements Initializable {
     Label lblServerStatus;
 
     @FXML
-    TextField filterRoomTable, filterStaffTable;
+    TextField filterRoomTable, filterStaffTable,filterAttendanceTable;
 
     @FXML
     Label lblRoomsTotal, lblRoomsOccupied, lblRoomsAvailable;
@@ -99,6 +96,9 @@ public class ManagerController implements Initializable {
 
     @FXML
     TableView<Orders> ordersTableView;
+
+    @FXML
+    TableView<Attendance> attendanceTableView;
 
     @FXML
     TableColumn<Room, Integer> roomNumCol;
@@ -154,6 +154,17 @@ public class ManagerController implements Initializable {
     @FXML
     TableColumn<Orders, String> orderBellboyCol;
 
+    @FXML
+    TableColumn<Attendance, String> attendanceNameCol;
+    @FXML
+    TableColumn<Attendance, Integer> attendanceIDCol;
+    @FXML
+    TableColumn<Attendance, String> attendancePresentCol;
+    @FXML
+    TableColumn<Attendance, String> attendanceDesignationCol;
+    @FXML
+    TableColumn<Attendance, String> attendanceDateCol;
+
 
     @FXML
     TextField filterCustomerTable;
@@ -181,7 +192,99 @@ public class ManagerController implements Initializable {
         setupOverview();
         setupStaff();
         setupCustomer();
+        setupAttendance();
         showOnly("Overview");
+    }
+
+    private void setupAttendance() {
+        //setupAttendanceHeader();
+        setupAttendanceTable();
+    }
+
+    private void setupAttendanceTable() {
+        //Set Cell and Property Value Factory for the table
+        attendanceNameCol.setCellValueFactory(new PropertyValueFactory<Attendance, String>("attendanceName"));
+        attendanceIDCol.setCellValueFactory(new PropertyValueFactory<Attendance, Integer>("attendanceID"));
+        attendancePresentCol.setCellValueFactory(new PropertyValueFactory<Attendance, String>("attendancePresent"));
+        attendanceDesignationCol.setCellValueFactory(new PropertyValueFactory<Attendance, String>("attendanceDesignation"));
+        attendanceDateCol.setCellValueFactory(new PropertyValueFactory<Attendance, String>("attendanceDate"));
+
+        // 0. Initialize the columns.
+        //ObservableList<Attendance> roomList = FXCollections.observableArrayList();
+        ObservableList<Attendance> attendanceList = fetchAttendanceData();
+
+
+        // 1. Wrap the ObservableList in a FilteredList (initially display all data).
+        FilteredList<Attendance> attendanceFilteredList = new FilteredList<>(attendanceList, p -> true);
+
+        // 2. Set the filter Predicate whenever the filter changes.
+        filterAttendanceTable.textProperty().addListener((observable, oldValue, newValue) -> {
+            attendanceFilteredList.setPredicate(attendance -> {
+
+                //If filter is empty display all data
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+
+                String lowerCaseFilter = newValue.toLowerCase().trim();
+                //Column-wise filtering logic
+                if (attendance.getAttendanceName().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                }else if(attendance.getAttendanceDesignation().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if (String.valueOf(attendance.getAttendanceID()).toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if (attendance.getAttendancePresent().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if(attendance.getAttendanceDate().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                }
+                return false;
+            });
+        });
+
+        // 3. Wrap the FilteredList in a SortedList.
+        SortedList<Attendance> attendanceSortedList = new SortedList<>(attendanceFilteredList);
+
+        //4. Bind the Sortedlist comparator to the TableView comparator.
+        //Otherwise, sorting the TableView would have no effect.
+        attendanceSortedList.comparatorProperty().bind(attendanceTableView.comparatorProperty());
+
+        //Add sorted ( and filtered ) data to the table.
+        attendanceTableView.setItems(attendanceSortedList);
+
+        //If we have no data to show
+        attendanceTableView.setPlaceholder(new Label("No search results"));
+    }
+
+    private ObservableList<Attendance> fetchAttendanceData() {
+        ObservableList<Attendance> attendancelist = FXCollections.observableArrayList();
+
+        try {
+            //Querying data for staff items
+            String query = "SELECT CONCAT(Employee.FirstName, ' ',Employee.LastName) AS Name, Designation, E_ID, isPresent,Attendance_Date AS Required_Attendance " +
+                    "FROM Employee, Attendance " +
+                    "WHERE Employee.E_ID=Attendance.E_ID AND (Attendance.Attendance_Date BETWEEN 2021-04-05 AND 2021-04-10);";
+
+            preparedStatement = con.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+
+            //Iterating over data and adding to observable list
+            while (resultSet.next()) {
+                //Extract data from a particular row
+                String attendanceName = resultSet.getString("Name");
+                Integer attendanceID= resultSet.getInt("E_ID");
+                String attendanceDesignation = resultSet.getString("Designation");
+                String attendancePresent = resultSet.getInt("isPresent") == 1 ? "Present" : "Absent";
+                String attendanceDate = resultSet.getString("Attendance_Date");
+                //Add data to attendancelist
+                attendancelist.add(new Attendance(attendanceName, attendanceDesignation, attendanceID, attendancePresent, attendanceDate)); }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return attendancelist;
     }
 
     private void setupStaff() {
