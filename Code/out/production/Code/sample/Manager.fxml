@@ -2,6 +2,7 @@
 
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -12,6 +13,8 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -20,6 +23,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -45,6 +49,21 @@
                   <Insets bottom="20.0" />
                </VBox.margin>
             </Label>
+            <Button fx:id="btnVisualizeManager" alignment="BASELINE_LEFT" graphicTextGap="22.0" layoutX="10.0" layoutY="176.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="42.0" prefWidth="259.0" stylesheets="@style.css" text="Visualize" textFill="#e7e5e5">
+               <graphic>
+                  <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/icons8_Home_32px.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets left="50.0" />
+               </padding>
+            </Button>
             <Button fx:id="btnRoomsManager" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="42.0" prefWidth="259.0" stylesheets="@style.css" text="Rooms" textFill="#e7e5e5">
                <graphic>
                   <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
@@ -139,6 +158,56 @@
       </VBox>
       <StackPane layoutX="258.0" prefHeight="576.0" prefWidth="793.0" style="-fx-background-color: #02030A;">
          <children>
+            <Pane fx:id="pnlVisualize" prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <TabPane prefHeight="576.0" prefWidth="794.0" tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                      <Tab text="Line Graphs">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <BorderPane prefHeight="546.0" prefWidth="794.0">
+                                       <center>
+                                          <Label text="lINE" BorderPane.alignment="CENTER" />
+                                       </center>
+                                    </BorderPane>
+                                 </children>
+                              </AnchorPane>
+                        </content>
+                      </Tab>
+                        <Tab text="Pie Chart">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <BorderPane prefHeight="546.0" prefWidth="794.0">
+                                       <center>
+                                          <Label text="PIE" BorderPane.alignment="CENTER" />
+                                       </center>
+                                    </BorderPane>
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </Tab>
+                        <Tab text="Bar Graph">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <BorderPane prefHeight="546.0" prefWidth="794.0">
+                                       <center>
+                                          <Label text="BAR" BorderPane.alignment="CENTER" />
+                                       </center>
+                                    </BorderPane>
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </Tab>
+                    </tabs>
+                     <padding>
+                        <Insets top="20.0" />
+                     </padding>
+                  </TabPane>
+               </children>
+            </Pane>
             <Pane fx:id="pnlCheckout" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" visible="false">
                <children>
                   <VBox prefHeight="576.0" prefWidth="794.0">
@@ -642,7 +711,7 @@
                   </ImageView>
                </children>
             </Pane>
-            <Pane fx:id="pnlAttedance" layoutX="10.0" layoutY="10.0" prefHeight="554.0" prefWidth="793.0">
+            <Pane fx:id="pnlAttedance" layoutX="10.0" layoutY="10.0" prefHeight="554.0" prefWidth="793.0" visible="false">
                <children>
                   <TextField fx:id="filterAttendanceTable" layoutX="590.0" layoutY="47.0" prefHeight="27.0" prefWidth="183.0" promptText="search" style="-fx-background-color: #02030A; -fx-border-color: #B7C3D7; -fx-border-radius: 2em;" />
                   <Label layoutX="57.0" layoutY="25.0" text="Attendance" textFill="#e7e5e5">
@@ -654,52 +723,40 @@
                      <children>
                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <Label fx:id="lblRoomsTotal1" text="80" textFill="#2a73ff">
-                                 <font>
-                                    <Font name="System Bold" size="26.0" />
-                                 </font>
-                              </Label>
-                              <Label text="Room" textFill="#e7e5e5" />
+                              <DatePicker fx:id="attendanceFrom" prefHeight="26.0" prefWidth="130.0" />
+                              <Label text="From" textFill="#e7e5e5" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <Label fx:id="lblRoomsOccupied1" text="50" textFill="#26bfbc">
-                                 <font>
-                                    <Font name="System Bold" size="26.0" />
-                                 </font>
-                              </Label>
-                              <Label text="Request" textFill="#e7e5e5" />
+                              <DatePicker fx:id="attendanceTo" />
+                              <Label text="To" textFill="#e7e5e5" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <Label fx:id="lblRoomsAvailable1" text="30" textFill="#fa5f7e">
-                                 <font>
-                                    <Font name="System Bold" size="26.0" />
-                                 </font>
-                              </Label>
-                              <Label text="Inventories" textFill="#e7e5e5" />
+                              <TextField fx:id="txtAttendanceEmpSearch" alignment="CENTER" prefHeight="27.0" prefWidth="183.0" promptText="Employee" style="-fx-background-color: #02030A; -fx-border-color: #B7C3D7; -fx-border-radius: 2em;" />
+                              <Label text="ID" textFill="#e7e5e5" />
+                              <Label fx:id="lblEmpAtdStatus" layoutX="51.0" layoutY="61.0" textFill="#e7e5e5" />
                            </children>
                         </VBox>
-                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                        <VBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="92.0" prefWidth="116.0">
                            <children>
-                              <Label fx:id="lblServerStatus1" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" prefHeight="38.0" prefWidth="121.0" text="1" textFill="#de0000">
-                                 <font>
-                                    <Font name="System Bold" size="26.0" />
-                                 </font>
-                              </Label>
-                              <Label text="Charges" textFill="#e7e5e5" />
+                              <PieChart fx:id="attendancePieChart" labelLineLength="5.0" legendVisible="false" prefHeight="171.0" prefWidth="200.0" />
                            </children>
                         </VBox>
-                        <VBox alignment="CENTER" layoutX="461.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0">
+                        <VBox alignment="CENTER" layoutX="600.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <Label fx:id="lblServerStatus11" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" prefHeight="38.0" prefWidth="121.0" text="1" textFill="#de0000">
-                                 <font>
-                                    <Font name="System Bold" size="26.0" />
-                                 </font>
-                              </Label>
-                              <Label text="BellBoy" textFill="#e7e5e5" />
+                              <Button fx:id="btnEmpAttendance" mnemonicParsing="false" onMouseClicked="#empAttendanceFetchBtn" prefHeight="47.0" prefWidth="73.0" style="-fx-background-color: transparent;">
+                                 <graphic>
+                                    <ImageView fitHeight="23.0" fitWidth="43.0" onMouseClicked="#empAttendanceFetchBtn" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/find_user_male_40px.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Label text="Search" textFill="#e7e5e5" />
                            </children>
                         </VBox>
                      </children>
@@ -898,8 +955,8 @@
                      <children>
                         <VBox alignment="CENTER" prefHeight="92.0" prefWidth="162.0">
                            <children>
-                              <TextField fx:id="filterRoomTable1" alignment="CENTER" prefHeight="27.0" prefWidth="183.0" promptText="Room" style="-fx-background-color: #02030A; -fx-border-color: #B7C3D7; -fx-border-radius: 1em;" />
-                              <Label text="Available" textFill="#e7e5e5">
+                              <TextField fx:id="filterRoomTable1" alignment="CENTER" prefHeight="27.0" prefWidth="183.0" promptText="Room" style="-fx-background-color: #02030A; -fx-border-color: #B7C3D7; -fx-border-radius: 1em;" text="Employee" />
+                              <Label text="ID" textFill="#e7e5e5">
                                  <VBox.margin>
                                     <Insets top="10.0" />
                                  </VBox.margin>
@@ -908,19 +965,19 @@
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="92.0" prefWidth="187.0">
                            <children>
-                              <Label fx:id="lblCustomerCount1" alignment="CENTER" prefHeight="38.0" prefWidth="170.0" text="Suite" textFill="#26bfbc">
+                              <Label fx:id="lblCustomerCount1" alignment="CENTER" prefHeight="38.0" prefWidth="170.0" text="Manager" textFill="#26bfbc">
                                  <font>
                                     <Font name="System Bold" size="26.0" />
                                  </font>
                               </Label>
-                              <Label text="Price" textFill="#e7e5e5">
+                              <Label text="Desgination" textFill="#e7e5e5">
                                  <VBox.margin>
                                     <Insets top="5.0" />
                                  </VBox.margin>
                               </Label>
                            </children>
                         </VBox>
-                        <VBox alignment="CENTER" prefHeight="92.0" prefWidth="161.0">
+                        <VBox alignment="CENTER" prefHeight="92.0" prefWidth="161.0" visible="false">
                            <children>
                               <ComboBox prefWidth="150.0" promptText="Service Type" stylesheets="@style.css" />
                               <Label text="Price" textFill="#e7e5e5">
@@ -932,8 +989,8 @@
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="71.0" text="Book" />
-                              <Label text="Total Price" textFill="#e7e5e5">
+                              <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="71.0" text="Add" />
+                              <Label text="Status" textFill="#e7e5e5">
                                  <padding>
                                     <Insets top="10.0" />
                                  </padding>
@@ -1014,19 +1071,19 @@
                                     </HBox>
                                     <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                        <children>
-                                          <Label alignment="CENTER" prefHeight="58.0" prefWidth="178.0" text="Passport" />
+                                          <Label alignment="CENTER" prefHeight="58.0" prefWidth="178.0" text="Designation" />
                                           <TextField prefHeight="37.0" prefWidth="187.0" />
                                        </children>
                                     </HBox>
                                     <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
                                        <children>
-                                          <Label alignment="CENTER" prefHeight="58.0" prefWidth="178.0" text="Profession" />
+                                          <Label alignment="CENTER" prefHeight="58.0" prefWidth="178.0" text="Rating" />
                                           <TextField prefHeight="37.0" prefWidth="187.0" />
                                        </children>
                                     </HBox>
                                     <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                        <children>
-                                          <Label alignment="CENTER" prefHeight="58.0" prefWidth="178.0" text="Martial Status" />
+                                          <Label alignment="CENTER" prefHeight="58.0" prefWidth="178.0" text="Shift" />
                                           <ComboBox editable="true" prefHeight="30.0" prefWidth="187.0" promptText="Choose" visibleRowCount="3" />
                                        </children>
                                     </HBox>
@@ -1038,19 +1095,19 @@
                                     </HBox>
                                     <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                        <children>
-                                          <Label alignment="CENTER" prefHeight="58.0" prefWidth="178.0" text="Occupants" />
+                                          <Label alignment="CENTER" prefHeight="58.0" prefWidth="178.0" text="Wage" />
                                           <Spinner editable="true" prefHeight="36.0" prefWidth="187.0" />
                                        </children>
                                     </HBox>
                                     <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="4">
                                        <children>
-                                          <Label alignment="CENTER" prefHeight="58.0" prefWidth="178.0" text="Arrival" />
+                                          <Label alignment="CENTER" prefHeight="58.0" prefWidth="178.0" text="Joining" />
                                           <DatePicker editable="false" prefHeight="37.0" prefWidth="186.0" />
                                        </children>
                                     </HBox>
                                     <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                        <children>
-                                          <Label alignment="CENTER" prefHeight="58.0" prefWidth="178.0" text="Departure" />
+                                          <Label alignment="CENTER" prefHeight="58.0" prefWidth="178.0" text="Relieved" />
                                           <DatePicker prefHeight="37.0" prefWidth="186.0" />
                                        </children>
                                     </HBox>

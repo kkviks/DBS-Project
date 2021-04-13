@@ -11,7 +11,7 @@ public class Queries {
     private static ResultSet resultSet=null;
     private static String query;
 
-    private static ResultSet execute() throws SQLException {
+    private static ResultSet execute() {
         con = ConnectionUtil.conDB();
         if(con==null){
             System.out.println("Connection JDBC is null!");
@@ -23,12 +23,13 @@ public class Queries {
             if(resultSet==null){
                 System.out.println("ResultSet is null!");
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
         return resultSet;
     }
 
+    //Reception
     public static ResultSet getStaffSummary() throws SQLException {
         query = "SELECT CONCAT(Employee.FirstName, ' ',Employee.LastName) AS Name, Designation, Phone, Shift, isPresent AS Availability " +
                 "FROM Employee, Attendance " +
@@ -151,4 +152,35 @@ public class Queries {
         return execute();
     }
 
+
+    public static ResultSet getServiceTypes() throws SQLException {
+        query = "SELECT Type AS Service_Types from service_type ;";
+
+        try{
+            resultSet = execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultSet;
+    }
+
+    public static ResultSet getServiceTypePrice(String serviceType) {
+        query = "SELECT Price from service_type where Type= " + "'" + serviceType +"'" +" ;";
+        try{
+            resultSet = execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultSet;
+    }
+
+    public static ResultSet getEmpAttendance(String e_id) {
+        query = "SELECT Count(*) AS DaysTotal, SUM(isPresent) AS DaysPresent FROM attendance WHERE E_ID= "+ e_id +" ;";
+        try{
+            resultSet = execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultSet;
+    }
 }

@@ -16,16 +16,12 @@ import models.Customer;
 import models.Orders;
 import models.Room;
 import models.Staff;
-import utils.ConnectionUtil;
-import utils.DateManipulation;
-import utils.Pair;
-import utils.Queries;
+import utils.*;
 
+import java.math.BigInteger;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -244,10 +240,42 @@ public class ReceptionController implements Initializable {
         //Initialize panels
         hideAll();
         setupOverview();
+        setupNewBooking();
         setupStaff();
         setupOrders();
         setupCustomer();
         showOnly("Overview");
+            }
+
+    private void setupNewBooking() {
+        try {
+            resultSet = Queries.getServiceTypes();
+            int i = 0;
+            while(resultSet.next()){
+                String serviceType = resultSet.getString("Service_Types");
+                cbServiceType.getItems().add(serviceType);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+    }
+
+    public void changeServiceTypeCombo(){
+        if(cbServiceType.getValue()==null){
+            return;
+        }
+        String serviceType = cbServiceType.getValue().toString();
+        try{
+            resultSet = Queries.getServiceTypePrice(serviceType);
+            if(resultSet.next()){
+                lblServiceTypePrice.setText(resultSet.getString("Price"));
+            }else{
+                lblServiceTypePrice.setText("");
+            }
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
 
     }
 
@@ -1028,7 +1056,7 @@ public class ReceptionController implements Initializable {
     }
 
     public void resetNewBooking(){
-        txtFirstName.setText("");
+        /*txtFirstName.setText("");
         txtLastName.setText("");
         txtEmail.setText("");
         txtPhone.setText("");
@@ -1039,14 +1067,56 @@ public class ReceptionController implements Initializable {
         //dpArrival.setChronology(null);
         //dpDeparture.setChronology(null);
         txtAddress.setText("");
-        //spinnerOccupants
+        //spinnerOccupants*/
     }
 
     public void bookRoom(){
         boolean allOK = validateAllFields();
         if(allOK){
-            // TODO: 12-04-2021 Update query
+            addCustomer();
+        }
+    }
 
+    private void addCustomer() {
+        //Fetch all data
+        String firstName = txtFirstName.getText().trim();
+        String surname = txtLastName.getText().trim();
+        String email = txtEmail.getText().trim();
+        String phone = txtPhone.getText().trim();
+        String adhar = txtUIDAI.getText().trim();
+        String passport = txtPassport.getText().trim();
+        String profession = txtProfession.getText().trim();
+        String address = txtAddress.getText().trim();
+        int roomNum = Integer.parseInt(txtRoomNB.getText());
+        //nt occupants = (int) spinnerOccupants.getValue();
+        String serviceType = cbServiceType.getValue().toString();
+        int married = cbMartialStatus.getValue().toString().equals("Single")?0:1;
+
+        //System.out.println(firstName+surname+email+phone+adhar+passport+profession+address+
+        //        String.valueOf(roomNum)+serviceType+String.valueOf(married));
+
+
+        // TODO: 12-04-2021 Update query
+        Statement stmt;
+        try {
+
+            stmt = con.createStatement();
+
+            String sql = "set foreign_key_checks=0;";
+            stmt.executeUpdate(sql);
+
+            String query = "Insert INTO customer VALUES(520190815, 520190815, "+roomNum+" , '"+ serviceType+"' , "+"5"+" , NOW() , NULL , NULL , NULL, '"+phone+ "' );";
+            stmt.executeUpdate(query);
+
+            query = "Insert INTO visitor VALUES(520190815, '"+ firstName+"' , '"+surname+"' , '"+adhar+"' , '"+passport+"' , '"+address+ "' , '"+ email+ "' , '"+profession+"' , "+married+" , 520190815, '"+phone+"' );";
+            stmt.executeUpdate(query);
+
+        } catch (SQLException se) {
+            //Handle errors for JDBC
+            se.printStackTrace();
+        } catch (Exception e) {
+            //Handle errors for Class.forName
+            e.printStackTrace();
         }
     }
 
@@ -1054,56 +1124,69 @@ public class ReceptionController implements Initializable {
 
         boolean allOk = true;
 
-        String firstName = txtFirstName.getText();
-        String surname = txtLastName.getText();
-        String email = txtEmail.getText();
-        String phone = txtPhone.getText();
-        String adhar = txtUIDAI.getText();
-        String passport = txtPassport.getText();
-        String profession = txtProfession.getText();
-        String address = txtAddress.getText();
-        // TODO: 12-04-2021 Get data
-        // dpArrival.setChronology(null);
-        //dpDeparture.setChronoly
-        //spinnerOccupants
+        String firstName = txtFirstName.getText().trim();
+        String surname = txtLastName.getText().trim();
+        String email = txtEmail.getText().trim();
+        String phone = txtPhone.getText().trim();
+        String adhar = txtUIDAI.getText().trim();
+        String passport = txtPassport.getText().trim();
+        String profession = txtProfession.getText().trim();
+        String address = txtAddress.getText().trim();
+        String dateArrival = dpArrival.getValue().toString();
+        String dateDeparture = dpDeparture.getValue().toString();
+        String occupants = String.valueOf(spinnerOccupants.getValue().toString());
 
         // TODO: 12-04-2021 Add Regex validations
-        if(firstName.isEmpty()){
+        if(firstName.isEmpty() || !RegexValidation.validateName(firstName)){
             txtFirstName.setStyle("-fx-border-color: red");
             allOk = false;
-        }
+        }else txtFirstName.setStyle("-fx-border-color: transparent");
 
-        if(surname.isEmpty()){
+        if(surname.isEmpty() || !RegexValidation.validateSurname(surname)){
             txtLastName.setStyle("-fx-border-color: red");
             allOk = false;
-        }
+        }else txtLastName.setStyle("-fx-border-color: transparent");
 
-        if(email.isEmpty()){
+        if(email.isEmpty() || !RegexValidation.validateEmail(email)){
             txtEmail.setStyle("-fx-border-color: red");
             allOk = false;
-        }
+        }else  txtEmail.setStyle("-fx-border-color: transparent");
 
-        if(phone.isEmpty()){
+        if(address.isEmpty() || !RegexValidation.validateAddress(address)){
+            txtAddress.setStyle("-fx-border-color: red");
+        }else txtAddress.setStyle("-fx-border-color: transparent");
+
+        if(phone.isEmpty() || !RegexValidation.validatePhone(phone)){
             txtPhone.setStyle("-fx-border-color: red");
             allOk = false;
-        }
+        }else txtPhone.setStyle("-fx-border-color: transparent");
 
-        if(adhar.isEmpty()){
+        if(adhar.isEmpty() || !RegexValidation.validateUIDAI(adhar)){
             txtUIDAI.setStyle("-fx-border-color: red");
             allOk = false;
-        }
+        }else  txtUIDAI.setStyle("-fx-border-color: transparent");
 
-        if(passport.isEmpty()){
+        if(passport.isEmpty() || !RegexValidation.validatePassport(passport)){
             txtPassport.setStyle("-fx-border-color: red");
             allOk = false;
-        }
+        }else  txtPassport.setStyle("-fx-border-color: transparent");
 
-        if(profession.isEmpty()){
+        if(profession.isEmpty() || !RegexValidation.validateProfession(profession)){
             txtProfession.setStyle("-fx-border-color: red");
             allOk = false;
-        }
+        }else txtProfession.setStyle("-fx-border-color: transparent");
 
-        // TODO: 12-04-2021  Add remaining field
+       if(dateArrival.isEmpty() || !RegexValidation.validateArrival(dateArrival)){
+           dpArrival.setStyle("-fx-border-color: red");
+       }else  dpArrival.setStyle("-fx-border-color: transparent");
+
+       if(!RegexValidation.validateDeparture(dateDeparture)){
+           dpDeparture.setStyle("-fx-border-color: red");
+       }else dpDeparture.setStyle("-fx-border-color: transparent");
+
+       if(occupants.isEmpty() || !RegexValidation.validateOccupants(occupants)){
+           spinnerOccupants.setStyle("-fx-border-color: red");
+       }else spinnerOccupants.setStyle("-fx-border-color: transparent");
 
         return allOk;
     }

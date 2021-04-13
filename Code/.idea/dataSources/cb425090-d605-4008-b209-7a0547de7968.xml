@@ -1399,6 +1399,7 @@ Attendance_Date</ColNames>
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
+      <SequenceIdentity>null</SequenceIdentity>
     </column>
     <column id="408" parent="290" name="FirstName">
       <Position>2</Position>

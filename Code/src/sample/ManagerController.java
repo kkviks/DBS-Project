@@ -6,20 +6,26 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import models.*;
 import utils.ConnectionUtil;
+import utils.Queries;
 
+import javax.swing.*;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 public class ManagerController implements Initializable {
@@ -178,11 +184,31 @@ public class ManagerController implements Initializable {
     @FXML
     Label lblServerStatusCustomer, lblVisitorCount, lblCustomerCount, lblAmountDueCount;
 
+    //Attendace header
+    @FXML
+    DatePicker attendanceFrom, attendanceTo;
+
+    @FXML
+    TextField txtAttendanceEmpSearch;
+
+    @FXML
+    PieChart attendancePieChart;
+
+    @FXML
+    Button btnEmpAttendance;
+
+    @FXML
+    Label lblEmpAtdStatus;
+
+    //Visualize
+    @FXML Button btnVisualizeManager;
+
+    @FXML Pane pnlVisualize;
+
     //SQL setup
     Connection con = null;
     PreparedStatement preparedStatement = null;
     ResultSet resultSet = null;
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -877,7 +903,9 @@ public class ManagerController implements Initializable {
         pnlCustomer.setStyle("-fx-background-color : #02030A");
         pnlAttedance.setStyle("-fx-background-color : #02030A");
         pnlCheckout.setStyle("-fx-background-color : #02030A");
+        pnlVisualize.setStyle("-fx-background-color : #02030A");
 
+        pnlVisualize.setVisible(true);
         pnlRooms.setVisible(false);
         pnlNewEmp.setVisible(false);
         pnlStaff.setVisible(false);
@@ -889,6 +917,10 @@ public class ManagerController implements Initializable {
     private void showOnly(String panel) {
 
         switch (panel) {
+            case "Visualize":
+                pnlVisualize.toFront();
+                pnlVisualize.setVisible(true);
+                break;
             case "Rooms":
                 pnlRooms.toFront();
                 pnlRooms.setVisible(true);
@@ -925,6 +957,10 @@ public class ManagerController implements Initializable {
 
     public void handleClicks(ActionEvent actionEvent) {
 
+        if(actionEvent.getSource()==btnVisualizeManager){
+            showOnly("Visualize");
+        }
+
         if (actionEvent.getSource() == btnRoomsManager) {
             showOnly("Rooms");
         }
@@ -953,6 +989,40 @@ public class ManagerController implements Initializable {
             Platform.exit();
             System.exit(0);
         }
+    }
+
+    public void empAttendanceFetchBtn(){
+        // TODO: 13-04-2021
+        LocalDate dateFrom = attendanceFrom.getValue();
+        LocalDate dateTo = attendanceTo.getValue();
+
+        String e_id = txtAttendanceEmpSearch.getText().trim();
+        try{
+            resultSet = Queries.getEmpAttendance(e_id);
+            if(resultSet.next()){
+                int daysTotal = resultSet.getInt("DaysTotal");
+                int daysPresent = resultSet.getInt("DaysPresent");
+                ObservableList<PieChart.Data> list = FXCollections.observableArrayList(
+                        new PieChart.Data("Present",daysPresent),
+                        new PieChart.Data("Absent",daysTotal-daysPresent)
+                );
+                attendancePieChart.setData(list);
+                for(final PieChart.Data data: attendancePieChart.getData()){
+                    data.getNode().addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent event) {
+                            lblEmpAtdStatus.setText(data.getName()+": "+    String.valueOf(data.getPieValue()*100.0/daysTotal)+"%");
+                        }
+                    });
+                }
+            }else{
+                System.out.println("No e_id for employee attendace!");
+                setupAttendance();
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
     }
 }
     

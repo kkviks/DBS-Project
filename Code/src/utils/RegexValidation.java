@@ -15,9 +15,9 @@ public class RegexValidation {
         }
         return false;
     }
-    public static boolean validateName(String roomName) {
+    public static boolean validateName(String name) {
         Pattern pattern = Pattern.compile("[A-Z][a-z]{1,49}");
-        Matcher matcher = pattern.matcher(roomName.trim());
+        Matcher matcher = pattern.matcher(name.trim());
         boolean matchFound = matcher.find();
         if(matchFound)
         {
@@ -60,7 +60,7 @@ public class RegexValidation {
     }
 
     public static boolean validatePhone(String roomPhone) {
-        Pattern pattern = Pattern.compile("[1-9][0-9]{9}");
+        Pattern pattern = Pattern.compile("^\\d{10}$");
         Matcher matcher = pattern.matcher(roomPhone.trim());
         boolean matchFound = matcher.find();
         if(matchFound)
