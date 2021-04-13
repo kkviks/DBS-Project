@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
+    <file url="file://$USER_HOME$/Desktop/db/dbs_project_room_service.sql" dialect="MySQL" />
+    <file url="file://$USER_HOME$/Desktop/db/dbs_project_room_type.sql" dialect="MySQL" />
+    <file url="file://$USER_HOME$/Desktop/db/dbs_project_service_type.sql" dialect="MySQL" />
+    <file url="file://$USER_HOME$/Desktop/db/dbs_project_shift.sql" dialect="MySQL" />
+    <file url="file://$USER_HOME$/Desktop/db/dbs_project_toll.sql" dialect="MySQL" />
+    <file url="file://$USER_HOME$/Desktop/db/dbs_project_visitor.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/src/sample/ReceptionController.java" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/../Database/Data Scripts/attendance.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/../Database/Data Scripts/bill.sql" dialect="MySQL" />

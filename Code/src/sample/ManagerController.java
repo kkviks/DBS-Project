@@ -25,19 +25,19 @@ import java.util.ResourceBundle;
 public class ManagerController implements Initializable {
 
     @FXML
-    private Button btnOverview;
+    private Button btnRoomsManager;
 
     @FXML
-    private Button btnOrders;
+    private Button btnAttendanceManager;
 
     @FXML
     private Button btnStaff;
 
     @FXML
-    private Button btnCheckout;
+    private Button btnFinances;
 
     @FXML
-    private Button btnNewBooking;
+    private Button btnNewEmployee;
 
     @FXML
     private Button btnCustomers;
@@ -48,10 +48,10 @@ public class ManagerController implements Initializable {
     //panels
 
     @FXML
-    Pane pnlOverview;
+    Pane pnlRooms;
 
     @FXML
-    Pane pnlNewBooking;
+    Pane pnlNewEmp;
 
     @FXML
     Pane pnlStaff;
@@ -60,7 +60,7 @@ public class ManagerController implements Initializable {
     Pane pnlCustomer;
 
     @FXML
-    Pane pnlOrders;
+    Pane pnlAttedance;
 
     @FXML
     Pane pnlCheckout;
@@ -192,14 +192,15 @@ public class ManagerController implements Initializable {
 
         //Initialize panels
         hideAll();
-        setupOverview();
+        setupRooms();
         setupStaff();
         setupCustomer();
         setupAttendance();
-        showOnly("Overview");
+        showOnly("Rooms");
     }
 
     private void setupAttendance() {
+        // TODO: 13-04-2021
         //setupAttendanceHeader();
         setupAttendanceTable();
     }
@@ -265,12 +266,12 @@ public class ManagerController implements Initializable {
 
         try {
             //Querying data for staff items
-            String query = "SELECT CONCAT(Employee.FirstName, ' ',Employee.LastName) AS Name, Designation, E_ID, isPresent,Attendance_Date AS Required_Attendance " +
+            String query = "SELECT CONCAT(Employee.FirstName, ' ',Employee.LastName) AS Name, Designation, Employee.E_ID, isPresent,Attendance_Date AS Required_Attendance " +
                     "FROM Employee, Attendance " +
-                    "WHERE Employee.E_ID=Attendance.E_ID AND (Attendance.Attendance_Date BETWEEN 2021-04-05 AND 2021-04-10);";
+                    "WHERE Employee.E_ID=Attendance.E_ID AND (Attendance.Attendance_Date BETWEEN '2021-03-05' AND '2021-05-10');";
 
             preparedStatement = con.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();
+            resultSet = preparedStatement.executeQuery(query);
 
             //Iterating over data and adding to observable list
             while (resultSet.next()) {
@@ -279,7 +280,7 @@ public class ManagerController implements Initializable {
                 Integer attendanceID= resultSet.getInt("E_ID");
                 String attendanceDesignation = resultSet.getString("Designation");
                 String attendancePresent = resultSet.getInt("isPresent") == 1 ? "Present" : "Absent";
-                String attendanceDate = resultSet.getString("Attendance_Date");
+                String attendanceDate = resultSet.getString("Required_Attendance");
                 //Add data to attendancelist
                 attendancelist.add(new Attendance(attendanceName, attendanceDesignation, attendanceID, attendancePresent, attendanceDate)); }
 
@@ -442,12 +443,12 @@ public class ManagerController implements Initializable {
         return count;
     }
 
-    private void setupOverview() {
-        setupOverviewHeader();
-        setupOverviewTable();
+    private void setupRooms() {
+        setupRoomsHeader();
+        setupRoomsTable();
     }
 
-    private void setupOverviewHeader() {
+    private void setupRoomsHeader() {
         //Get room numbers
         int numRoomsTotal = getRoomNums("Total");
         int numRoomAvailable = getRoomNums("Available");
@@ -501,7 +502,7 @@ public class ManagerController implements Initializable {
             return count;
     }
 
-    private void setupOverviewTable() {
+    private void setupRoomsTable() {
 
         //Set Cell and Property Value Factory for the table
         roomNumCol.setCellValueFactory(new PropertyValueFactory<Room, Integer>("roomNum"));
@@ -870,32 +871,32 @@ public class ManagerController implements Initializable {
 
     private void hideAll() {
 
-        pnlOverview.setStyle("-fx-background-color : #02030A");
-        pnlNewBooking.setStyle("-fx-background-color : #02030A");
+        pnlRooms.setStyle("-fx-background-color : #02030A");
+        pnlNewEmp.setStyle("-fx-background-color : #02030A");
         pnlStaff.setStyle("-fx-background-color : #02030A");
         pnlCustomer.setStyle("-fx-background-color : #02030A");
-        pnlOrders.setStyle("-fx-background-color : #02030A");
+        pnlAttedance.setStyle("-fx-background-color : #02030A");
         pnlCheckout.setStyle("-fx-background-color : #02030A");
 
-        pnlOverview.setVisible(false);
-        pnlNewBooking.setVisible(false);
+        pnlRooms.setVisible(false);
+        pnlNewEmp.setVisible(false);
         pnlStaff.setVisible(false);
         pnlCustomer.setVisible(false);
-        pnlOrders.setVisible(false);
+        pnlAttedance.setVisible(false);
         pnlCheckout.setVisible(false);
     }
 
     private void showOnly(String panel) {
 
         switch (panel) {
-            case "Overview":
-                pnlOverview.toFront();
-                pnlOverview.setVisible(true);
+            case "Rooms":
+                pnlRooms.toFront();
+                pnlRooms.setVisible(true);
                 break;
-            case "New Booking":
-                pnlNewBooking.toFront();
-                pnlNewBooking.setVisible(true);
-                pnlNewBooking.setStyle("-fx-background-color : #02030A");
+            case "New Employee":
+                pnlNewEmp.toFront();
+                pnlNewEmp.setVisible(true);
+                pnlNewEmp.setStyle("-fx-background-color : #02030A");
                 break;
             case "Staff":
                 pnlStaff.toFront();
@@ -907,12 +908,12 @@ public class ManagerController implements Initializable {
                 pnlCustomer.setVisible(true);
                 pnlCustomer.setStyle("-fx-background-color : #02030A");
                 break;
-            case "Orders":
-                pnlOrders.toFront();
-                pnlOrders.setVisible(true);
-                pnlOrders.setStyle("-fx-background-color : #02030A");
+            case "Attendance":
+                pnlAttedance.toFront();
+                pnlAttedance.setVisible(true);
+                pnlAttedance.setStyle("-fx-background-color : #02030A");
                 break;
-            case "Checkout":
+            case "Finances":
                 pnlCheckout.toFront();
                 pnlCheckout.setVisible(true);
                 pnlCheckout.setStyle("-fx-background-color : #02030A");
@@ -924,12 +925,12 @@ public class ManagerController implements Initializable {
 
     public void handleClicks(ActionEvent actionEvent) {
 
-        if (actionEvent.getSource() == btnOverview) {
-            showOnly("Overview");
+        if (actionEvent.getSource() == btnRoomsManager) {
+            showOnly("Rooms");
         }
 
-        if (actionEvent.getSource() == btnNewBooking) {
-            showOnly("New Booking");
+        if (actionEvent.getSource() == btnNewEmployee) {
+            showOnly("New Employee");
         }
 
         if (actionEvent.getSource() == btnStaff) {
@@ -940,12 +941,12 @@ public class ManagerController implements Initializable {
             showOnly("Customers");
         }
 
-        if (actionEvent.getSource() == btnOrders) {
-            showOnly("Orders");
+        if (actionEvent.getSource() == btnAttendanceManager) {
+            showOnly("Attendance");
         }
 
-        if (actionEvent.getSource() == btnCheckout) {
-            showOnly("Checkout");
+        if (actionEvent.getSource() == btnFinances) {
+            showOnly("Finances");
         }
 
         if (actionEvent.getSource() == btnSignout) {
@@ -953,8 +954,6 @@ public class ManagerController implements Initializable {
             System.exit(0);
         }
     }
-
-
 }
     
 
