@@ -83,6 +83,9 @@ public class ManagerController implements Initializable {
     @FXML
     Label lblServerStatusOrder;
 
+    @FXML
+    Button btnRooms;
+
 
     //tableView
     @FXML

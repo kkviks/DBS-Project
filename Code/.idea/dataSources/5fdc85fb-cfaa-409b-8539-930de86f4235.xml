@@ -968,7 +968,7 @@ SELECT|sys.sys_config
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="309" parent="292" name="Date">
+    <column id="309" parent="292" name="Attendance_Date">
       <Position>2</Position>
       <DataType>date|0s</DataType>
       <NotNull>1</NotNull>
@@ -988,7 +988,7 @@ SELECT|sys.sys_config
     <key id="313" parent="292" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>E_ID
-Date</ColNames>
+Attendance_Date</ColNames>
       <Primary>1</Primary>
     </key>
     <column id="314" parent="293" name="Bill_ID">

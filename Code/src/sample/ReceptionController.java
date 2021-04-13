@@ -19,6 +19,7 @@ import models.Staff;
 import utils.ConnectionUtil;
 import utils.DateManipulation;
 import utils.Pair;
+import utils.Queries;
 
 import java.net.URL;
 import java.sql.Connection;
@@ -1091,7 +1092,7 @@ public class ReceptionController implements Initializable {
     }
 
     public void txtRoomCheckoutChanged(){
-        // TODO: 12-04-2021 Clear when invalid room number 
+        // TODO: 12-04-2021 Clear when invalid room number
 
         txtRoomCheckout.textProperty().addListener((observable, oldValue, newValue) -> {
             if(validateRoomNum(newValue.trim())){
@@ -1105,19 +1106,42 @@ public class ReceptionController implements Initializable {
                 }
                 else
                 {
-                    if(!lblRoomStatusCheckout.getText().equals("No such room!")){
+                    if(lblRoomStatusCheckout.getText().equals("No such room!")){
                         lblRoomStatusCheckout.setText("Already Vacant!");
-                        btnFinalCheckout.setVisible(false);
                     }
                     btnFinalCheckout.setVisible(false);
+                    clearCheckoutDetail();
                 }
             }
             else
             {
                 lblRoomStatusCheckout.setText("No such room!");
                 btnFinalCheckout.setVisible(false);
+                clearCheckoutDetail();
             }
         });
+    }
+
+    private void clearCheckoutDetail() {
+        lblName.setText("");
+        lblEmail.setText("");
+        lblPhone.setText("");
+        lblOccupants.setText("");
+        lblCheckin.setText("");
+        lblCheckout.setText("");
+        lblRoomNumCheckOut.setText("");
+        lblRoomPriceCheckOut.setText("");
+        lblDuration.setText("");
+        lblDurationPrice.setText("");
+        lblService.setText("");
+        lblServicePrice.setText("");
+        lblTotalRoomPriceCheckout.setText("");
+        lblSubtotal.setText("");
+        lblAdditionalCharges.setText("");
+        lblTax.setText("");
+        lblTotalCheckout.setText("");
+        lblPaid.setText("");
+        lblDue.setText("");
     }
 
     private boolean fillCheckoutDetail(String roomNum) {
@@ -1156,6 +1180,7 @@ public class ReceptionController implements Initializable {
             }
 
             //Summary details
+            // TODO: 13-04-2021 remove this! 
             query = "SELECT Type, Price " +
                     "from ROOM_TYPE, " +
                     " room " +
