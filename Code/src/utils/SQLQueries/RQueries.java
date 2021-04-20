@@ -33,7 +33,7 @@ public class RQueries {
 
     public static ResultSet getStaffSummary() throws SQLException {
         query = "SELECT CONCAT(Employee.FirstName, ' ',Employee.LastName) AS Name, Designation, Phone, Shift, isPresent AS Availability " +
-                "FROM Employee, Attendance " +
+                "FROM reception_staffView " +
                 "WHERE Employee.E_ID=Attendance.E_ID;";
         return execute();
     }
@@ -74,7 +74,7 @@ public class RQueries {
 
     public static ResultSet getOverviewSummary() throws SQLException {
         query = "SELECT Room_No,Room_Type, Availability , Beds_Num, Price " +
-                "FROM room,room_type " +
+                "FROM reception_overviewView " +
                 "WHERE room.room_type=room_type.Type " +
                 "ORDER BY room.Availability DESC, " +
                 "Room_Type.Price DESC, " +
@@ -101,7 +101,7 @@ public class RQueries {
 
     public static ResultSet getCustomerSummary() throws SQLException {
         query = "SELECT Room_No , CONCAT(Visitor.FirstName, ' ',Visitor.LastName) AS Name,Service_Type,Occupants_Num, Arrival, Special_Requests,Due " +
-                "FROM Customer,Visitor,Bill " +
+                "FROM manager_customerView " +
                 "WHERE Customer.Visitor_ID=Visitor.Visitor_ID AND Bill.Bill_ID=Customer.Bill_ID " +
                 "ORDER BY Room_No;";
         return execute();
@@ -109,7 +109,7 @@ public class RQueries {
 
     public static ResultSet getOrdersSummary() throws SQLException {
         query = "SELECT Room_No, Special_Request,Inventories,Extra_Charges,Service_Date_Time, CONCAT(Employee.FirstName, ' ',Employee.LastName) AS BellBoyName,Bell_Boy " +
-                "FROM CUSTOMER,ROOM_SERVICE,EMPLOYEE " +
+                "FROM reception_orderView " +
                 "WHERE CUSTOMER.Customer_ID = ROOM_SERVICE.Customer_ID AND EMPLOYEE.E_ID=ROOM_SERVICE.Bell_Boy " +
                 "ORDER BY Room_No ASC;";
         return execute();

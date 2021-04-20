@@ -23,6 +23,7 @@ import models.*;
 import utils.ConnectionUtil;
 import utils.Report;
 import utils.SQLQueries.MQueries;
+import utils.SQLQueries.RQueries;
 
 import java.io.IOException;
 import java.net.URL;
@@ -103,7 +104,7 @@ public class ManagerController implements Initializable {
     //NewEmp
 
     @FXML
-    TextField txtNameNE,txtSurnameNE, txtEmailNE,txtPhoneNE,txtAdharNE,txtRatingNE, txtPasswordNE, txtWageNE;
+    TextField txtNameNE,txtSurnameNE, txtEmailNE,txtPhoneNE,txtAdharNE,txtRatingNE, txtPasswordNE, txtWageNE,txtDesignationNE;
 
     @FXML
     DatePicker dpJoiningNE, dpReleivedNE;
@@ -1245,6 +1246,7 @@ public class ManagerController implements Initializable {
         String joining = dpJoiningNE.getValue().toString();
         String relieved = dpReleivedNE.getValue().toString();
         String password = txtPasswordNE.getText().trim();
+        String designation= txtDesignationNE.getText().trim();
         //Is number;
         String wage = txtWageNE.getText().trim();
 
@@ -1254,8 +1256,16 @@ public class ManagerController implements Initializable {
             con = ConnectionUtil.conDB();
             stmt = con.createStatement();
             String sql = "Insert into employee(FirstName,LastName,Designation,UIDAI,Phone,Address,E_mail,Joining,Tenure,Rating,Shift) " +
-                    "values('"+name+"','"+surname+"+','Receptionist','123456789123,'abcde','ritika@abcde.com',NOW(),NULL,NULL,'Night');"
+                    "values('"+name+"','"+surname+"+','"+designation+"','"+adhar+"','"+phone+"','"+password+"','"+email+"','"+joining+"','"+relieved+"','"+rating+"','"+shift+"' );" ;
             stmt.executeUpdate(sql);
+
+            int employeeId=0;
+            resultSet= MQueries.getEmployeeID();
+            if(resultSet.next()){
+                employeeId = resultSet.getInt("E_ID");
+            }
+            String query= "Insert into credentials values('"+employeeId+"','"+password+"' );";
+            stmt.execute(query);
         }
         if(btnNewEmp.getText().equals("Update")){
             String e_id = txtNewEmpID.getText().trim();
@@ -1263,7 +1273,7 @@ public class ManagerController implements Initializable {
             //update emp with above details given emp
             con = ConnectionUtil.conDB();
             stmt = con.createStatement();
-            String sql = "set foreign_key_checks=0;";
+            String sql = "Update employee set FirstName= "+name+ "','"+"LastName= "+surname+"', '"+"Designation= "+designation+ "', '"+"E_mail= "+email+"','"+"Phone= "+phone+"', '"+"UIDAI= "+adhar+"', '"+"Shift= "+shift+ "','"+"Address= "+password+"','"+"Joining= "+joining+"where E_ID= "+e_id+ " ;";
             stmt.executeUpdate(sql);
         }
 
