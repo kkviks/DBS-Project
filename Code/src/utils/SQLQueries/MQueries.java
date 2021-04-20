@@ -42,7 +42,7 @@ public class MQueries {
     public static ResultSet getFinanceSummary() throws SQLException {
         query = "SELECT Update_Date,Wages,Rent,Profit,Credit " +
                 "FROM Finance " +
-                "WHERE Update_Date BETWEEN '2021-01-10' AND '2021-01-20');";
+                "WHERE Update_Date BETWEEN '2021-01-10' AND '2021-01-20';";
         return execute();
     }
 
@@ -50,13 +50,13 @@ public class MQueries {
 
         switch (whatFinance) {
             case "Total Wages":
-                query = "SELECT SUM(Wage) FROM Finance";
+                query = "SELECT SUM(Wages) AS VAL FROM Finance";
                 break;
             case "Total Rent":
-                query = "SELECT SUM(Rent) FROM Finance";
+                query = "SELECT SUM(Rent) AS VAL FROM Finance";
                 break;
             case "Total Profit":
-                query = "SELECT SUM(Profit) FROM Finance";
+                query = "SELECT SUM(Profit) AS VAL FROM Finance";
         }
 
         return execute();

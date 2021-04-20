@@ -218,17 +218,26 @@ public class ManagerController implements Initializable {
     Button btnEmpAttendance;
 
     @FXML
-    Label lblEmpAtdStatus;
+    Label lblEmpAtdStatus, lblServerStatusFinance;;
 
     //Visualize
     @FXML Button btnVisualizeManager;
 
     @FXML Pane pnlVisualize;
 
+    //Reports
+    @FXML
+    DatePicker dpEmp, dpFinanceFrom, dpFinanceTo, dpVisitorsFrom, dpVisitorsTo, dpParkingFrom, dpParkingTo;
+
+    @FXML
+    Button btnReportEmp, btnReportFinance, btnReportVisitors, btnReportParking;
+
+
     //SQL setup
     Connection con = null;
     PreparedStatement preparedStatement = null;
     ResultSet resultSet = null;
+
 
 
     @Override
@@ -243,7 +252,7 @@ public class ManagerController implements Initializable {
         setupStaff();
         setupCustomer();
         setupAttendance();
-        //setupFinance();
+        setupFinance();
         showOnly("Rooms");
     }
 
@@ -351,7 +360,7 @@ public class ManagerController implements Initializable {
         financeWageCol.setCellValueFactory(new PropertyValueFactory<Finance, Double>("financeWage"));
         financeRentCol.setCellValueFactory(new PropertyValueFactory<Finance, Double>("financeRent"));
         financeProfitCol.setCellValueFactory(new PropertyValueFactory<Finance, Double>("financeProfit"));
-        financeCreditCol.setCellValueFactory(new PropertyValueFactory<Finance, Double>("financeCreditCol"));
+        financeCreditCol.setCellValueFactory(new PropertyValueFactory<Finance, Double>("financeCredit"));
 
         // 0. Initialize the columns.
         //ObservableList<Attendance> roomList = FXCollections.observableArrayList();
@@ -438,9 +447,9 @@ public class ManagerController implements Initializable {
         int numFinanceProfit = getFinanceNums("Total Profit");
 
         //Set label text values
-        lblStaffTotal.setText(String.valueOf(numFinanceWage));
-        lblStaffPresent.setText(String.valueOf(numFinanceRent));
-        lblStaffAbsent.setText(String.valueOf(numFinanceProfit));
+        lblFinanceWage.setText(String.valueOf(numFinanceWage));
+        lblFinanceRent.setText(String.valueOf(numFinanceRent));
+        lblFinanceProfit.setText(String.valueOf(numFinanceProfit));
 
         //Server Status
         if (con == null) {
@@ -448,8 +457,8 @@ public class ManagerController implements Initializable {
             lblServerStatusStaff.setText("Not OK");
             return;
         } else {
-            lblServerStatusStaff.setTextFill(Color.GREEN);
-            lblServerStatusStaff.setText("OK");
+            lblServerStatusFinance.setTextFill(Color.GREEN);
+            lblServerStatusFinance.setText("OK");
         }
 
     }
@@ -1140,6 +1149,21 @@ public class ManagerController implements Initializable {
             throwables.printStackTrace();
         }
 
+    }
+
+    public void handReportClicks(ActionEvent actionEvent){
+
+        if(actionEvent.getSource()==btnReportEmp){
+        }
+
+        if(actionEvent.getSource()==btnReportFinance){
+        }
+
+        if(actionEvent.getSource()==btnReportVisitors){
+        }
+
+        if(actionEvent.getSource()==btnReportParking){
+        }
     }
 }
     

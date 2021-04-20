@@ -3,27 +3,20 @@
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.PieChart?>
-<?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Spinner?>
-<?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -49,7 +42,7 @@
                   <Insets bottom="20.0" />
                </VBox.margin>
             </Label>
-            <Button fx:id="btnVisualizeManager" alignment="BASELINE_LEFT" graphicTextGap="22.0" layoutX="10.0" layoutY="176.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="42.0" prefWidth="259.0" stylesheets="@style.css" text="Visualize" textFill="#e7e5e5">
+            <Button fx:id="btnVisualizeManager" alignment="BASELINE_LEFT" graphicTextGap="22.0" layoutX="10.0" layoutY="176.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="42.0" prefWidth="259.0" stylesheets="@style.css" text="Reports" textFill="#e7e5e5">
                <graphic>
                   <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -160,475 +153,195 @@
          <children>
             <Pane fx:id="pnlVisualize" prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <TabPane prefHeight="576.0" prefWidth="794.0" tabClosingPolicy="UNAVAILABLE">
-                    <tabs>
-                      <Tab text="Line Graphs">
-                        <content>
-                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                 <children>
-                                    <BorderPane prefHeight="546.0" prefWidth="794.0">
-                                       <center>
-                                          <Label text="lINE" BorderPane.alignment="CENTER" />
-                                       </center>
-                                    </BorderPane>
-                                 </children>
-                              </AnchorPane>
-                        </content>
-                      </Tab>
-                        <Tab text="Pie Chart">
-                           <content>
-                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                 <children>
-                                    <BorderPane prefHeight="546.0" prefWidth="794.0">
-                                       <center>
-                                          <Label text="PIE" BorderPane.alignment="CENTER" />
-                                       </center>
-                                    </BorderPane>
-                                 </children>
-                              </AnchorPane>
-                           </content>
-                        </Tab>
-                        <Tab text="Bar Graph">
-                           <content>
-                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                 <children>
-                                    <BorderPane prefHeight="546.0" prefWidth="794.0">
-                                       <center>
-                                          <Label text="BAR" BorderPane.alignment="CENTER" />
-                                       </center>
-                                    </BorderPane>
-                                 </children>
-                              </AnchorPane>
-                           </content>
-                        </Tab>
-                    </tabs>
-                     <padding>
-                        <Insets top="20.0" />
-                     </padding>
-                  </TabPane>
-               </children>
-            </Pane>
-            <Pane fx:id="pnlCheckout" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" visible="false">
-               <children>
-                  <VBox prefHeight="576.0" prefWidth="794.0">
+                  <VBox prefHeight="522.0" prefWidth="766.0">
                      <children>
-                        <HBox alignment="CENTER_LEFT" prefHeight="92.0" prefWidth="687.0" spacing="50.0">
+                        <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <VBox alignment="CENTER" prefHeight="92.0" prefWidth="187.0">
+                              <Label alignment="CENTER" prefHeight="65.0" prefWidth="230.0" text="Reports" textFill="WHITE">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets top="20.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <GridPane prefHeight="405.0" prefWidth="766.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <VBox.margin>
+                              <Insets top="50.0" />
+                           </VBox.margin>
+                           <children>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <Label fx:id="lblCustomerCount11" alignment="CENTER" prefHeight="38.0" prefWidth="170.0" text="Checkout" textFill="#26bfbc">
+                                    <Label alignment="CENTER" prefHeight="101.0" prefWidth="214.0" text="Employees :" textFill="WHITE">
                                        <font>
-                                          <Font name="System Bold" size="26.0" />
+                                          <Font size="18.0" />
                                        </font>
                                     </Label>
                                  </children>
-                              </VBox>
-                              <VBox alignment="CENTER" prefHeight="92.0" prefWidth="162.0">
+                              </HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                                  <children>
-                                    <TextField fx:id="filterRoomTable11" alignment="CENTER" prefHeight="27.0" prefWidth="183.0" promptText="Room Number" style="-fx-background-color: #02030A; -fx-border-color: #B7C3D7; -fx-border-radius: 1em;" />
+                                    <DatePicker fx:id="dpEmp" layoutX="10.0" layoutY="10.0" prefHeight="26.0" prefWidth="192.0" promptText="Select month">
+                                       <HBox.margin>
+                                          <Insets right="10.0" top="30.0" />
+                                       </HBox.margin>
+                                    </DatePicker>
                                  </children>
-                              </VBox>
-                              <VBox alignment="CENTER" prefHeight="92.0" prefWidth="161.0">
+                              </HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" />
+                              <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3">
                                  <children>
-                                    <Label prefHeight="28.0" prefWidth="105.0" text="Service Type" textFill="#e7e5e5">
-                                       <VBox.margin>
-                                          <Insets top="10.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                 </children>
-                              </VBox>
-                              <VBox alignment="CENTER" prefHeight="70.0" prefWidth="146.0">
-                                 <children>
-                                    <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="102.0" text="CHECKOUT">
-                                       <VBox.margin>
-                                          <Insets />
-                                       </VBox.margin>
+                                    <Button fx:id="btnReportEmp" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#handReportClicks" prefHeight="35.0" prefWidth="29.0">
+                                       <HBox.margin>
+                                          <Insets left="40.0" top="25.0" />
+                                       </HBox.margin>
+                                       <graphic>
+                                          <ImageView fitHeight="27.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../images/img_10.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
                                     </Button>
                                  </children>
-                              </VBox>
+                              </HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                                 <children>
+                                    <Label alignment="CENTER" prefHeight="101.0" prefWidth="214.0" text="Finance :" textFill="WHITE">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                 </children></HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <children>
+                                    <DatePicker fx:id="dpFinanceFrom" editable="false" prefHeight="26.0" prefWidth="192.0" promptText="From">
+                                       <HBox.margin>
+                                          <Insets right="10.0" top="30.0" />
+                                       </HBox.margin>
+                                    </DatePicker>
+                                 </children></HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                 <children>
+                                    <DatePicker fx:id="dpFinanceTo" editable="false" prefHeight="26.0" prefWidth="192.0" promptText="To">
+                                       <HBox.margin>
+                                          <Insets left="10.0" top="30.0" />
+                                       </HBox.margin>
+                                    </DatePicker>
+                                 </children></HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                 <children>
+                                    <Button fx:id="btnReportFinance" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#handReportClicks" prefHeight="35.0" prefWidth="29.0">
+                                       <graphic>
+                                          <ImageView fitHeight="27.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../images/img_10.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                       <HBox.margin>
+                                          <Insets left="40.0" top="25.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children></HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
+                                 <children>
+                                    <Label alignment="CENTER" prefHeight="101.0" prefWidth="214.0" text="Visitors :" textFill="WHITE">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                 </children></HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                 <children>
+                                    <DatePicker fx:id="dpVisitorsFrom" editable="false" prefHeight="26.0" prefWidth="192.0" promptText="From">
+                                       <HBox.margin>
+                                          <Insets right="10.0" top="30.0" />
+                                       </HBox.margin>
+                                    </DatePicker>
+                                 </children></HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                 <children>
+                                    <DatePicker fx:id="dpVisitorsTo" editable="false" prefHeight="26.0" prefWidth="192.0" promptText="To">
+                                       <HBox.margin>
+                                          <Insets left="10.0" top="30.0" />
+                                       </HBox.margin>
+                                    </DatePicker>
+                                 </children></HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                                 <children>
+                                    <Button fx:id="btnReportVisitors" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#handReportClicks" prefHeight="35.0" prefWidth="29.0">
+                                       <graphic>
+                                          <ImageView fitHeight="27.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../images/img_10.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                       <HBox.margin>
+                                          <Insets left="40.0" top="25.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children></HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
+                                 <children>
+                                    <Label alignment="CENTER" prefHeight="101.0" prefWidth="214.0" text="Parking :" textFill="WHITE">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                 </children></HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                 <children>
+                                    <DatePicker fx:id="dpParkingFrom" editable="false" prefHeight="26.0" prefWidth="192.0" promptText="From">
+                                       <HBox.margin>
+                                          <Insets right="10.0" top="30.0" />
+                                       </HBox.margin>
+                                    </DatePicker>
+                                 </children></HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                                 <children>
+                                    <DatePicker fx:id="dpParkingTo" editable="false" prefHeight="26.0" prefWidth="192.0" promptText="To">
+                                       <HBox.margin>
+                                          <Insets left="10.0" top="30.0" />
+                                       </HBox.margin>
+                                    </DatePicker>
+                                 </children></HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                                 <children>
+                                    <Button fx:id="btnReportParking" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#handReportClicks" prefHeight="35.0" prefWidth="29.0">
+                                       <graphic>
+                                          <ImageView fitHeight="27.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../images/img_10.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                       <HBox.margin>
+                                          <Insets left="40.0" top="25.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children></HBox>
                            </children>
-                        </HBox>
-                        <SplitPane dividerPositions="0.607" prefHeight="468.0" prefWidth="794.0">
-                          <items>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="466.0" prefWidth="468.0">
-                                 <children>
-                                    <VBox layoutX="-4.0" prefHeight="466.0" prefWidth="454.0">
-                                       <children>
-                                          <HBox prefHeight="38.0" prefWidth="454.0">
-                                             <children>
-                                                <Label alignment="CENTER" prefHeight="38.0" prefWidth="442.0" text="Customer" underline="true">
-                                                   <font>
-                                                      <Font name="System Bold" size="18.0" />
-                                                   </font>
-                                                </Label>
-                                             </children>
-                                             <VBox.margin>
-                                                <Insets top="10.0" />
-                                             </VBox.margin>
-                                          </HBox>
-                                          <GridPane>
-                                            <columnConstraints>
-                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                            </columnConstraints>
-                                            <rowConstraints>
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                            </rowConstraints>
-                                             <children>
-                                                <HBox prefHeight="30.0" prefWidth="215.0">
-                                                   <children>
-                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="99.0" text="Name :" />
-                                                      <Label alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="174.0" text="&lt;Text&gt;" />
-                                                   </children>
-                                                </HBox>
-                                                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
-                                                   <children>
-                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="99.0" text="E-mail:" />
-                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="174.0" text="&lt;Text&gt;" />
-                                                   </children>
-                                                </HBox>
-                                                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
-                                                   <children>
-                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="99.0" text="Phone:" />
-                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="174.0" text="&lt;Text&gt;" />
-                                                   </children>
-                                                </HBox>
-                                                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                                   <children>
-                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="99.0" text="Occupants" />
-                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="174.0" text="&lt;Text&gt;" />
-                                                   </children>
-                                                </HBox>
-                                                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
-                                                   <children>
-                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="99.0" text="Check-in:" />
-                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="174.0" text="&lt;Text&gt;" />
-                                                   </children>
-                                                </HBox>
-                                                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                                                   <children>
-                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="99.0" text="Check-out" />
-                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="174.0" text="&lt;Text&gt;" />
-                                                   </children>
-                                                </HBox>
-                                             </children>
-                                             <VBox.margin>
-                                                <Insets left="20.0" top="20.0" />
-                                             </VBox.margin>
-                                          </GridPane>
-                                          <HBox layoutX="10.0" layoutY="10.0" prefHeight="38.0" prefWidth="454.0">
-                                             <children>
-                                                <Label alignment="CENTER" prefHeight="38.0" prefWidth="442.0" text="Summary" underline="true">
-                                                   <font>
-                                                      <Font name="System Bold" size="18.0" />
-                                                   </font>
-                                                </Label>
-                                             </children>
-                                             <VBox.margin>
-                                                <Insets top="40.0" />
-                                             </VBox.margin>
-                                          </HBox>
-                                          <GridPane layoutX="10.0" layoutY="48.0">
-                                             <columnConstraints>
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                             </columnConstraints>
-                                             <rowConstraints>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                             </rowConstraints>
-                                             <children>
-                                                <HBox prefHeight="30.0" prefWidth="215.0">
-                                                   <children>
-                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="153.0" text="Room:" />
-                                                   </children>
-                                                </HBox>
-                                                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
-                                                   <children>
-                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="174.0" text="&lt;Text&gt;" />
-                                                   </children>
-                                                </HBox>
-                                                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
-                                                   <children>
-                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="186.0" text="Duration:" />
-                                                   </children>
-                                                </HBox>
-                                                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                                   <children>
-                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="160.0" text="&lt;Text&gt;" />
-                                                   </children>
-                                                </HBox>
-                                                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2">
-                                                   <children>
-                                                      <Label alignment="CENTER" prefHeight="35.0" prefWidth="136.0" text="&lt;Price&gt;" />
-                                                   </children>
-                                                </HBox>
-                                                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                                                   <children>
-                                                      <Label alignment="CENTER" prefHeight="31.0" prefWidth="136.0" text="&lt;Price&gt;" />
-                                                   </children>
-                                                </HBox>
-                                                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
-                                                   <children>
-                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="186.0" text="Service:" />
-                                                   </children>
-                                                </HBox>
-                                                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                                                   <children>
-                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="186.0" text="&lt;Text&gt;" />
-                                                   </children>
-                                                </HBox>
-                                                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
-                                                   <children>
-                                                      <Label alignment="CENTER" prefHeight="31.0" prefWidth="136.0" text="&lt;Price&gt;" />
-                                                   </children>
-                                                </HBox>
-                                                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3" />
-                                                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                                                   <children>
-                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="186.0" text="Total:" />
-                                                   </children>
-                                                </HBox>
-                                                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
-                                                   <children>
-                                                      <Label alignment="CENTER" prefHeight="31.0" prefWidth="136.0" text="Amount" />
-                                                   </children>
-                                                </HBox>
-                                             </children>
-                                             <VBox.margin>
-                                                <Insets top="20.0" />
-                                             </VBox.margin>
-                                          </GridPane>
-                                          <HBox prefHeight="100.0" prefWidth="200.0">
-                                             <children>
-                                                <ProgressBar prefHeight="20.0" prefWidth="364.0" progress="0.0">
-                                                   <HBox.margin>
-                                                      <Insets left="40.0" top="30.0" />
-                                                   </HBox.margin>
-                                                </ProgressBar>
-                                             </children>
-                                          </HBox>
-                                       </children></VBox>
-                                 </children>
-                              </AnchorPane>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                                 <children>
-                                    <VBox prefHeight="445.0" prefWidth="284.0">
-                                       <children>
-                                          <HBox layoutX="10.0" layoutY="10.0" prefHeight="45.0" prefWidth="284.0">
-                                             <children>
-                                                <Label alignment="CENTER" prefHeight="57.0" prefWidth="285.0" text="Bill" underline="true">
-                                                   <font>
-                                                      <Font name="System Bold" size="18.0" />
-                                                   </font>
-                                                   <HBox.margin>
-                                                      <Insets />
-                                                   </HBox.margin>
-                                                </Label>
-                                             </children>
-                                             <VBox.margin>
-                                                <Insets />
-                                             </VBox.margin>
-                                          </HBox>
-                                          <Separator prefWidth="200.0" />
-                                          <GridPane>
-                                            <columnConstraints>
-                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                            </columnConstraints>
-                                            <rowConstraints>
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                            </rowConstraints>
-                                             <children>
-                                                <HBox prefHeight="100.0" prefWidth="200.0">
-                                                   <children>
-                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="153.0" text="Sub Total:" />
-                                                   </children>
-                                                </HBox>
-                                                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
-                                                   <children>
-                                                      <Label alignment="CENTER" prefHeight="31.0" prefWidth="136.0" text="&lt;Price&gt;" />
-                                                   </children>
-                                                </HBox>
-                                                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
-                                                   <children>
-                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="153.0" text="Additional Charges:" />
-                                                   </children>
-                                                </HBox>
-                                                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                                   <children>
-                                                      <Label alignment="CENTER" prefHeight="31.0" prefWidth="136.0" text="&lt;Price&gt;" />
-                                                   </children>
-                                                </HBox>
-                                                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
-                                                   <children>
-                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="153.0" text="Tax" />
-                                                   </children>
-                                                </HBox>
-                                                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                                                   <children>
-                                                      <Label alignment="CENTER" prefHeight="31.0" prefWidth="136.0" text="&lt;Price&gt;" />
-                                                   </children>
-                                                </HBox>
-                                             </children>
-                                          </GridPane>
-                                          <Separator prefWidth="200.0" />
-                                          <GridPane>
-                                            <columnConstraints>
-                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                            </columnConstraints>
-                                            <rowConstraints>
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                            </rowConstraints>
-                                             <children>
-                                                <HBox prefHeight="100.0" prefWidth="200.0">
-                                                   <children>
-                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="153.0" text="Total:" />
-                                                   </children>
-                                                </HBox>
-                                                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
-                                                   <children>
-                                                      <Label alignment="CENTER" prefHeight="31.0" prefWidth="136.0" text="&lt;Price&gt;" />
-                                                   </children>
-                                                </HBox>
-                                                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
-                                                   <children>
-                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="153.0" text="Paid:" />
-                                                   </children>
-                                                </HBox>
-                                                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                                   <children>
-                                                      <Label alignment="CENTER" prefHeight="31.0" prefWidth="136.0" text="&lt;Price&gt;" />
-                                                   </children>
-                                                </HBox>
-                                                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
-                                                   <children>
-                                                      <Label alignment="CENTER" prefHeight="30.0" prefWidth="153.0" text="Due:" />
-                                                   </children>
-                                                </HBox>
-                                                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                                                   <children>
-                                                      <Label alignment="CENTER" prefHeight="31.0" prefWidth="136.0" text="&lt;Price&gt;" />
-                                                   </children>
-                                                </HBox>
-                                             </children>
-                                             <VBox.margin>
-                                                <Insets top="5.0" />
-                                             </VBox.margin>
-                                          </GridPane>
-                                          <Separator prefWidth="200.0">
-                                             <VBox.margin>
-                                                <Insets top="5.0" />
-                                             </VBox.margin>
-                                          </Separator>
-                                          <HBox prefHeight="38.0" prefWidth="454.0">
-                                             <children>
-                                                <Label alignment="CENTER" prefHeight="38.0" prefWidth="442.0" text="Payment " underline="true">
-                                                   <font>
-                                                      <Font name="System Bold" size="18.0" />
-                                                   </font>
-                                                   <HBox.margin>
-                                                      <Insets top="5.0" />
-                                                   </HBox.margin>
-                                                </Label>
-                                             </children>
-                                          </HBox>
-                                          <HBox prefHeight="152.0" prefWidth="284.0">
-                                             <children>
-                                                <Accordion prefHeight="152.0" prefWidth="282.0">
-                                                  <panes>
-                                                    <TitledPane animated="false" text="Cash">
-                                                      <content>
-                                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                                               <children>
-                                                                  <HBox prefHeight="67.0" prefWidth="282.0">
-                                                                     <children>
-                                                                        <TextField alignment="CENTER" prefHeight="26.0" prefWidth="134.0" promptText="Amount">
-                                                                           <HBox.margin>
-                                                                              <Insets left="20.0" top="15.0" />
-                                                                           </HBox.margin>
-                                                                        </TextField>
-                                                                        <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="74.0" text="Receive">
-                                                                           <HBox.margin>
-                                                                              <Insets left="40.0" right="20.0" top="15.0" />
-                                                                           </HBox.margin>
-                                                                        </Button>
-                                                                     </children>
-                                                                  </HBox>
-                                                               </children>
-                                                            </AnchorPane>
-                                                      </content>
-                                                    </TitledPane>
-                                                    <TitledPane animated="false" text="UPI">
-                                                      <content>
-                                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                                               <children>
-                                                                  <HBox prefHeight="67.0" prefWidth="282.0">
-                                                                     <children>
-                                                                        <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="109.0" text="Show QR">
-                                                                           <HBox.margin>
-                                                                              <Insets left="40.0" right="20.0" top="15.0" />
-                                                                           </HBox.margin>
-                                                                        </Button>
-                                                                        <Button layoutX="201.0" layoutY="25.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="96.0" text="Receive">
-                                                                           <HBox.margin>
-                                                                              <Insets left="20.0" right="20.0" top="15.0" />
-                                                                           </HBox.margin>
-                                                                        </Button>
-                                                                     </children>
-                                                                  </HBox>
-                                                               </children>
-                                                            </AnchorPane>
-                                                      </content>
-                                                    </TitledPane>
-                                                    <TitledPane animated="false" text="Card">
-                                                      <content>
-                                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                                               <children>
-                                                                  <HBox prefHeight="67.0" prefWidth="282.0">
-                                                                     <children>
-                                                                        <TextField alignment="CENTER" prefHeight="26.0" prefWidth="134.0" promptText="Reference No.">
-                                                                           <HBox.margin>
-                                                                              <Insets left="20.0" top="15.0" />
-                                                                           </HBox.margin>
-                                                                        </TextField>
-                                                                        <Button mnemonicParsing="false" prefHeight="32.0" prefWidth="74.0" text="Receive">
-                                                                           <HBox.margin>
-                                                                              <Insets left="40.0" right="20.0" top="15.0" />
-                                                                           </HBox.margin>
-                                                                        </Button>
-                                                                     </children>
-                                                                  </HBox>
-                                                               </children>
-                                                            </AnchorPane>
-                                                      </content>
-                                                    </TitledPane>
-                                                  </panes>
-                                                </Accordion>
-                                             </children>
-                                          </HBox>
-                                       </children>
-                                    </VBox>
-                                 </children></AnchorPane>
-                          </items>
-                           <VBox.margin>
-                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                           </VBox.margin>
-                        </SplitPane>
+                        </GridPane>
                      </children>
-                     <padding>
-                        <Insets left="20.0" top="20.0" />
-                     </padding>
                   </VBox>
                </children>
             </Pane>
@@ -1133,6 +846,85 @@
                         <Label layoutX="305.0" layoutY="288.0" prefHeight="17.0" prefWidth="125.0" text="New Booking" />
                      </children>
                   </Pane>
+               </children>
+            </Pane>
+            <Pane fx:id="pnlCheckout" layoutX="10.0" layoutY="10.0" prefHeight="554.0" prefWidth="793.0" visible="false">
+               <children>
+                  <TextField fx:id="filterFinanceTable" layoutX="590.0" layoutY="47.0" prefHeight="27.0" prefWidth="183.0" promptText="search" style="-fx-background-color: #02030A; -fx-border-color: #B7C3D7; -fx-border-radius: 2em;" />
+                  <Label layoutX="57.0" layoutY="25.0" text="Finances" textFill="#e7e5e5">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <HBox alignment="CENTER_LEFT" layoutX="45.0" layoutY="72.0" prefHeight="92.0" prefWidth="687.0" spacing="50.0">
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Label fx:id="lblFinanceWage" text="80" textFill="#2a73ff">
+                                 <font>
+                                    <Font name="System Bold" size="26.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Wages" textFill="#e7e5e5" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Label fx:id="lblFinanceRent" text="50" textFill="#26bfbc">
+                                 <font>
+                                    <Font name="System Bold" size="26.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Rents" textFill="#e7e5e5" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Label fx:id="lblFinanceProfit" text="30" textFill="#fa5f7e">
+                                 <font>
+                                    <Font name="System Bold" size="26.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Profits" textFill="#e7e5e5" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Label fx:id="lblServerStatusFinance" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" prefHeight="38.0" prefWidth="121.0">
+                                 <font>
+                                    <Font name="System Bold" size="26.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Server" textFill="#e7e5e5" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <ScrollPane layoutX="14.0" layoutY="182.0" prefHeight="370.0" prefWidth="746.0" stylesheets="@style.css">
+                     <content>
+                        <TableView fx:id="financeTableView" prefHeight="364.0" prefWidth="744.0" style="-fx-background-color: #e7e5e5;" tableMenuButtonVisible="true">
+                           <columns>
+                              <TableColumn fx:id="financeDateCol" editable="false" prefWidth="164.800048828125" text="Date" />
+                              <TableColumn fx:id="financeWageCol" editable="false" prefWidth="132.79998779296875" text="Wages" />
+                              <TableColumn fx:id="financeRentCol" editable="false" prefWidth="170.4000244140625" text="Rents" />
+                              <TableColumn fx:id="financeProfitCol" editable="false" prefWidth="127.199951171875" sortType="DESCENDING" text="Profits" />
+                              <TableColumn fx:id="financeCreditCol" editable="false" prefWidth="170.4000244140625" text="Credits" />
+                           </columns>
+                           <stylesheets>
+                              <URL value="@table.css" />
+                              <URL value="@style.css" />
+                           </stylesheets>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </TableView>
+                     </content>
+                  </ScrollPane>
+                  <ImageView fitHeight="17.0" fitWidth="16.0" layoutX="749.0" layoutY="53.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/icons8_Search_52px.png" />
+                     </image>
+                  </ImageView>
                </children>
             </Pane>
          </children>
