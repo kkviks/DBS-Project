@@ -1091,7 +1091,7 @@ Attendance_Date</ColNames>
     </column>
     <column id="337" parent="295" name="Phone">
       <Position>10</Position>
-      <DataType>bigint|0s</DataType>
+      <DataType>char(10)|0s</DataType>
     </column>
     <index id="338" parent="295" name="FK_Visitor_ID">
       <ColNames>Visitor_ID</ColNames>
@@ -1487,7 +1487,7 @@ Attendance_Date</ColNames>
     </column>
     <column id="427" parent="307" name="UIDAI">
       <Position>4</Position>
-      <DataType>bigint|0s</DataType>
+      <DataType>char(12)|0s</DataType>
     </column>
     <column id="428" parent="307" name="Passport">
       <Position>5</Position>
@@ -1515,7 +1515,7 @@ Attendance_Date</ColNames>
     </column>
     <column id="434" parent="307" name="Phone">
       <Position>11</Position>
-      <DataType>bigint|0s</DataType>
+      <DataType>char(10)|0s</DataType>
     </column>
     <index id="435" parent="307" name="FK_Related_to">
       <ColNames>Related_to</ColNames>

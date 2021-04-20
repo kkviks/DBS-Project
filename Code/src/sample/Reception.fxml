@@ -139,7 +139,7 @@
       </VBox>
       <StackPane layoutX="258.0" prefHeight="576.0" prefWidth="793.0" style="-fx-background-color: #02030A;">
          <children>
-            <Pane fx:id="pnlCheckout" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0">
+            <Pane fx:id="pnlCheckout" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" visible="false">
                <children>
                   <VBox prefHeight="576.0" prefWidth="794.0">
                      <children>
@@ -816,7 +816,7 @@
                   </ImageView>
                </children>
             </Pane>
-            <Pane fx:id="pnlNewBooking" layoutX="10.0" layoutY="10.0" prefHeight="554.0" prefWidth="793.0" visible="false">
+            <Pane fx:id="pnlNewBooking" layoutX="10.0" layoutY="10.0" prefHeight="554.0" prefWidth="793.0">
                <children>
                   <HBox alignment="CENTER_LEFT" layoutX="50.0" layoutY="25.0" prefHeight="92.0" prefWidth="687.0" spacing="50.0">
                      <children>
@@ -846,7 +846,7 @@
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="92.0" prefWidth="161.0">
                            <children>
-                              <ComboBox fx:id="cbServiceType" prefWidth="150.0" promptText="Service Type" stylesheets="@style.css" />
+                              <ComboBox fx:id="cbServiceType" onMouseClicked="#changeServiceTypeCombo" prefWidth="150.0" stylesheets="@style.css" />
                               <Label fx:id="lblServiceTypePrice" text="Price" textFill="#e7e5e5">
                                  <VBox.margin>
                                     <Insets top="10.0" />
