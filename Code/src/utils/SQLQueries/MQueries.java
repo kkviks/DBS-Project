@@ -34,14 +34,14 @@ public class MQueries {
 
     public static ResultSet getAttendanceSummary() throws SQLException {
         query = "SELECT CONCAT(Employee.FirstName, ' ',Employee.LastName) AS Name, Designation, Employee.E_ID, isPresent,Attendance_Date AS Required_Attendance " +
-                "FROM manager_attendanceView " +
+                "FROM Employee, Attendance " +
                 "WHERE Employee.E_ID=Attendance.E_ID AND (Attendance.Attendance_Date BETWEEN '2021-03-05' AND '2021-05-10');";
         return execute();
     }
 
     public static ResultSet getFinanceSummary() throws SQLException {
         query = "SELECT Update_Date,Wages,Rent,Profit,Credit " +
-                "FROM manager_financeView " +
+                "FROM Finance " +
                 "WHERE Update_Date BETWEEN '2021-01-10' AND '2021-01-20';";
         return execute();
     }
@@ -65,7 +65,7 @@ public class MQueries {
 
     public static ResultSet getStaffSummary() throws SQLException {
         query = "SELECT CONCAT(Employee.FirstName, ' ',Employee.LastName) AS Name, Designation, Phone, Shift, isPresent AS Availability,Wage " +
-                "FROM manager_staffView " +
+                "FROM Employee, Attendance,Designation " +
                 "WHERE Employee.E_ID=Attendance.E_ID AND Designation.Designation_Name=Employee.Designation;";
         return execute();
     }
@@ -106,7 +106,7 @@ public class MQueries {
 
     public static ResultSet getOverviewSummary() throws SQLException {
         query = "SELECT Room_No,Room_Type, Availability , Beds_Num, Price " +
-                "FROM manager_overviewView " +
+                "FROM room,room_type " +
                 "WHERE room.room_type=room_type.Type " +
                 "ORDER BY room.Availability DESC, " +
                 "Room_Type.Price DESC, " +
@@ -132,7 +132,7 @@ public class MQueries {
 
     public static ResultSet getCustomerSummary() throws SQLException {
         query = "SELECT Room_No , CONCAT(Visitor.FirstName, ' ',Visitor.LastName) AS Name,Service_Type,Occupants_Num, Arrival, Special_Requests,Due " +
-                "FROM manager_customerView " +
+                "FROM Customer,Visitor,Bill " +
                 "WHERE Customer.Visitor_ID=Visitor.Visitor_ID AND Bill.Bill_ID=Customer.Bill_ID " +
                 "ORDER BY Room_No;";
         return execute();
@@ -140,7 +140,7 @@ public class MQueries {
 
     public static ResultSet getOrdersSummary() throws SQLException {
         query = "SELECT Room_No, Special_Request,Inventories,Extra_Charges,Service_Date_Time, CONCAT(Employee.FirstName, ' ',Employee.LastName) AS BellBoyName,Bell_Boy " +
-                "FROM manager_orderView " +
+                "FROM CUSTOMER,ROOM_SERVICE,EMPLOYEE " +
                 "WHERE CUSTOMER.Customer_ID = ROOM_SERVICE.Customer_ID AND EMPLOYEE.E_ID=ROOM_SERVICE.Bell_Boy " +
                 "ORDER BY Room_No ASC;";
         return execute();

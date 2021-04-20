@@ -9,7 +9,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -151,7 +150,7 @@
       </VBox>
       <StackPane layoutX="258.0" prefHeight="576.0" prefWidth="793.0" style="-fx-background-color: #02030A;">
          <children>
-            <Pane fx:id="pnlVisualize" prefHeight="200.0" prefWidth="200.0">
+            <Pane fx:id="pnlVisualize" prefHeight="200.0" prefWidth="200.0" visible="false">
                <children>
                   <VBox prefHeight="522.0" prefWidth="766.0">
                      <children>
@@ -662,13 +661,13 @@
                   </ImageView>
                </children>
             </Pane>
-            <Pane fx:id="pnlNewEmp" layoutX="10.0" layoutY="10.0" prefHeight="554.0" prefWidth="793.0" visible="false">
+            <Pane fx:id="pnlNewEmp" layoutX="10.0" layoutY="10.0" prefHeight="554.0" prefWidth="793.0">
                <children>
                   <HBox alignment="CENTER_LEFT" layoutX="50.0" layoutY="25.0" prefHeight="92.0" prefWidth="687.0" spacing="50.0">
                      <children>
                         <VBox alignment="CENTER" prefHeight="92.0" prefWidth="162.0">
                            <children>
-                              <TextField fx:id="filterRoomTable1" alignment="CENTER" prefHeight="27.0" prefWidth="183.0" promptText="Room" style="-fx-background-color: #02030A; -fx-border-color: #B7C3D7; -fx-border-radius: 1em;" text="Employee" />
+                              <TextField fx:id="txtNewEmpID" alignment="CENTER" onKeyPressed="#txtNewEmpIDPressed" prefHeight="27.0" prefWidth="183.0" promptText="Employee" style="-fx-background-color: #02030A; -fx-border-color: #B7C3D7; -fx-border-radius: 1em;" />
                               <Label text="ID" textFill="#e7e5e5">
                                  <VBox.margin>
                                     <Insets top="10.0" />
@@ -678,7 +677,7 @@
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="92.0" prefWidth="187.0">
                            <children>
-                              <Label fx:id="lblCustomerCount1" alignment="CENTER" prefHeight="38.0" prefWidth="170.0" text="Manager" textFill="#26bfbc">
+                              <Label fx:id="lblDesignation" alignment="CENTER" prefHeight="38.0" prefWidth="170.0" text="Manager" textFill="#26bfbc">
                                  <font>
                                     <Font name="System Bold" size="26.0" />
                                  </font>
@@ -702,7 +701,7 @@
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="71.0" text="Add" />
+                              <Button fx:id="btnNewEmp" mnemonicParsing="false" onAction="#btnNewEmpClicked" prefHeight="26.0" prefWidth="87.0" text="Add" />
                               <Label text="Status" textFill="#e7e5e5">
                                  <padding>
                                     <Insets top="10.0" />
@@ -755,73 +754,73 @@
                                     <HBox prefHeight="24.0" prefWidth="372.0">
                                        <children>
                                           <Label alignment="CENTER" prefHeight="58.0" prefWidth="178.0" text="Name" />
-                                          <TextField prefHeight="37.0" prefWidth="187.0" />
+                                          <TextField fx:id="txtNameNE" prefHeight="37.0" prefWidth="187.0" />
                                        </children>
                                     </HBox>
                                     <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                                        <children>
                                           <Label alignment="CENTER" prefHeight="58.0" prefWidth="178.0" text="Surname" />
-                                          <TextField prefHeight="37.0" prefWidth="187.0" />
+                                          <TextField fx:id="txtSurnameNE" prefHeight="37.0" prefWidth="187.0" />
                                        </children>
                                     </HBox>
                                     <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
                                        <children>
                                           <Label alignment="CENTER" prefHeight="58.0" prefWidth="178.0" text="E-mail" />
-                                          <TextField prefHeight="37.0" prefWidth="187.0" />
+                                          <TextField fx:id="txtEmailNE" prefHeight="37.0" prefWidth="187.0" />
                                        </children>
                                     </HBox>
                                     <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                        <children>
                                           <Label alignment="CENTER" prefHeight="58.0" prefWidth="178.0" text="Phone" />
-                                          <TextField prefHeight="37.0" prefWidth="187.0" />
+                                          <TextField fx:id="txtPhoneNE" prefHeight="37.0" prefWidth="187.0" />
                                        </children>
                                     </HBox>
                                     <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
                                        <children>
                                           <Label alignment="CENTER" prefHeight="58.0" prefWidth="178.0" text="UIDAI" />
-                                          <TextField prefHeight="37.0" prefWidth="187.0" />
+                                          <TextField fx:id="txtAdharNE" prefHeight="37.0" prefWidth="187.0" />
                                        </children>
                                     </HBox>
                                     <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                        <children>
                                           <Label alignment="CENTER" prefHeight="58.0" prefWidth="178.0" text="Designation" />
-                                          <TextField prefHeight="37.0" prefWidth="187.0" />
+                                          <TextField fx:id="txtDesignationNE" prefHeight="37.0" prefWidth="187.0" />
                                        </children>
                                     </HBox>
                                     <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
                                        <children>
                                           <Label alignment="CENTER" prefHeight="58.0" prefWidth="178.0" text="Rating" />
-                                          <TextField prefHeight="37.0" prefWidth="187.0" />
+                                          <TextField fx:id="txtRatingNE" prefHeight="37.0" prefWidth="187.0" />
                                        </children>
                                     </HBox>
                                     <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                        <children>
                                           <Label alignment="CENTER" prefHeight="58.0" prefWidth="178.0" text="Shift" />
-                                          <ComboBox editable="true" prefHeight="30.0" prefWidth="187.0" promptText="Choose" visibleRowCount="3" />
+                                          <ComboBox fx:id="cbShiftNE" editable="true" prefHeight="30.0" prefWidth="187.0" promptText="Choose" visibleRowCount="3" />
                                        </children>
                                     </HBox>
                                     <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5">
                                        <children>
-                                          <Label alignment="CENTER" prefHeight="58.0" prefWidth="178.0" text="Address" />
-                                          <TextField prefHeight="37.0" prefWidth="187.0" />
+                                          <Label alignment="CENTER" prefHeight="58.0" prefWidth="178.0" text="Password" />
+                                          <TextField fx:id="txtPasswordNE" prefHeight="37.0" prefWidth="187.0" />
                                        </children>
                                     </HBox>
                                     <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                        <children>
                                           <Label alignment="CENTER" prefHeight="58.0" prefWidth="178.0" text="Wage" />
-                                          <Spinner editable="true" prefHeight="36.0" prefWidth="187.0" />
+                                          <TextField fx:id="txtWageNE" prefHeight="37.0" prefWidth="187.0" />
                                        </children>
                                     </HBox>
                                     <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="4">
                                        <children>
                                           <Label alignment="CENTER" prefHeight="58.0" prefWidth="178.0" text="Joining" />
-                                          <DatePicker editable="false" prefHeight="37.0" prefWidth="186.0" />
+                                          <DatePicker fx:id="dpJoiningNE" editable="false" prefHeight="37.0" prefWidth="186.0" />
                                        </children>
                                     </HBox>
                                     <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                        <children>
                                           <Label alignment="CENTER" prefHeight="58.0" prefWidth="178.0" text="Relieved" />
-                                          <DatePicker prefHeight="37.0" prefWidth="186.0" />
+                                          <DatePicker fx:id="dpRelievedNE" prefHeight="37.0" prefWidth="186.0" />
                                        </children>
                                     </HBox>
                                  </children>

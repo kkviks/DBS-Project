@@ -219,8 +219,7 @@
 					<property name="com.jaspersoft.studio.table.style.detail" value="Table 1_TD"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 				</reportElement>
-				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd
-http://jasperreports.sourceforge.net/jasperreports/components " xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 					<datasetRun subDataset="Dataset1" uuid="4cd75068-3257-491c-9de2-dae0bb643705">
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>

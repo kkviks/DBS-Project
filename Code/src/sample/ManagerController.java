@@ -678,7 +678,7 @@ public class ManagerController implements Initializable {
             try {
                 resultSet = MQueries.getRoomHeader(whatRooms);
     
-                if (resultSet.next()) {
+                if (resultSet!=null && resultSet.next()) {
                     count = resultSet.getInt("VAL");
                 }
     
@@ -1226,8 +1226,8 @@ public class ManagerController implements Initializable {
         return "";
     }
 
-    private boolean isEmpExists(String e_id) throws SQLException {
-        resultSet = MQueries.isExist(e_id);
+    private boolean isEmpExists(String eid) throws SQLException {
+        resultSet = MQueries.isExist(eid);
         if(resultSet.next()){
             return true;
         }
