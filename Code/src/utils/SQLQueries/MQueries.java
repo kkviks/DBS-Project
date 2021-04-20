@@ -1,11 +1,14 @@
-package utils;
+package utils.SQLQueries;
+
+import utils.ConnectionUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Queries {
+public class MQueries {
+
     private static Connection con;
     private static PreparedStatement preparedStatement;
     private static ResultSet resultSet=null;
@@ -27,6 +30,37 @@ public class Queries {
             throwables.printStackTrace();
         }
         return resultSet;
+    }
+
+    public static ResultSet getAttendanceSummary() throws SQLException {
+        query = "SELECT CONCAT(Employee.FirstName, ' ',Employee.LastName) AS Name, Designation, Employee.E_ID, isPresent,Attendance_Date AS Required_Attendance " +
+                "FROM Employee, Attendance " +
+                "WHERE Employee.E_ID=Attendance.E_ID AND (Attendance.Attendance_Date BETWEEN '2021-03-05' AND '2021-05-10');";
+        return execute();
+    }
+
+    public static ResultSet getFinanceSummary() throws SQLException {
+        query = "SELECT Update_Date,Wages,Rent,Profit,Credit " +
+                "FROM Finance " +
+                "WHERE Update_Date BETWEEN '2021-01-10' AND '2021-01-20');";
+        return execute();
+    }
+
+    public static ResultSet getFinanceHeader(String whatFinance) throws SQLException {
+
+        switch (whatFinance) {
+            case "Total Wages":
+                query = "SELECT SUM(Wage) FROM Finance";
+                break;
+            case "Total Rent":
+                query = "SELECT SUM(Rent) FROM Finance";
+                break;
+            case "Total Profit":
+                query = "SELECT SUM(Profit) FROM Finance";
+        }
+
+        return execute();
+
     }
 
     public static ResultSet getStaffSummary() throws SQLException {
@@ -53,7 +87,7 @@ public class Queries {
 
     }
 
-    public static ResultSet getOverviewHeader(String whatRooms) throws SQLException {
+    public static ResultSet getRoomHeader(String whatRooms) throws SQLException {
 
         switch (whatRooms) {
             case "Total":
@@ -79,7 +113,6 @@ public class Queries {
                 "room.Room_No ASC;";
         return execute();
     }
-
     public static ResultSet getCustomerHeader(String whatCustomers) throws SQLException {
 
         switch (whatCustomers) {
@@ -112,43 +145,4 @@ public class Queries {
                 "ORDER BY Room_No ASC;";
         return execute();
     }
-
-    public static ResultSet getCheckoutSummary(String roomNum) throws SQLException {
-        query = "SELECT CONCAT(Visitor.FirstName, ' ', Visitor.LastName) AS Name, E_mail, " +
-                "Customer.Phone AS Phone, " +
-                "Occupants_Num AS Occupants, " +
-                "Arrival AS CheckIn " +
-                "FROM CUSTOMER, " +
-                "VISITOR, " +
-                "ROOM " +
-                "WHERE Visitor.Visitor_ID = Customer.Visitor_ID " +
-                "AND room.Room_No=customer.Room_No " +
-                "AND Customer.Room_No = " + roomNum + " ;";
-        return execute();
-    }
-
-    public static ResultSet getType(String roomNum) throws SQLException {
-        query = "SELECT Type, Price from room,room_type where room.Room_Type = room_type.Type and Room_No = " + roomNum +" ;";
-        return execute();
-    }
-
-    public static ResultSet getAvailability(String roomNum) throws SQLException {
-        query = "SELECT Availability from room where Room_No = "+ roomNum +" ;";
-        return execute();
-    }
-
-    public static ResultSet getPaid(String roomNum) throws SQLException {
-        query = "SELECT Paid FROM Bill,Customer " +
-                "WHERE Bill.Bill_ID = Customer.Bill_ID AND Customer.Room_No= " + roomNum +" ;";
-        return execute();
-    }
-
-    public static ResultSet getAdditionalCharges(String roomNum) throws SQLException {
-        query = "SELECT SUM(room_service.Extra_Charges) AS Addition_Charges_Sum " +
-                "FROM room_service,customer " +
-                "WHERE customer.Customer_ID = room_service.Customer_ID " +
-                "AND customer.Room_No = "+roomNum +" ;";
-        return execute();
-    }
-
 }

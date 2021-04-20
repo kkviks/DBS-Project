@@ -14,6 +14,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import models.*;
 import utils.ConnectionUtil;
+import utils.SQLQueries.MQueries;
 
 import java.net.URL;
 import java.sql.Connection;
@@ -69,13 +70,16 @@ public class ManagerController implements Initializable {
     Label lblServerStatus;
 
     @FXML
-    TextField filterRoomTable, filterStaffTable,filterAttendanceTable;
+    TextField filterRoomTable, filterStaffTable,filterAttendanceTable,filterFinanceTable;
 
     @FXML
     Label lblRoomsTotal, lblRoomsOccupied, lblRoomsAvailable;
 
     @FXML
     Label lblStaffTotal, lblStaffPresent, lblStaffAbsent;
+
+    @FXML
+    Label lblFinanceWage, lblFinanceRent , lblFinanceProfit;
 
     @FXML
     Label lblServerStatusStaff;
@@ -102,6 +106,9 @@ public class ManagerController implements Initializable {
 
     @FXML
     TableView<Attendance> attendanceTableView;
+
+    @FXML
+    TableView<Finance> financeTableView;
 
     @FXML
     TableColumn<Room, Integer> roomNumCol;
@@ -157,6 +164,20 @@ public class ManagerController implements Initializable {
     @FXML
     TableColumn<Orders, String> orderBellboyCol;
 
+
+    //For Finance table
+    @FXML
+    TableColumn<Finance, String> financeDateCol;
+    @FXML
+    TableColumn<Finance, Double> financeWageCol;
+    @FXML
+    TableColumn<Finance, Double> financeRentCol;
+    @FXML
+    TableColumn<Finance, Double> financeProfitCol;
+    @FXML
+    TableColumn<Finance, Double> financeCreditCol;
+
+
     @FXML
     TableColumn<Attendance, String> attendanceNameCol;
     @FXML
@@ -196,6 +217,7 @@ public class ManagerController implements Initializable {
         setupStaff();
         setupCustomer();
         setupAttendance();
+        setupFinance();
         showOnly("Rooms");
     }
 
@@ -266,12 +288,12 @@ public class ManagerController implements Initializable {
 
         try {
             //Querying data for staff items
-            String query = "SELECT CONCAT(Employee.FirstName, ' ',Employee.LastName) AS Name, Designation, Employee.E_ID, isPresent,Attendance_Date AS Required_Attendance " +
+            /*String query = "SELECT CONCAT(Employee.FirstName, ' ',Employee.LastName) AS Name, Designation, Employee.E_ID, isPresent,Attendance_Date AS Required_Attendance " +
                     "FROM Employee, Attendance " +
                     "WHERE Employee.E_ID=Attendance.E_ID AND (Attendance.Attendance_Date BETWEEN '2021-03-05' AND '2021-05-10');";
 
-            preparedStatement = con.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery(query);
+            preparedStatement = con.prepareStatement(query);*/
+            resultSet = MQueries.getAttendanceSummary();
 
             //Iterating over data and adding to observable list
             while (resultSet.next()) {
@@ -289,6 +311,140 @@ public class ManagerController implements Initializable {
         }
 
         return attendancelist;
+    }
+
+    private void setupFinance() {
+        // TODO: 20-04-2021
+        setupFinanceHeader();
+        setupFinanceTable();
+    }
+
+    private void setupFinanceTable() {
+        //Set Cell and Property Value Factory for the table
+        financeDateCol.setCellValueFactory(new PropertyValueFactory<Finance, String>("financeDate"));
+        financeWageCol.setCellValueFactory(new PropertyValueFactory<Finance, Double>("financeWage"));
+        financeRentCol.setCellValueFactory(new PropertyValueFactory<Finance, Double>("financeRent"));
+        financeProfitCol.setCellValueFactory(new PropertyValueFactory<Finance, Double>("financeProfit"));
+        financeCreditCol.setCellValueFactory(new PropertyValueFactory<Finance, Double>("financeCreditCol"));
+
+        // 0. Initialize the columns.
+        //ObservableList<Attendance> roomList = FXCollections.observableArrayList();
+        ObservableList<Finance> financeList = fetchFinanceData();
+
+
+        // 1. Wrap the ObservableList in a FilteredList (initially display all data).
+        FilteredList<Finance> financeFilteredList = new FilteredList<>(financeList, p -> true);
+
+        // 2. Set the filter Predicate whenever the filter changes.
+        filterFinanceTable.textProperty().addListener((observable, oldValue, newValue) -> {
+            financeFilteredList.setPredicate(finance -> {
+
+                //If filter is empty display all data
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+
+                String lowerCaseFilter = newValue.toLowerCase().trim();
+                //Column-wise filtering logic
+                if (finance.getFinanceDate().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                }else if(String.valueOf(finance.getFinanceWage()).toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if(String.valueOf(finance.getFinanceRent()).toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if(String.valueOf(finance.getFinanceProfit()).toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if(String.valueOf(finance.getFinanceCredit()).toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                }
+                return false;
+            });
+        });
+
+        // 3. Wrap the FilteredList in a SortedList.
+        SortedList<Finance> financeSortedList = new SortedList<>(financeFilteredList);
+
+        //4. Bind the Sortedlist comparator to the TableView comparator.
+        //Otherwise, sorting the TableView would have no effect.
+        financeSortedList.comparatorProperty().bind(financeTableView.comparatorProperty());
+
+        //Add sorted ( and filtered ) data to the table.
+       financeTableView.setItems(financeSortedList);
+
+        //If we have no data to show
+        financeTableView.setPlaceholder(new Label("No search results"));
+    }
+
+    private ObservableList<Finance> fetchFinanceData() {
+        ObservableList<Finance> financelist = FXCollections.observableArrayList();
+
+        try {
+            //Querying data for staff items
+            /*String query = "SELECT CONCAT(Employee.FirstName, ' ',Employee.LastName) AS Name, Designation, Employee.E_ID, isPresent,Attendance_Date AS Required_Attendance " +
+                    "FROM Employee, Attendance " +
+                    "WHERE Employee.E_ID=Attendance.E_ID AND (Attendance.Attendance_Date BETWEEN '2021-03-05' AND '2021-05-10');";
+
+            preparedStatement = con.prepareStatement(query);*/
+            resultSet = MQueries.getFinanceSummary();
+
+            //Iterating over data and adding to observable list
+            while (resultSet.next()) {
+                //Extract data from a particular row
+                String financeDate = resultSet.getString("Update_Date");
+                Double financeWage= resultSet.getDouble("Wages");
+                Double financeRent = resultSet.getDouble("Rent");
+                Double financeProfit = resultSet.getDouble("Profit");
+                Double financeCredit = resultSet.getDouble("Credit");
+                //Add data to attendancelist
+                financelist.add(new Finance(financeDate, financeWage, financeRent, financeProfit, financeCredit)); }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return financelist;
+    }
+
+    private void setupFinanceHeader() {
+        //Get room numbers
+        int numFinanceWage = getFinanceNums("Total Wages");
+        int numFinanceRent = getFinanceNums("Total Rent");
+        int numFinanceProfit = getFinanceNums("Total Profit");
+
+        //Set label text values
+        lblStaffTotal.setText(String.valueOf(numFinanceWage));
+        lblStaffPresent.setText(String.valueOf(numFinanceRent));
+        lblStaffAbsent.setText(String.valueOf(numFinanceProfit));
+
+        //Server Status
+        if (con == null) {
+            lblServerStatusStaff.setTextFill(Color.TOMATO);
+            lblServerStatusStaff.setText("Not OK");
+            return;
+        } else {
+            lblServerStatusStaff.setTextFill(Color.GREEN);
+            lblServerStatusStaff.setText("OK");
+        }
+
+    }
+
+    private int getFinanceNums(String whatFinance) {
+
+        int count = 0;
+
+        try {
+            resultSet = MQueries.getFinanceHeader(whatFinance);
+
+            if (resultSet.next()) {
+                count = resultSet.getInt("VAL");
+            }
+
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+            lblServerStatusStaff.setText("Not OK");
+        }
+
+        return count;
     }
 
     private void setupStaff() {
@@ -360,12 +516,12 @@ public class ManagerController implements Initializable {
 
         try {
             //Quering data for staff items
-            String query = "SELECT CONCAT(Employee.FirstName, ' ',Employee.LastName) AS Name, Designation, Phone, Shift, isPresent AS Availability,Wage " +
+            /*String query = "SELECT CONCAT(Employee.FirstName, ' ',Employee.LastName) AS Name, Designation, Phone, Shift, isPresent AS Availability,Wage " +
                     "FROM Employee, Attendance,Designation " +
                     "WHERE Employee.E_ID=Attendance.E_ID AND Designation.Designation_Name=Employee.Designation;";
 
-            preparedStatement = con.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();
+            preparedStatement = con.prepareStatement(query);*/
+            resultSet = MQueries.getStaffSummary();
 
             //Iterating over data and adding to observable list
             while (resultSet.next()) {
@@ -414,22 +570,9 @@ public class ManagerController implements Initializable {
     private int getStaffNums(String whatStaff) {
 
         int count = 0;
-        String query = "";
-
-        switch (whatStaff) {
-            case "Total":
-                query = "SELECT COUNT(*) AS VAL FROM Employee, Attendance WHERE Employee.E_ID=Attendance.E_ID";
-                break;
-            case "Present":
-                query = "SELECT COUNT(*) AS VAL FROM Employee, Attendance WHERE Employee.E_ID=Attendance.E_ID AND isPresent=1";
-                break;
-            case "Absent":
-                query = "SELECT COUNT(*) AS VAL FROM Employee, Attendance WHERE Employee.E_ID=Attendance.E_ID AND isPresent=0";
-        }
 
         try {
-            preparedStatement = con.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();
+            resultSet = MQueries.getStaffHeader(whatStaff);
 
             if (resultSet.next()) {
                 count = resultSet.getInt("VAL");
@@ -473,22 +616,9 @@ public class ManagerController implements Initializable {
     private int getRoomNums(String whatRooms) {
 
             int count = 0;
-            String query = "";
-    
-            switch (whatRooms) {
-                case "Total":
-                    query = "SELECT COUNT(*) AS VAL FROM ROOM";
-                    break;
-                case "Available":
-                    query = "SELECT COUNT(*) AS VAL FROM ROOM WHERE Availability=1;";
-                    break;
-                case "Occupied":
-                    query = "SELECT COUNT(*) AS VAL FROM room WHERE Availability=0";
-            }
     
             try {
-                preparedStatement = con.prepareStatement(query);
-                resultSet = preparedStatement.executeQuery();
+                resultSet = MQueries.getRoomHeader(whatRooms);
     
                 if (resultSet.next()) {
                     count = resultSet.getInt("VAL");
@@ -566,15 +696,15 @@ public class ManagerController implements Initializable {
 
         try {
             //Querying data for room items
-            String query = "SELECT Room_No,Room_Type, Availability , Beds_Num, Price " +
+            /*String query = "SELECT Room_No,Room_Type, Availability , Beds_Num, Price " +
                     "FROM room,room_type " +
                     "WHERE room.room_type=room_type.Type " +
                     "ORDER BY room.Availability DESC, " +
                     "Room_Type.Price DESC, " +
                     "room.Room_No ASC;";
 
-            preparedStatement = con.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();
+            preparedStatement = con.prepareStatement(query);*/
+            resultSet = MQueries.getOverviewSummary();
 
             //Iterating over data and adding to rooms observable list
             while (resultSet.next()) {
@@ -627,22 +757,9 @@ public class ManagerController implements Initializable {
     private int getCustomerNums(String whatCustomers) {
 
         int count = 0;
-        String query = "";
-
-        switch (whatCustomers) {
-            case "Visitor":
-                query = "SELECT COUNT(*) AS VAL FROM VISITOR;";
-                break;
-            case "Customer":
-                query = "SELECT COUNT(*) AS VAL FROM CUSTOMER;";
-                break;
-            case "Amount Due":
-                query = "SELECT SUM(DUE) AS VAL FROM BILL,CUSTOMER WHERE CUSTOMER.BILL_ID=BILL.BILL_ID;";
-        }
 
         try {
-            preparedStatement = con.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();
+            resultSet = MQueries.getCustomerHeader(whatCustomers);
 
             if (resultSet.next()) {
                 count = resultSet.getInt("VAL");
@@ -732,13 +849,13 @@ public class ManagerController implements Initializable {
 
         try {
             //Querying data for room items
-            String query = "SELECT Room_No , CONCAT(Visitor.FirstName, ' ',Visitor.LastName) AS Name,Service_Type,Occupants_Num, Arrival, Special_Requests,Due " +
+            /*String query = "SELECT Room_No , CONCAT(Visitor.FirstName, ' ',Visitor.LastName) AS Name,Service_Type,Occupants_Num, Arrival, Special_Requests,Due " +
                     "FROM Customer,Visitor,Bill " +
                     "WHERE Customer.Visitor_ID=Visitor.Visitor_ID AND Bill.Bill_ID=Customer.Bill_ID " +
                     "ORDER BY Room_No;";
 
-            preparedStatement = con.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();
+            preparedStatement = con.prepareStatement(query);*/
+            resultSet = MQueries.getCustomerSummary();
 
             //Iterating over data and adding to rooms observable list
             while (resultSet.next()) {
@@ -837,13 +954,13 @@ public class ManagerController implements Initializable {
 
         try {
             //Querying data for orders items
-            String query = "SELECT Room_No, Special_Requests,Inventories,Extra_Charges,Service_Date_Time, CONCAT(Employee.FirstName, ' ',Employee.LastName) AS BellBoyName,Bell_Boy " +
+            /*String query = "SELECT Room_No, Special_Requests,Inventories,Extra_Charges,Service_Date_Time, CONCAT(Employee.FirstName, ' ',Employee.LastName) AS BellBoyName,Bell_Boy " +
                     "FROM CUSTOMER,ROOM_SERVICE,EMPLOYEE " +
                     "WHERE CUSTOMER.Customer_ID = ROOM_SERVICE.Customer_ID AND EMPLOYEE.E_ID=ROOM_SERVICE.Bell_Boy " +
                     "ORDER BY Room_No ASC;";
 
-            preparedStatement = con.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();
+            preparedStatement = con.prepareStatement(query);*/
+            resultSet = MQueries.getOrdersSummary();
 
             //Iterating over data and adding to rooms observable list
 

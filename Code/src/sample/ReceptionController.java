@@ -19,7 +19,7 @@ import models.Staff;
 import utils.ConnectionUtil;
 import utils.DateManipulation;
 import utils.Pair;
-import utils.Queries;
+import utils.SQLQueries.RQueries;
 
 import java.net.URL;
 import java.sql.Connection;
@@ -316,15 +316,8 @@ public class ReceptionController implements Initializable {
         ObservableList<Staff> stafflist = FXCollections.observableArrayList();
 
         try {
-            //Quering data for staff items
-            /*String query = "SELECT CONCAT(Employee.FirstName, ' ',Employee.LastName) AS Name, Designation, Phone, Shift, isPresent AS Availability " +
-                    "FROM Employee, Attendance " +
-                    "WHERE Employee.E_ID=Attendance.E_ID;";
 
-            preparedStatement = con.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();*/
-
-            resultSet = Queries.getStaffSummary();
+            resultSet = RQueries.getStaffSummary();
 
 
             //Iterating over data and adding to observable list
@@ -373,25 +366,9 @@ public class ReceptionController implements Initializable {
     private int getStaffNums(String whatStaff) {
 
         int count = 0;
-        //String query = "";
-
-        /*switch (whatStaff) {
-            case "Total":
-                query = "SELECT COUNT(*) AS VAL FROM Employee, Attendance WHERE Employee.E_ID=Attendance.E_ID";
-                break;
-            case "Present":
-                query = "SELECT COUNT(*) AS VAL FROM Employee, Attendance WHERE Employee.E_ID=Attendance.E_ID AND isPresent=1";
-                break;
-            case "Absent":
-                query = "SELECT COUNT(*) AS VAL FROM Employee, Attendance WHERE Employee.E_ID=Attendance.E_ID AND isPresent=0";
-        }*/
-
 
         try {
-            //preparedStatement = con.prepareStatement(query);
-            //resultSet = preparedStatement.executeQuery();
-
-            resultSet = Queries.getStaffHeader(whatStaff);
+            resultSet = RQueries.getStaffHeader(whatStaff);
 
             if (resultSet.next()) {
                 count = resultSet.getInt("VAL");
@@ -435,24 +412,9 @@ public class ReceptionController implements Initializable {
     private int getRoomNums(String whatRooms) {
 
         int count = 0;
-        //String query = "";
-
-        /*switch (whatRooms) {
-            case "Total":
-                query = "SELECT COUNT(*) AS VAL FROM ROOM";
-                break;
-            case "Available":
-                query = "SELECT COUNT(*) AS VAL FROM ROOM WHERE Availability=1;";
-                break;
-            case "Occupied":
-                query = "SELECT COUNT(*) AS VAL FROM room WHERE Availability=0";
-        }*/
 
         try {
-            //preparedStatement = con.prepareStatement(query);
-            //resultSet =
-
-            resultSet = Queries.getOverviewHeader(whatRooms);
+            resultSet = RQueries.getOverviewHeader(whatRooms);
 
             if (resultSet.next()) {
                 count = resultSet.getInt("VAL");
@@ -529,18 +491,8 @@ public class ReceptionController implements Initializable {
         ObservableList<Room> roomsList = FXCollections.observableArrayList();
 
         try {
-            //Querying data for room items
-            /*String query = "SELECT Room_No,Room_Type, Availability , Beds_Num, Price " +
-                    "FROM room,room_type " +
-                    "WHERE room.room_type=room_type.Type " +
-                    "ORDER BY room.Availability DESC, " +
-                    "Room_Type.Price DESC, " +
-                    "room.Room_No ASC;";
 
-            preparedStatement = con.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();*/
-
-            resultSet= Queries.getOverviewSummary();
+            resultSet= RQueries.getOverviewSummary();
 
             //Iterating over data and adding to rooms observable list
             while (resultSet.next()) {
@@ -593,24 +545,9 @@ public class ReceptionController implements Initializable {
     private int getCustomerNums(String whatCustomers) {
 
         int count = 0;
-        //String query = "";
-
-        /*switch (whatCustomers) {
-            case "Visitor":
-                query = "SELECT COUNT(*) AS VAL FROM VISITOR;";
-                break;
-            case "Customer":
-                query = "SELECT COUNT(*) AS VAL FROM CUSTOMER;";
-                break;
-            case "Amount Due":
-                query = "SELECT SUM(DUE) AS VAL FROM BILL,CUSTOMER WHERE CUSTOMER.BILL_ID=BILL.BILL_ID;";
-        }*/
 
         try {
-            //preparedStatement = con.prepareStatement(query);
-           // resultSet = preparedStatement.executeQuery();
-
-            resultSet = Queries.getCustomerHeader(whatCustomers);
+            resultSet = RQueries.getCustomerHeader(whatCustomers);
 
             if (resultSet.next()) {
                 count = resultSet.getInt("VAL");
@@ -695,16 +632,7 @@ public class ReceptionController implements Initializable {
         ObservableList<Customer> customerList = FXCollections.observableArrayList();
 
         try {
-            //Querying data for room items
-            /*String query = "SELECT Room_No , CONCAT(Visitor.FirstName, ' ',Visitor.LastName) AS Name,Service_Type,Occupants_Num, Arrival, Special_Requests,Due " +
-                    "FROM Customer,Visitor,Bill " +
-                    "WHERE Customer.Visitor_ID=Visitor.Visitor_ID AND Bill.Bill_ID=Customer.Bill_ID " +
-                    "ORDER BY Room_No;";
-
-            preparedStatement = con.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();*/
-
-            resultSet=Queries.getCustomerSummary();
+            resultSet= RQueries.getCustomerSummary();
 
             //Iterating over data and adding to rooms observable list
             while (resultSet.next()) {
@@ -802,16 +730,8 @@ public class ReceptionController implements Initializable {
         ObservableList<Orders> ordersList = FXCollections.observableArrayList();
 
         try {
-            //Querying data for orders items
-            /*String query = "SELECT Room_No, Special_Request,Inventories,Extra_Charges,Service_Date_Time, CONCAT(Employee.FirstName, ' ',Employee.LastName) AS BellBoyName,Bell_Boy " +
-                    "FROM CUSTOMER,ROOM_SERVICE,EMPLOYEE " +
-                    "WHERE CUSTOMER.Customer_ID = ROOM_SERVICE.Customer_ID AND EMPLOYEE.E_ID=ROOM_SERVICE.Bell_Boy " +
-                    "ORDER BY Room_No ASC;";
 
-            preparedStatement = con.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();*/
-
-            resultSet = Queries.getOrdersSummary();
+            resultSet = RQueries.getOrdersSummary();
 
             //Iterating over data and adding to rooms observable list
 
@@ -963,12 +883,9 @@ public class ReceptionController implements Initializable {
     private Pair<String,Integer> getRoomType(String roomNum) {
 
         // TODO: 12-04-2021 Make view
-        //String query = "SELECT Type, Price from room,room_type where room.Room_Type = room_type.Type and Room_No = " + roomNum +" ;";
         try {
-            /*preparedStatement = con.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();*/
 
-            resultSet = Queries.getType(roomNum);
+            resultSet = RQueries.getType(roomNum);
 
             if (resultSet.next()) {
                 String roomType = resultSet.getString("Type");
@@ -990,13 +907,9 @@ public class ReceptionController implements Initializable {
     public boolean isRoomAvailable(String roomNum) {
 
         // TODO: 12-04-2021 Make view
-        //String query = "SELECT Availability from room where Room_No = "+roomNum+" ;";
 
         try {
-           // preparedStatement = con.prepareStatement(query);
-           // resultSet = preparedStatement.executeQuery();
-
-            resultSet = Queries.getAvailability(roomNum);
+            resultSet = RQueries.getAvailability(roomNum);
 
             if (resultSet.next()) {
                 int availability = resultSet.getInt("Availability");
@@ -1167,24 +1080,10 @@ public class ReceptionController implements Initializable {
         String query = "";
 
         try {
-            //Customer details
-            /*query = "SELECT CONCAT(Visitor.FirstName, ' ', Visitor.LastName) AS Name, E_mail, " +
-                    "Customer.Phone AS Phone, " +
-                    "Occupants_Num AS Occupants, " +
-                    "Arrival AS CheckIn " +
-                    "FROM CUSTOMER, " +
-                    "VISITOR, " +
-                    "ROOM " +
-                    "WHERE Visitor.Visitor_ID = Customer.Visitor_ID " +
-                    "AND room.Room_No=customer.Room_No " +
-                    "AND Customer.Room_No = " + roomNum + " ;";*/
 
             System.out.println(roomNum);
 
-            //preparedStatement = con.prepareStatement(query);
-            //resultSet = preparedStatement.executeQuery();
-
-            resultSet = Queries.getCheckoutSummary(roomNum);
+            resultSet = RQueries.getCheckoutSummary(roomNum);
 
             if(resultSet.next()){
                 lblName.setText(resultSet.getString("Name"));
@@ -1200,14 +1099,8 @@ public class ReceptionController implements Initializable {
 
             //Summary details
             // TODO: 13-04-2021 remove this! 
-            query = "SELECT Type, Price " +
-                    "from ROOM_TYPE, " +
-                    " room " +
-                    "WHERE room.Room_Type = room_type.Type " +
-                    "  AND Room_No = " + roomNum +" ;";
 
-            preparedStatement = con.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();
+            resultSet = RQueries.getType(roomNum);
 
             if(resultSet.next()){
                 // TODO: 12-04-2021 Checkout Label and duration 
@@ -1218,13 +1111,8 @@ public class ReceptionController implements Initializable {
             }
 
             //Service details
-            query = "SELECT Service_type.Type AS Service_Type, Service_type.Price AS Price " +
-                    "from Customer, Service_type " +
-                    "WHERE Customer.service_type = Service_type.type " +
-                    "AND Customer.Room_No = " + roomNum + " ;";
 
-            preparedStatement = con.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();
+            resultSet = RQueries.getServiceSummary(roomNum);
 
             if(resultSet.next()){
                 // TODO: 12-04-2021 Total Label
@@ -1285,13 +1173,10 @@ public class ReceptionController implements Initializable {
 
     private int fetchPaid(String roomNum) {
         int paid = 0;
-        /*String query = "SELECT Paid FROM Bill,Customer " +
-                "WHERE Bill.Bill_ID = Customer.Bill_ID AND Customer.Room_No= " + roomNum +" ;";*/
-        try{
-            //preparedStatement = con.prepareStatement(query);
-            //resultSet = preparedStatement.executeQuery();
 
-            resultSet = Queries.getPaid(roomNum);
+        try{
+
+            resultSet = RQueries.getPaid(roomNum);
 
             if(resultSet.next()){
                 paid = (int)resultSet.getDouble("Paid");
@@ -1304,15 +1189,10 @@ public class ReceptionController implements Initializable {
     }
 
     private int findAdditionalCharges(String roomNum) {
-       /* String query = "SELECT SUM(room_service.Extra_Charges) AS Addition_Charges_Sum " +
-                "FROM room_service,customer " +
-                "WHERE customer.Customer_ID = room_service.Customer_ID " +
-                "AND customer.Room_No = "+roomNum +" ;";*/
-        try{
-            //preparedStatement = con.prepareStatement(query);
-            //resultSet = preparedStatement.executeQuery();
 
-            resultSet = Queries.getAdditionalCharges(roomNum);
+        try{
+
+            resultSet = RQueries.getAdditionalCharges(roomNum);
 
             if(resultSet.next()){
                 return (int)resultSet.getDouble("Addition_Charges_Sum");
