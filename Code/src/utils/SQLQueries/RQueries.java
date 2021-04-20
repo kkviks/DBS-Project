@@ -125,7 +125,8 @@ public class RQueries {
                 "ROOM " +
                 "WHERE Visitor.Visitor_ID = Customer.Visitor_ID " +
                 "AND room.Room_No=customer.Room_No " +
-                "AND Customer.Room_No = " + roomNum + " ;";
+                "AND Customer.Room_No = " + roomNum + " ORDER BY Arrival DESC \n" +
+                "LIMIT 1;";
         return execute();
     }
 
@@ -178,6 +179,18 @@ public class RQueries {
             resultSet = execute();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        return resultSet;
+    }
+
+    public static ResultSet getCustomerID(String roomNum) {
+        query = "Select Customer_ID from customer \n" +
+                "order by Customer_ID DESC\n" +
+                "limit 1; ";
+        try{
+            resultSet = execute();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
         return resultSet;
     }

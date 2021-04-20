@@ -146,8 +146,9 @@ public class MQueries {
         return execute();
     }
 
-    public static ResultSet getEmpAttendance(String e_id) {
-        query = "SELECT Count(*) AS DaysTotal, SUM(isPresent) AS DaysPresent FROM attendance WHERE E_ID= "+ e_id +" ;";
+    public static ResultSet getEmpAttendance(String e_id, String dateFrom, String dateTo) {
+        query = "SELECT Count(*) AS DaysTotal, SUM(isPresent) AS DaysPresent FROM attendance WHERE E_ID= "+ e_id +" " +
+                "AND Attendance_Date BETWEEN '" + dateFrom +"' and '"+dateTo+"' ;";
         try{
             resultSet = execute();
         } catch (Exception e) {
@@ -164,5 +165,26 @@ public class MQueries {
             e.printStackTrace();
         }
         return resultSet;
+    }
+
+    public static ResultSet isExist(String e_id) {
+        query = "SELECT Exists (select * from employee where E_ID =  " +e_id +" ;";
+        try{
+            resultSet = execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultSet;
+    }
+
+    public static ResultSet getDesignation(String e_id) {
+        query = "SELECT Designation from Employee where E_ID = "+e_id+" ;";
+        try{
+            resultSet = execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultSet;
+
     }
 }

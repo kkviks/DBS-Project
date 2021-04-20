@@ -1,6 +1,5 @@
 package sample;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -8,24 +7,26 @@ import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import models.*;
 import utils.ConnectionUtil;
 import utils.Report;
 import utils.SQLQueries.MQueries;
 
-import javax.swing.*;
+import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
@@ -51,6 +52,9 @@ public class ManagerController implements Initializable {
 
     @FXML
     private Button btnSignout;
+
+    @FXML
+    TextField txtNewEmpID;
 
     //panels
 
@@ -85,7 +89,7 @@ public class ManagerController implements Initializable {
     Label lblStaffTotal, lblStaffPresent, lblStaffAbsent;
 
     @FXML
-    Label lblFinanceWage, lblFinanceRent , lblFinanceProfit;
+    Label lblFinanceWage, lblFinanceRent , lblFinanceProfit,lblDesignation;
 
     @FXML
     Label lblServerStatusStaff;
@@ -95,6 +99,20 @@ public class ManagerController implements Initializable {
 
     @FXML
     Button btnRooms;
+
+    //NewEmp
+
+    @FXML
+    TextField txtNameNE,txtSurnameNE, txtEmailNE,txtPhoneNE,txtAdharNE,txtRatingNE, txtPasswordNE, txtWageNE;
+
+    @FXML
+    DatePicker dpJoiningNE, dpReleivedNE;
+
+    @FXML
+    ComboBox cbSHiftNE;
+
+
+
 
 
     //tableView
@@ -226,6 +244,9 @@ public class ManagerController implements Initializable {
 
     @FXML Pane pnlVisualize;
 
+    @FXML
+    Button btnNewEmp;
+
     //Reports
     @FXML
     DatePicker dpEmp, dpFinanceFrom, dpFinanceTo, dpVisitorsFrom, dpVisitorsTo, dpParkingFrom, dpParkingTo;
@@ -238,7 +259,7 @@ public class ManagerController implements Initializable {
     Connection con = null;
     PreparedStatement preparedStatement = null;
     ResultSet resultSet = null;
-
+    private Statement stmt;
 
 
     @Override
@@ -1082,7 +1103,7 @@ public class ManagerController implements Initializable {
     }
 
 
-    public void handleClicks(ActionEvent actionEvent) {
+    public void handleClicks(ActionEvent actionEvent) throws IOException {
 
         if(actionEvent.getSource()==btnVisualizeManager){
             showOnly("Visualize");
@@ -1113,8 +1134,11 @@ public class ManagerController implements Initializable {
         }
 
         if (actionEvent.getSource() == btnSignout) {
-            Platform.exit();
-            System.exit(0);
+            Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
+            Scene scene = new Scene(root,900,500);
+            Stage appStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            appStage.setScene(scene);
+            appStage.show();
         }
     }
     public void empAttendanceFetchBtn(){
@@ -1124,7 +1148,7 @@ public class ManagerController implements Initializable {
 
         String e_id = txtAttendanceEmpSearch.getText().trim();
         try{
-            resultSet = MQueries.getEmpAttendance(e_id);
+            resultSet = MQueries.getEmpAttendance(e_id, dateFrom.toString(),dateTo.toString());
             if(resultSet.next()){
                 int daysTotal = resultSet.getInt("DaysTotal");
                 int daysPresent = resultSet.getInt("DaysPresent");
@@ -1157,12 +1181,13 @@ public class ManagerController implements Initializable {
 
         if(actionEvent.getSource()==btnReportEmp){
             System.out.println("Print emp");
-            Report.printEmployee();
+            //Report.printEmployee();
+            Report.printInvoice();
         }
 
         if(actionEvent.getSource()==btnReportFinance){
             System.out.println("Print finance");
-            // TODO: 20-04-2021  
+            Report.printFinance(dpFinanceFrom.getValue().toString(), dpFinanceTo.getValue().toString());
         }
 
         if(actionEvent.getSource()==btnReportVisitors){
@@ -1170,8 +1195,78 @@ public class ManagerController implements Initializable {
         }
 
         if(actionEvent.getSource()==btnReportParking){
-            Report.printparking();
+            Report.printParking();
         }
+    }
+
+    public void txtNewEmpIDPressed() {
+
+        txtNewEmpID.textProperty().addListener((observable, oldValue, newValue) -> {
+            String e_id = newValue.trim();
+            try {
+                if (isEmpExists(e_id)) {
+                    lblDesignation.setText(getEmpDesignation(e_id));
+                    btnNewEmp.setText("Update");
+                    //Fetch and assign values to each fields
+                } else {
+                    btnNewEmp.setText("Register");
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        });
+    }
+
+    private String getEmpDesignation(String e_id) throws SQLException {
+        resultSet = MQueries.getDesignation(e_id);
+        if(resultSet.next()){
+            return resultSet.getString("Designation");
+        }
+        return "";
+    }
+
+    private boolean isEmpExists(String e_id) throws SQLException {
+        resultSet = MQueries.isExist(e_id);
+        if(resultSet.next()){
+            return true;
+        }
+        return false;
+    }
+
+    public void btnNewEmpClicked(MouseEvent mouseEvent) throws SQLException {
+
+        String name = txtNameNE.getText().trim();
+        String surname = txtSurnameNE.getText().trim();
+        String email = txtEmailNE.getText().trim();
+        String phone = txtPhoneNE.getText().trim();
+        String adhar = txtAdharNE.getText().trim();
+        String rating= txtRatingNE.getText().trim();
+        String shift = cbSHiftNE.getValue().toString();
+        String joining = dpJoiningNE.getValue().toString();
+        String relieved = dpReleivedNE.getValue().toString();
+        String password = txtPasswordNE.getText().trim();
+        //Is number;
+        String wage = txtWageNE.getText().trim();
+
+        if(btnNewEmp.getText().equals("Register")){
+            //register emp with above details
+            // TODO: 20-04-2021
+            con = ConnectionUtil.conDB();
+            stmt = con.createStatement();
+            String sql = "Insert into employee(FirstName,LastName,Designation,UIDAI,Phone,Address,E_mail,Joining,Tenure,Rating,Shift) " +
+                    "values('"+name+"','"+surname+"+','Receptionist','123456789123,'abcde','ritika@abcde.com',NOW(),NULL,NULL,'Night');"
+            stmt.executeUpdate(sql);
+        }
+        if(btnNewEmp.getText().equals("Update")){
+            String e_id = txtNewEmpID.getText().trim();
+            // TODO: 20-04-2021
+            //update emp with above details given emp
+            con = ConnectionUtil.conDB();
+            stmt = con.createStatement();
+            String sql = "set foreign_key_checks=0;";
+            stmt.executeUpdate(sql);
+        }
+
     }
 }
     

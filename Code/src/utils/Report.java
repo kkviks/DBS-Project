@@ -79,7 +79,7 @@ public class Report {
 
     }
 
-    public static void printparking(){
+    public static void printParking(){
         sql = " select * from parking_slot";
         try {
             printReport("parking");
@@ -98,13 +98,39 @@ public class Report {
         }
 
     }
-    public static void printattendance(){
+    public static void printAttendance(){
         sql = " select * from visitor";
         try {
             printReport("visitors");
         } catch (JRException e) {
             e.printStackTrace();
         }
+    }
 
+    public static void printInvoice() {
+        sql = " SELECT CONCAT(visitor.FirstName, ' ',visitor.LastName) AS Name,bill.Bill_ID,Rent,Extra_Charges,Payment_Mode,Tax,Total FROM customer,visitor,bill WHERE customer.visitor_ID=visitor.visitor_ID AND bill.bill_ID=customer.bill_ID";
+        try {
+            printReport("Invoice");
+        } catch (JRException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void printFinance() {
+        sql = " select * from finance";
+        try {
+            printReport("finance");
+        } catch (JRException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void printFinance(String dateFrom, String dateTo) {
+        sql = " select * from finance where Update_Date BETWEEN '"+dateFrom+"' and '"+dateTo+"' ;";
+        try {
+            printReport("finance");
+        } catch (JRException e) {
+            e.printStackTrace();
+        }
     }
 }
