@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Parking" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2f6e4db4-9f8f-4ffe-9759-6e1fd142f492">
+	<property name="template.type" value="columnar"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
+	<style name="Title" forecolor="#000000" fontName="Times New Roman" fontSize="50" isBold="false"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Times New Roman" fontSize="18" isBold="false"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<queryString language="SQL">
+		<![CDATA[SELECT * from parking_slot]]>
+	</queryString>
+	<field name="Customer_ID" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="Customer_ID"/>
+		<property name="com.jaspersoft.studio.field.label" value="Customer_ID"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="parking_slot"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Slot" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="Slot"/>
+		<property name="com.jaspersoft.studio.field.label" value="Slot"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="parking_slot"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Vehicle_Type" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Vehicle_Type"/>
+		<property name="com.jaspersoft.studio.field.label" value="Vehicle_Type"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="parking_slot"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Plate_No" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Plate_No"/>
+		<property name="com.jaspersoft.studio.field.label" value="Plate_No"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="parking_slot"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Model" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Model"/>
+		<property name="com.jaspersoft.studio.field.label" value="Model"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="parking_slot"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="134" splitType="Stretch">
+
+			<staticText>
+				<reportElement style="Title" x="120" y="10" width="435" height="93" uuid="f49d68fd-a2c7-44ec-a5fc-9300d10c85a1"/>
+				<textElement>
+					<font size="60" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Parking Details
+dlkmal]]></text>
+			</staticText>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement style="Column header" x="310" y="80" width="222" height="32" forecolor="#000000" uuid="9d3307e6-b8ab-4ec3-ad5f-6520d16cc649"/>
+				<textElement verticalAlignment="Middle">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="126" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="2" y="110" width="551" height="1" uuid="5e41185f-9c90-45ca-839b-e28b308c1430"/>
+			</line>
+			<staticText>
+				<reportElement style="Column header" positionType="Float" x="79" y="0" width="132" height="20" forecolor="#000000" uuid="63bfd309-3390-43fa-94a7-29d3716b7c10"/>
+				<textElement textAlignment="Right">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Customer_ID]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" x="215" y="0" width="338" height="18" uuid="fd9b214e-a86d-4d82-bdb7-0d0d22bae7ba"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Customer_ID}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Column header" positionType="Float" x="79" y="20" width="132" height="20" forecolor="#000000" uuid="c7c64be5-0782-4bc3-b4f9-178fcfa8f12b"/>
+				<textElement textAlignment="Right">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Slot]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" x="215" y="20" width="338" height="18" uuid="77dc6d60-270b-44b2-8c8d-af4cdd01eef5"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Slot}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Column header" positionType="Float" x="79" y="40" width="132" height="20" forecolor="#000000" uuid="83d4035b-2a37-4bbf-8a1c-f87dbede170d"/>
+				<textElement textAlignment="Right">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Vehicle_Type]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" x="215" y="40" width="338" height="18" uuid="44816385-47ef-4373-abfc-7295a1f74a79"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Vehicle_Type}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Column header" positionType="Float" x="79" y="60" width="132" height="20" forecolor="#000000" uuid="fe520679-08c4-4fec-a329-6dca0a3a043b"/>
+				<textElement textAlignment="Right">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Plate_No]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" x="215" y="60" width="338" height="18" uuid="2ba242cf-9ff9-4ed9-bd64-601d3a4f7af8"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Plate_No}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Column header" positionType="Float" x="79" y="80" width="132" height="20" forecolor="#000000" uuid="03d25e7d-bfa5-4329-adb9-9d2c9a1825ba"/>
+				<textElement textAlignment="Right">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Model]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" x="215" y="80" width="338" height="18" uuid="4fe327f7-94a7-4450-abfa-f0a06c5a7d85"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Model}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="23" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="fab082df-3ca0-43ac-900e-4da3f8b5a45d"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="13" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="2" y="0" width="555" height="13" forecolor="#D0B48E" backcolor="#9DB1B8" uuid="bfdca178-800d-445c-9a31-bb616a00e8ce"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="513" y="0" width="40" height="13" forecolor="#FFFFFF" uuid="2fba0f87-635e-476d-858f-d102b26146fe"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" mode="Transparent" x="433" y="0" width="80" height="13" forecolor="#FFFFFF" uuid="e454d23d-bcfc-4c79-a399-0ef520a3150a"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

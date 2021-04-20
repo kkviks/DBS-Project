@@ -17,6 +17,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import models.*;
 import utils.ConnectionUtil;
+import utils.Report;
 import utils.SQLQueries.MQueries;
 
 import javax.swing.*;
@@ -1151,18 +1152,25 @@ public class ManagerController implements Initializable {
 
     }
 
-    public void handReportClicks(ActionEvent actionEvent){
+    public void handReportClicks(MouseEvent actionEvent){
+
 
         if(actionEvent.getSource()==btnReportEmp){
+            System.out.println("Print emp");
+            Report.printEmployee();
         }
 
         if(actionEvent.getSource()==btnReportFinance){
+            System.out.println("Print finance");
+            // TODO: 20-04-2021  
         }
 
         if(actionEvent.getSource()==btnReportVisitors){
+            Report.printVisitor();
         }
 
         if(actionEvent.getSource()==btnReportParking){
+            Report.printparking();
         }
     }
 }
