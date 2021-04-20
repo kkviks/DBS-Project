@@ -161,4 +161,24 @@ public class RQueries {
         return execute();
     }
 
+    public static ResultSet getServiceTypes() throws SQLException {
+        query = "SELECT Type AS Service_Types from service_type ;";
+
+        try{
+            resultSet = execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultSet;
+    }
+
+    public static ResultSet getServiceTypePrice(String serviceType) {
+        query = "SELECT Price from service_type where Type= " + "'" + serviceType +"'" +" ;";
+        try{
+            resultSet = execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultSet;
+    }
 }

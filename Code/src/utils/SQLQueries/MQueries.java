@@ -64,9 +64,9 @@ public class MQueries {
     }
 
     public static ResultSet getStaffSummary() throws SQLException {
-        query = "SELECT CONCAT(Employee.FirstName, ' ',Employee.LastName) AS Name, Designation, Phone, Shift, isPresent AS Availability " +
-                "FROM Employee, Attendance " +
-                "WHERE Employee.E_ID=Attendance.E_ID;";
+        query = "SELECT CONCAT(Employee.FirstName, ' ',Employee.LastName) AS Name, Designation, Phone, Shift, isPresent AS Availability,Wage " +
+                "FROM Employee, Attendance,Designation " +
+                "WHERE Employee.E_ID=Attendance.E_ID AND Designation.Designation_Name=Employee.Designation;";
         return execute();
     }
 
@@ -144,5 +144,25 @@ public class MQueries {
                 "WHERE CUSTOMER.Customer_ID = ROOM_SERVICE.Customer_ID AND EMPLOYEE.E_ID=ROOM_SERVICE.Bell_Boy " +
                 "ORDER BY Room_No ASC;";
         return execute();
+    }
+
+    public static ResultSet getEmpAttendance(String e_id) {
+        query = "SELECT Count(*) AS DaysTotal, SUM(isPresent) AS DaysPresent FROM attendance WHERE E_ID= "+ e_id +" ;";
+        try{
+            resultSet = execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultSet;
+    }
+
+    public static ResultSet getServiceTypePrice(String serviceType) {
+        query = "SELECT Price from service_type where Type= " + "'" + serviceType +"'" +" ;";
+        try{
+            resultSet = execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultSet;
     }
 }
